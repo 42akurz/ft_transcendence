@@ -1,0 +1,58 @@
+version: "3"
+
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      device: '${PWD}/data'
+      o: bind
+      type: none
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+    - "5432:5432"
+    volumes:
+    - database:/var/lib/postgresql/data
+    env_file:
+    - db.env
+    networks:
+    - open
+    restart: always
+
+  backend:
+    container_name: backend
+    links:
+    - postgres:postgres
+    build: ../backend
+    depends_on:
+      - postgres
+    ports:
+    - "3000:3000"
+    volumes:
+      - ${PWD}/backend/src:/backend/src
+    env_file:
+      - ../backend/.env
+    networks:
+      - open
+    restart: always
+
+  frontend:
+    container_name: frontend
+    build: ../frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${PWD}/frontend/src:/frontend/src
+    env_file:
+      - ../frontend/.env
+    restart: always
+
+
+networks:
+  open:
+    driver: bridge
