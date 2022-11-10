@@ -7,7 +7,9 @@ const store = createStore({
 		return {
 			currentUser: null,
 			socketChat: null,
-			socketGame: null
+			socketGame: null,
+			currentGameKey: 0,
+			currentGameRole: ''
 		}
 	},
 
@@ -15,6 +17,8 @@ const store = createStore({
 		getCurrentUser: (state) => state.currentUser,
 		getSocketChat: (state) => state.socketChat,
 		getSocketGame: (state) => state.socketGame,
+		getCurrentGameKey: (state) => state.currentGameKey,
+		getCurrentGameRole: (state) => state.currentGameRole,
 	},
 
 	actions: {
@@ -69,7 +73,15 @@ const store = createStore({
 
 		setSocketChat(state, chat) {
 			state.socketChat = chat
-		}
+		},
+
+		setCurrentGameKey(state, key) {
+			state.currentGameKey = key
+		},
+
+		setCurrentGameRole(state, role) {
+			state.currentGameRole = role
+		},
 	}
 })
 

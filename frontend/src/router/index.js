@@ -55,8 +55,7 @@ const routes = [
 {
 	path: '/gameroom',
 	name: 'gameroom',
-	component: GameRoomView,
-	props: true
+	component: GameRoomView
 }
 ]
 

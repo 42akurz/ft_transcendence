@@ -35,13 +35,9 @@
 	/* COMPUTED */
 
 	const enterGameRoom = (gameKey) => {
-		router.push({
-			name: 'gameroom',
-			params: {
-				gameKey: gameKey,
-				role: 'player'
-			}
-		});
+		store.commit('setCurrentGameKey', Number(gameKey));
+		store.commit('setCurrentGameRole', 'player');
+		router.push('gameroom');
 	}
 
 	onBeforeMount(async () => {
