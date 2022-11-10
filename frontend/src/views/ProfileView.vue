@@ -4,17 +4,26 @@
 			<button @click="goPageBack" style="color: red;" v-if="buttonsAllowed">X</button>
 			<div class="flex-container">
 				<div class="info">
-					<h2>{{user.username}}</h2>
+					<h2 class="info__title">Profile</h2>
 
-					<img id="profile-pic" :src="imageLink">
+					<h2 class="info__username">{{user.username}}</h2>
+					<img class="info__image" :src="imageLink">
 
-					<ProfileStats
+					<BaseBoxNumberWithTitle
+						id="box1"
 						v-if="user"
-						:wins="user.wins"
-						:loses="user.loses"
+						:title="'Wins'"
+						:number="user.wins"
 					/>
 
-					<h3>{{userStatus}}</h3>
+					<BaseBoxNumberWithTitle
+						id="box2"
+						v-if="user"
+						:title="'Loses'"
+						:number="user.loses"
+					/>
+
+					<h3 class="info__status">{{userStatus}}</h3>
 				</div>
 
 				<div class="history">
@@ -36,7 +45,7 @@
 <script>
 	import store from '@/store/index.js'
 	import axios from 'axios'
-	import ProfileStats from '@/components/ProfileStats.vue'
+	import BaseBoxNumberWithTitle from '@/components/BaseBoxNumberWithTitle.vue'
 	import ProfileMatchHistory from '@/components/ProfileMatchHistory.vue'
 	import ProfileButtons from '@/components/ProfileButtons.vue'
 
@@ -44,7 +53,7 @@
 		name: 'ProfileView',
 
 		components: {
-			ProfileStats,
+			BaseBoxNumberWithTitle,
 			ProfileMatchHistory,
 			ProfileButtons
 		},
@@ -126,65 +135,127 @@
 </script>
 
 <style scoped>
-	small, strong {
-		display: block;
+	* {
+		box-sizing: border-box;
 	}
 
 	.wrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding: 0;
+		margin: 0;
 		min-height: calc(100vh - var(--nav-bar-height) - 30px);
 	}
 
 	.profile {
+		padding: 0;
+		margin: 0;
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
-		padding: 50px 10%;
+		padding: 50px;
 		border-radius: 60px;
-		/* width: 400px; */
 		width: 60%;
 		max-width: 1000px;
 	}
 
 	.flex-container {
-		/* border: 1px solid red; */
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 10px;
+		padding: 0;
+		margin: 0;
 	}
 
 	.flex-container .info {
-		/* border: 1px solid blue; */
 		flex: 1;
+		display: grid;
+		grid-template-areas:
+			'title title'
+			'name name'
+			'image image'
+			'wins loses'
+			'status status';
+		gap: 5px;
+		min-width: 300px;
+	}
+
+	.flex-container .info .info__title {
+		grid-area: title;
+	}
+
+	.flex-container .info .info__username {
+		grid-area: name;
+		border: 3px solid var(--blue-dark);
+		padding: 10px 0;
+		width: 100%;
+	}
+
+	.flex-container .info .info__image {
+		grid-area: image;
+		border: 3px solid var(--blue-dark);
+		width: 100%;
+	}
+
+	.flex-container .info #box1 {
+		grid-area: wins;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		border: 3px solid var(--blue-dark);
+		align-self: stretch;
+		justify-self: stretch;
+	}
+
+	.flex-container .info #box2 {
+		grid-area: loses;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		border: 3px solid var(--blue-dark);
+		align-self: stretch;
+		justify-self: stretch;
+	}
+
+	.flex-container .info .info__status {
+		margin: 0;
+		grid-area: status;
+		border: 3px solid var(--blue-dark);
+		color: var(--blue-dark);
+		letter-spacing: 2px;
+		width: 100%;
+		padding: 10px 0;
 	}
 
 	.flex-container .history {
-		/* border: 1px solid green; */
+		border: 1px solid green;
+		height: 100%;
 		flex: 1;
 		display: flex;
 		justify-content: center;
-		/* margin-bottom: auto; */
+		margin-bottom: auto;
 	}
 
-	#profile-pic {
+	/* #profile-pic {
 		border: 3px solid var(--blue-dark);
 		width: 300px;
-	}
+	} */
 
 	h2 {
 		color: var(--blue-dark);
 		letter-spacing: 2px;
+		margin: 0;
+		padding: 0;
 	}
 
 	h3 {
-		color: var(--blue-dark);
-		letter-spacing: 2px;
+		padding: 0;
+		margin: 0;
 	}
 
-	button {
+	/* button {
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(28, 123, 212);
@@ -198,5 +269,5 @@
 		cursor: pointer;
 		background-color: var(--orange);
 		color: var(--blue-dark);
-	}
+	} */
 </style>
