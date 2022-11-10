@@ -7,6 +7,7 @@ import { UsersService } from 'src/users/users.service';
 
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { UserFriendsSerializer } from 'src/users/users.serializer';
+import { User } from 'src/users/users.entity';
 
 
 @Injectable()
@@ -14,6 +15,8 @@ export class ScoreService {
 	constructor(
 		@InjectRepository(Score)
 		private scoreRepository: Repository<Score>,
+		@InjectRepository(User)
+		private usersRepository: Repository<User>,
 	
 		private readonly usersService: UsersService,
 	) {}
@@ -42,12 +45,11 @@ export class ScoreService {
 		return await this.scoreRepository.save(newScore);
 	}
 
-	// update(usertoUpdate){
-	// 	this.scoreRepository.update(usertoUpdate.id,usertoUpdate);
-	// }
-
-	// delete(id){
-	// 	this.scoreRepository.delete(id);
-	// }
+	async getPlayersSortedByWins(limit: number): Promise<User[]> {
+		return await this.usersRepository.createQueryBuilder('user')
+			.orderBy('user.wins', 'DESC')
+			.limit(limit)
+			.getMany()
+	}
 }
 

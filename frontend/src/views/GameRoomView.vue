@@ -8,7 +8,7 @@
 		<GameResult
 			v-if="gameResult"
 			:message="gameResult"
-			@goToLobby="goToLobby"
+			@goToLobby="gameOver"
 		/>
 		<GamePlayers
 			v-if="players.playerLeft && players.playerRight"
@@ -20,7 +20,7 @@
 			:score="gameData.score"
 		/>
 		<div class="options" v-if="!gameData">
-			<div v-if="countdown">COUNTDOWN: {{countdown}}</div>
+			<div v-if="countdown">Game starts in: {{countdown}}</div>
 		</div>
 		<div class="canvas">
 			<canvas width="750" height="585" id="game"></canvas>
@@ -44,7 +44,7 @@
 	
 	const gameData = ref(null);
 
-	const userClickedExit = ref(false);
+	const eitherPlayerExited = ref(false);
 
 	// gameData.value = {
 	// 	"userLeftSideID": 2,
@@ -231,9 +231,8 @@
 
 	const exitGame = () => {
 		socket.value.emit('exitGame')
-		userClickedExit.value = true;
 		resetAllGameData();
-		goToLobby();
+		gameOver();
 	}
 
 	const pauseGame = () => {
@@ -258,6 +257,11 @@
 		})
 	}
 
+	const gameOver = () => {
+		eitherPlayerExited.value = true;
+		goToLobby();
+	}
+
 	const goToLobby = () => {
 		router.push('gamelobby')
 	}
@@ -273,16 +277,18 @@
 			startGame();
 
 			document.addEventListener('keydown', (e) => {
-				switch (e.key) {
-					case 'ArrowUp':
-						socket.value.emit('movePaddleUp')
-						break;
-					case 'ArrowDown':
-						socket.value.emit('movePaddleDown')
-						break;
-					case 'p':
-						pauseGame();
-						break;
+				if (!countdown.value) {
+					switch (e.key) {
+						case 'ArrowUp':
+							socket.value.emit('movePaddleUp')
+							break;
+						case 'ArrowDown':
+							socket.value.emit('movePaddleDown')
+							break;
+						case 'p':
+							pauseGame();
+							break;
+					}
 				}
 			})
 		}
@@ -344,7 +350,7 @@
 		store.commit('setCurrentGameKey', 0)
 		store.commit('setCurrentGameRole', '')
 
-		if (currentGameRole.value === 'player' && !userClickedExit.value) {
+		if (currentGameRole.value === 'player' && !eitherPlayerExited.value) {
 			console.log('player')
 			exitGame();
 		}
