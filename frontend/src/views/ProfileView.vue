@@ -19,7 +19,7 @@
 
 				<div class="history">
 					<ProfileMatchHistory
-						:user="(id === '0') ? currentUser : user"
+						:user="user"
 					/>
 				</div>
 
