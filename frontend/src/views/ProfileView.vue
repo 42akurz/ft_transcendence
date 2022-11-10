@@ -2,25 +2,31 @@
 	<div class="wrapper">
 		<div class="profile" v-if="user">
 			<button @click="goPageBack" style="color: red;" v-if="buttonsAllowed">X</button>
-			<h2>{{user.username}}</h2>
+			<div class="flex-container">
+				<div class="info">
+					<h2>{{user.username}}</h2>
 
-			<img :src="imageLink" width="300">
+					<img id="profile-pic" :src="imageLink">
 
-			<ProfileStats
-				v-if="user"
-				:wins="user.wins"
-				:loses="user.loses"
-			/>
+					<ProfileStats
+						v-if="user"
+						:wins="user.wins"
+						:loses="user.loses"
+					/>
 
-			<h3>{{userStatus}}</h3>
+					<h3>{{userStatus}}</h3>
+				</div>
 
+				<div class="history">
+					<ProfileMatchHistory
+						:user="(id === '0') ? currentUser : user"
+					/>
+				</div>
+
+			</div>
 			<ProfileButtons
 				v-if="buttonsAllowed && user"
 				:user="user"
-			/>
-
-			<ProfileMatchHistory
-				:user="(id === '0') ? currentUser : user"
 			/>
 		</div>
 		<small style="color: red;" v-if="errorMsg">{{errorMsg}}</small>
@@ -133,15 +139,38 @@
 	.profile {
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
-		padding: 50px;
+		padding: 50px 10%;
 		border-radius: 60px;
 		/* width: 400px; */
 		width: 60%;
 		max-width: 1000px;
 	}
 
-	img {
+	.flex-container {
+		/* border: 1px solid red; */
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.flex-container .info {
+		/* border: 1px solid blue; */
+		flex: 1;
+	}
+
+	.flex-container .history {
+		/* border: 1px solid green; */
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		/* margin-bottom: auto; */
+	}
+
+	#profile-pic {
 		border: 3px solid var(--blue-dark);
+		width: 300px;
 	}
 
 	h2 {

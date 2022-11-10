@@ -120,6 +120,7 @@ export default {
 		border-radius: 60px;
 		padding: 15px;
 		margin: 10px 0;
+		width: 310px;
 	}
 
 	.green-bg {
