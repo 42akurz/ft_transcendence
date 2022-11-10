@@ -33,13 +33,9 @@
 
 	const spectateGame = (gameKey) => {
 		socket.value.emit('spectateGame', Number(gameKey), (key) => {
-			router.push({
-				name: 'gameroom',
-				params: {
-					gameKey: key,
-					role: 'spectator'
-				}
-			});
+			store.commit('setCurrentGameKey', key);
+			store.commit('setCurrentGameRole', 'spectator');
+			router.push('gameroom');
 		})
 	}
 

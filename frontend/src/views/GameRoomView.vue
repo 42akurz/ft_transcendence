@@ -35,12 +35,9 @@
 	import GameScore from '@/components/GameScore.vue'
 	import GamePlayers from '@/components/GamePlayers.vue'
 	import GameResult from '@/components/GameResult.vue'
-	import { useRoute } from 'vue-router'
 	import { useRouter } from 'vue-router';
 	
 	const router = useRouter()
-
-	const route = useRoute();
 
 	const canvas = ref(null);
 	const context = ref(null);
@@ -106,8 +103,6 @@
 
 	const gameIsPaused = ref(false);
 	const gameResult = ref('');
-	const gameKey = ref('');
-	const gameRole = ref('');
 
 	const countdown = ref(0);
 
@@ -178,6 +173,14 @@
 	const socket = computed(() => {
 		return store.getters.getSocketGame;
 	})
+
+	const currentGameKey = computed(() => {
+		return store.getters.getCurrentGameKey;
+	})
+
+	const currentGameRole = computed(() => {
+		return store.getters.getCurrentGameRole;
+	})
 	/* COMPUTED */
 
 
@@ -246,11 +249,11 @@
 	}
 
 	const startGame = () => {
-		socket.value.emit('startGame', Number(gameKey.value))
+		socket.value.emit('startGame', currentGameKey.value)
 	}
 
 	const fetchPlayers = () => {
-		socket.value.emit('fetchPlayers', Number(gameKey.value), (newPlayers) => {
+		socket.value.emit('fetchPlayers', currentGameKey.value, (newPlayers) => {
 			players.value = newPlayers;
 		})
 	}
@@ -260,16 +263,13 @@
 	}
 
 	const quitSpectating = () => {
-		socket.value.emit('quitSpectating', gameKey.value);
+		socket.value.emit('quitSpectating', currentGameKey.value);
 	}
 
 	onMounted(() => {
-		gameKey.value = route.params.gameKey;
-		gameRole.value = route.params.role;
-
 		fetchPlayers();
 
-		if (gameRole.value === 'player') {
+		if (currentGameRole.value === 'player') {
 			startGame();
 
 			document.addEventListener('keydown', (e) => {
@@ -341,11 +341,14 @@
 
 	onUnmounted(() => {
 		console.log('beforeUnmounted')
-		if (gameRole.value === 'player' && !userClickedExit.value) {
+		store.commit('setCurrentGameKey', 0)
+		store.commit('setCurrentGameRole', '')
+
+		if (currentGameRole.value === 'player' && !userClickedExit.value) {
 			console.log('player')
 			exitGame();
 		}
-		else if (gameRole.value === 'spectator') {
+		else if (currentGameRole.value === 'spectator') {
 			console.log('spectator')
 			// quitSpectating();
 		}
