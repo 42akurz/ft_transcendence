@@ -4,28 +4,18 @@
 			<button @click="goPageBack" style="color: red;" v-if="buttonsAllowed">X</button>
 			<div class="flex-container">
 				<div class="info">
-					<h2>{{user.username}}</h2>
-
-					<img id="profile-pic" :src="imageLink">
-
-					<ProfileStats
-						v-if="user"
-						:wins="user.wins"
-						:loses="user.loses"
+					<ProfileUserInfo
+						:user="user"
 					/>
-
-					<h3>{{userStatus}}</h3>
 				</div>
-
 				<div class="history">
 					<ProfileMatchHistory
 						:user="user"
 					/>
 				</div>
-
 			</div>
 			<ProfileButtons
-				v-if="buttonsAllowed && user"
+				v-if="buttonsAllowed"
 				:user="user"
 			/>
 		</div>
@@ -36,17 +26,17 @@
 <script>
 	import store from '@/store/index.js'
 	import axios from 'axios'
-	import ProfileStats from '@/components/ProfileStats.vue'
 	import ProfileMatchHistory from '@/components/ProfileMatchHistory.vue'
+	import ProfileUserInfo from '@/components/ProfileUserInfo.vue'
 	import ProfileButtons from '@/components/ProfileButtons.vue'
 
 	export default {
 		name: 'ProfileView',
 
 		components: {
-			ProfileStats,
 			ProfileMatchHistory,
-			ProfileButtons
+			ProfileButtons,
+			ProfileUserInfo
 		},
 
 		data() {
@@ -126,8 +116,10 @@
 </script>
 
 <style scoped>
-	small, strong {
-		display: block;
+	* {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
 	}
 
 	.wrapper {
@@ -140,48 +132,31 @@
 	.profile {
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
-		padding: 50px 10%;
+		padding: 50px;
 		border-radius: 60px;
-		/* width: 400px; */
 		width: 60%;
+		min-width: 400px;
 		max-width: 1000px;
 	}
 
 	.flex-container {
-		/* border: 1px solid red; */
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		align-items: center;
-		gap: 10px;
+		align-items: stretch;
+		gap: 50px;
 	}
 
 	.flex-container .info {
-		/* border: 1px solid blue; */
 		flex: 1;
 	}
 
 	.flex-container .history {
-		/* border: 1px solid green; */
 		flex: 1;
 		display: flex;
 		justify-content: center;
-		/* margin-bottom: auto; */
-	}
-
-	#profile-pic {
-		border: 3px solid var(--blue-dark);
-		width: 300px;
-	}
-
-	h2 {
-		color: var(--blue-dark);
-		letter-spacing: 2px;
-	}
-
-	h3 {
-		color: var(--blue-dark);
-		letter-spacing: 2px;
+		margin-bottom: auto;
+		align-self: stretch;
 	}
 
 	button {

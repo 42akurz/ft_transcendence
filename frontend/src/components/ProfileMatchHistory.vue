@@ -1,6 +1,6 @@
 <template>
 	<div class="profile-match-history">
-		<strong>Match History: </strong>
+		<h2>Match History</h2>
 		<div class="score" v-for="match in limitedMatchHistory" :key="match">
 			<BaseCardMatchHistory
 				:gameInfo="match"
@@ -37,5 +37,9 @@
 </script>
 
 <style scoped>
-
+	h2 {
+		color: var(--blue-dark);
+		letter-spacing: 2px;
+		margin: 0 0 30px 0;
+	}
 </style>
