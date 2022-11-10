@@ -16,12 +16,30 @@ export class GameService {
 		private readonly scoreService: ScoreService,
 	) {}
 
-	gameKeyToReadyPlayers: Map<number, number[]> = new Map()
-	gameRooms: Map<number, GameData> = new Map()
-	pendingInvitations: Map<number, GameData> = new Map()
-	gameKeyToActionTimeout: Map<number, NodeJS.Timeout> = new Map()
+	private logger: Logger = new Logger(GameService.name)
 
-	logger: Logger = new Logger(GameService.name)
+	/************************** GAME DATA **************************/
+	public gameKeyToReadyPlayers: Map<number, number[]> = new Map()
+	public gameRooms: Map<number, GameData> = new Map()
+	private pendingInvitations: Map<number, GameData> = new Map()
+	private gameKeyToActionTimeout: Map<number, NodeJS.Timeout> = new Map()
+	/************************** GAME DATA **************************/
+	
+	/************************* GAME CONFIG *************************/
+	private readonly BASE_PADDLE_SPEED: number = 40
+	private readonly BASE_BALL_SPEED: number = 0.2
+	private readonly BASE_SCORE_LIMIT: number = 10
+	
+	private readonly BASE_COLOR_WALL: string = 'black'
+	private readonly BASE_COLOR_BACKGROUND: string = '#EFEFEF'
+	private readonly BASE_COLOR_PADDLE: string = 'black'
+	private readonly BASE_COLOR_BALL: string = '#185ADB'
+	
+	private readonly BASE_CANVAS_HEIGHT: number = 585
+	private readonly BASE_CANVAS_WIDTH: number = 750
+	private readonly BASE_GRID: number = 15
+	private readonly BASE_PADDLE_HEIGHT: number = this.BASE_GRID * 5
+	/************************* GAME CONFIG *************************/
 
 	async validateToken(client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
@@ -35,52 +53,52 @@ export class GameService {
 
 	/* INIT */
 	initGameData(gameData: GameData): GameData {
-		gameData.canvasHeight = 585
-		gameData.canvasWidth = 750
-		gameData.grid = 15
-		gameData.paddleHeight = gameData.grid * 5
-		gameData.maxPaddleY = gameData.canvasHeight - gameData.grid - gameData.paddleHeight
+		gameData.canvasHeight = this.BASE_CANVAS_HEIGHT
+		gameData.canvasWidth = this.BASE_CANVAS_WIDTH
+		gameData.grid = this.BASE_GRID
+		gameData.paddleHeight = this.BASE_PADDLE_HEIGHT
+		gameData.maxPaddleY = this.BASE_CANVAS_HEIGHT - this.BASE_GRID - this.BASE_PADDLE_HEIGHT
 
-		gameData.paddleSpeed = 20
-		gameData.ballSpeed = 0.2
+		gameData.paddleSpeed = this.BASE_PADDLE_SPEED
+		gameData.ballSpeed = this.BASE_BALL_SPEED
 
-		gameData.wallColor = 'black'
-		gameData.backgroundColor = '#EFEFEF'
+		gameData.wallColor = this.BASE_COLOR_WALL
+		gameData.backgroundColor = this.BASE_COLOR_BACKGROUND
 
 		gameData.gameLoopIntervalID = null
 		gameData.spectatorsID = []
 
 		gameData.leftPaddle = {
-			x: gameData.grid * 2,
-			y: gameData.canvasHeight / 2 - gameData.paddleHeight / 2,
-			width: gameData.grid,
-			height: gameData.paddleHeight,
+			x: this.BASE_GRID * 2,
+			y: this.BASE_CANVAS_HEIGHT / 2 - this.BASE_PADDLE_HEIGHT / 2,
+			width: this.BASE_GRID,
+			height: this.BASE_PADDLE_HEIGHT,
 			velocity: 0,
-			color: 'black',
+			color: this.BASE_COLOR_PADDLE,
 		}
 
 		gameData.rightPaddle = {
-			x: gameData.canvasWidth - gameData.grid * 3,
-			y: gameData.canvasHeight / 2 - gameData.paddleHeight / 2,
-			width: gameData.grid,
-			height: gameData.paddleHeight,
+			x: this.BASE_CANVAS_WIDTH - this.BASE_GRID * 3,
+			y: this.BASE_CANVAS_HEIGHT / 2 - this.BASE_PADDLE_HEIGHT / 2,
+			width: this.BASE_GRID,
+			height: this.BASE_PADDLE_HEIGHT,
 			velocity: 0,
-			color: 'black',
+			color: this.BASE_COLOR_PADDLE,
 		}
 
 		gameData.ball = {
-			x: gameData.canvasWidth / 2,
-			y: gameData.canvasHeight / 2,
-			width: gameData.grid,
-			height: gameData.grid,
+			x: this.BASE_CANVAS_WIDTH / 2,
+			y: this.BASE_CANVAS_HEIGHT / 2,
+			width: this.BASE_GRID,
+			height: this.BASE_GRID,
 			resetting: false,
-			velocityY: gameData.ballSpeed,
-			velocityX: -gameData.ballSpeed,
-			color: '#185ADB',
+			velocityY: this.BASE_BALL_SPEED,
+			velocityX: -this.BASE_BALL_SPEED,
+			color: this.BASE_COLOR_BALL,
 		}
 
 		gameData.score = {
-			limit: 10,
+			limit: this.BASE_SCORE_LIMIT,
 			left: 0,
 			right: 0,
 		}
@@ -129,8 +147,8 @@ export class GameService {
 		const gameInstance = this.gameRooms.get(gameKey)
 		const updatedBall = {...gameInstance.ball};
 		// move ball by its velocity with an increasing speed
-		updatedBall.x += (updatedBall.velocityX *= 1.0008);
-		updatedBall.y += (updatedBall.velocityY *= 1.0008);
+		updatedBall.x += (updatedBall.velocityX *= 1.000008);
+		updatedBall.y += (updatedBall.velocityY *= 1.000008);
 		// prevent ball from going through walls by changing its velocity
 		if (updatedBall.y < gameInstance.grid) {
 			updatedBall.y = gameInstance.grid;
@@ -172,7 +190,7 @@ export class GameService {
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), ball: updatedBall})
 	}
 
-	changeBallSpeed(x: number = 0.2, updatedBall: any) {
+	changeBallSpeed(x: number = this.BASE_BALL_SPEED, updatedBall: any) {
 		// changes the ball speed, x = 5 is the default speed
 		if (updatedBall.velocityX < 0)
 			updatedBall.velocityX = -x;
@@ -205,7 +223,7 @@ export class GameService {
 				updatedScore.left++;
 
 			// resets ball speed after each goal
-			const {velocityX, velocityY} = this.changeBallSpeed(0.2, updatedBall);
+			const {velocityX, velocityY} = this.changeBallSpeed(this.BASE_BALL_SPEED, updatedBall);
 			updatedBall.velocityX = velocityX;
 			updatedBall.velocityY = velocityY;
 
@@ -462,6 +480,24 @@ export class GameService {
 		const updatedPedalRight = {...gameInstance.rightPaddle};
 
 		switch (incDec) {
+			case 'reset':
+				updatedPedalLeft.height = this.BASE_PADDLE_HEIGHT;
+				updatedPedalRight.height = this.BASE_PADDLE_HEIGHT;
+
+				this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
+				// change pedal position if it collides with wall
+				// if (gameInstance.paddleHeight == 75) {
+				// 	this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				// 		maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight * 2
+				// 	})
+				// }
+				// else {
+				// 	this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				// 		maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight
+				// 	})
+				// }
+				break;
+
 			case 'increase':
 				// only change pedal size if its not biggest size already
 				if (gameInstance.paddleHeight == 37.5 || gameInstance.paddleHeight == 75) {
@@ -518,9 +554,9 @@ export class GameService {
 
 	actionReversePaddles(gameKey: number) {
 		const gameInstance: GameData = this.gameRooms.get(gameKey);
-		if (gameInstance.ballSpeed > 0) {
+		if (gameInstance.paddleSpeed > 0) {
 			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-				ballSpeed: gameInstance.ballSpeed *= -1
+				paddleSpeed: gameInstance.paddleSpeed *= -1
 			})
 		}
 	}
@@ -535,34 +571,30 @@ export class GameService {
 
 	// try only setting the map properties once
 	randomActions(gameKey: number) {
-		this.actionChangePaddleSpeed(gameKey, 10);
-		this.actionChangeBackgroundColor(gameKey, '#EFEFEF')
+		this.actionChangePaddleSpeed(gameKey, this.BASE_PADDLE_SPEED);
+		this.actionChangeBallSpeed(gameKey, this.BASE_BALL_SPEED);
+		this.actionChangePaddleSize(gameKey, 'reset');
+		this.actionChangeBackgroundColor(gameKey, this.BASE_COLOR_BACKGROUND)
 
 		switch(this.randomNumberBetween(1, 7)) {
 			case 1:
-				this.logger.log('change paddle size big');
 				this.actionChangePaddleSize(gameKey, "increase");
 				break ;
 			case 2:
-				this.logger.log('change paddle size small');
 				this.actionChangePaddleSize(gameKey, "decrease");
 				break ;
 			case 3:
-				this.logger.log('change ball speed slow');
-				this.actionChangeBallSpeed(gameKey, 2.5);
+				this.actionChangeBallSpeed(gameKey, 0.1);
 				break ;
 			case 4:
-				this.logger.log('change ball speed fast');
-				this.actionChangeBallSpeed(gameKey, 10);
+				this.actionChangeBallSpeed(gameKey, 0.4);
 				break ;
 			case 5:
-				this.logger.log('reverse Paddles');
 				this.actionReversePaddles(gameKey);
 				this.actionChangeBackgroundColor(gameKey, 'red');
 				break ;
 			case 6:
-				Logger.log('change paddle speed fast');
-				this.actionChangePaddleSpeed(gameKey, 14);
+				this.actionChangePaddleSpeed(gameKey, 50);
 				this.actionChangeBackgroundColor(gameKey, 'blue');
 				break ;
 		}
@@ -574,7 +606,7 @@ export class GameService {
 			clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 			this.gameKeyToActionTimeout.delete(gameKey);
 			this.startActionInterval(gameKey)
-		}, 2000)
+		}, 6000)
 		this.gameKeyToActionTimeout.set(gameKey, timeout);
 	}
 	/* RANDOM ACTIONS */
