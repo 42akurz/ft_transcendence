@@ -67,6 +67,8 @@
 <style scoped>
 	* {
 		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
 	}
 
 	.profile-info {
@@ -83,6 +85,10 @@
 
 	.info .info__title {
 		grid-area: title;
+		margin: 0 0 30px 0;
+		color: var(--blue-dark);
+		letter-spacing: 2px;
+		margin: 0 0 30px 0;
 	}
 
 	.info .info__username {
@@ -101,8 +107,6 @@
 	.info #box1 {
 		grid-area: wins;
 		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
 		border: 3px solid var(--blue-dark);
 		align-self: stretch;
 		justify-self: stretch;
@@ -111,32 +115,17 @@
 	.info #box2 {
 		grid-area: loses;
 		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
 		border: 3px solid var(--blue-dark);
 		align-self: stretch;
 		justify-self: stretch;
 	}
 
 	.info .info__status {
-		margin: 0;
 		grid-area: status;
 		border: 3px solid var(--blue-dark);
 		color: var(--blue-dark);
 		letter-spacing: 2px;
 		width: 100%;
 		padding: 10px 0;
-	}
-
-	h2 {
-		color: var(--blue-dark);
-		letter-spacing: 2px;
-		margin: 0;
-		padding: 0;
-	}
-
-	h3 {
-		padding: 0;
-		margin: 0;
 	}
 </style>

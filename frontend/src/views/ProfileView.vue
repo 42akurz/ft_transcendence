@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<ProfileButtons
-				v-if="buttonsAllowed && user"
+				v-if="buttonsAllowed"
 				:user="user"
 			/>
 		</div>
@@ -118,20 +118,18 @@
 <style scoped>
 	* {
 		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
 	}
 
 	.wrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 0;
-		margin: 0;
 		min-height: calc(100vh - var(--nav-bar-height) - 30px);
 	}
 
 	.profile {
-		padding: 0;
-		margin: 0;
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
@@ -145,10 +143,8 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		align-items: center;
-		gap: 10px;
-		padding: 0;
-		margin: 0;
+		align-items: stretch;
+		gap: 50px;
 	}
 
 	.flex-container .info {
@@ -156,12 +152,11 @@
 	}
 
 	.flex-container .history {
-		border: 1px solid green;
-		height: 100%;
 		flex: 1;
 		display: flex;
 		justify-content: center;
 		margin-bottom: auto;
+		align-self: stretch;
 	}
 
 	button {

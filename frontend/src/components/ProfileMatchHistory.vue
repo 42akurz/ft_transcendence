@@ -40,6 +40,6 @@
 	h2 {
 		color: var(--blue-dark);
 		letter-spacing: 2px;
-		margin: 0;
+		margin: 0 0 30px 0;
 	}
 </style>
