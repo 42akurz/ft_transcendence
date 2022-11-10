@@ -9,7 +9,8 @@ const store = createStore({
 			socketChat: null,
 			socketGame: null,
 			currentGameKey: 0,
-			currentGameRole: ''
+			currentGameRole: '',
+			watchingCurrentProfileID: 0
 		}
 	},
 
@@ -19,6 +20,7 @@ const store = createStore({
 		getSocketGame: (state) => state.socketGame,
 		getCurrentGameKey: (state) => state.currentGameKey,
 		getCurrentGameRole: (state) => state.currentGameRole,
+		getWatchingCurrentProfileID: (state) => state.watchingCurrentProfileID
 	},
 
 	actions: {
@@ -82,6 +84,10 @@ const store = createStore({
 		setCurrentGameRole(state, role) {
 			state.currentGameRole = role
 		},
+		
+		setWatchingCurrentProfileID(state, id) {
+			state.watchingCurrentProfileID = id
+		}
 	}
 })
 

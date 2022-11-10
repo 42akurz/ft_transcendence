@@ -15,7 +15,6 @@ const routes = [
 	path: '/',
 	name: 'profile',
 	component: ProfileView,
-	props: true
 },
 // {
 // 	path: '/test',
@@ -55,7 +54,7 @@ const routes = [
 {
 	path: '/gameroom',
 	name: 'gameroom',
-	component: GameRoomView
+	component: GameRoomView,
 }
 ]
 

@@ -13,6 +13,9 @@
 </template>
 
 <script>
+import store from '@/store/index.js'
+
+
 export default {
 	name: 'BaseCardUser',
 
@@ -30,10 +33,8 @@ export default {
 	methods: {
 		goToProfilePage() {
 			if (this.allowPrivatePageOnClick) {
-				this.$router.push({
-					name: 'profile',
-					params: { id: this.data.id }
-				});
+				store.commit('setWatchingCurrentProfileID', this.data.id)
+				this.$router.push('/');
 			}
 		}
 	},

@@ -43,13 +43,6 @@
 	export default {
 		name: 'ProfileView',
 
-		props: {
-			id: {
-				type: String,
-				default: '0',
-			},
-		},
-
 		components: {
 			ProfileStats,
 			ProfileMatchHistory,
@@ -65,12 +58,16 @@
 		},
 
 		created() {
-			this.fetchUser(this.id);
+			this.fetchUser(this.watchingCurrentProfileID);
+		},
+
+		unmounted() {
+			store.commit('setWatchingCurrentProfileID', 0);
 		},
 
 		methods: {
 			async fetchUser(id) {
-				if (id === '0') {
+				if (id === 0) {
 					await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/users/myuser`, {withCredentials: true})
 					.then((response) => {
 						this.user = response.data
@@ -120,6 +117,10 @@
 			currentUser() {
 				return store.getters.getCurrentUser;
 			},
+
+			watchingCurrentProfileID() {
+				return store.getters.getWatchingCurrentProfileID;
+			}
 		},
 	}
 </script>
