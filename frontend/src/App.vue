@@ -3,8 +3,9 @@
 		<NavBar/>
 		<router-view/>
 		<TheGameInviteBox
-			v-if="gameInviterId"
+			v-if="gameInviterId && gameInviterName"
 			:senderId="gameInviterId"
+			:senderName="gameInviterName"
 			:showDuration="3000"
 			@hideAlert="gameInviterId = 0"
 		/>
@@ -20,6 +21,7 @@
 		data() {
 			return {
 				gameInviterId: 0,
+				gameInviterName: ''
 			}
 		},
 		components: {
@@ -31,14 +33,16 @@
 			await store.dispatch('fetchCurrentUser');
 			await store.dispatch('setupSockets');
 
-			store.getters.getSocketGame.on('receivedGameInvitaion', (senderId) => {
-				this.gameInviterId = senderId;
+			store.getters.getSocketGame.on('receivedGameInvitaion', ({id, name}) => {
+				this.gameInviterId = id;
+				this.gameInviterName = name;
 			})
 
 			store.getters.getSocketGame.on('redirectToGame', (gameKey) => {
 				store.commit('setCurrentGameKey', Number(gameKey));
 				store.commit('setCurrentGameRole', 'player');
 				this.gameInviterId = 0;
+				this.gameInviterName = '';
 				this.$router.push('gameroom');
 			})
 		}

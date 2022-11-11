@@ -180,14 +180,16 @@ export class GameGateway {
 	@SubscribeMessage('sendGameInvitation')
 	async sendGameInvitation(@MessageBody() userId: number, @ConnectedSocket() client: Socket) {
 		const senderId: number = Number(client.handshake.headers.authorization);
+		const sender: User = await this.usersService.findById(senderId);
+		if (!sender)
+			return ;
 
 		const allClients: any[] = await this.server.fetchSockets()
 		const receivingClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == userId);
 		if (receivingClient === undefined)
 			return ;
 		
-		client.nsp.to(receivingClient.id).emit('receivedInvitaion', senderId);
-		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', senderId);
+		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', {id: sender.id, name: sender.username});
 	}
 
 	@SubscribeMessage('acceptGameInvite')

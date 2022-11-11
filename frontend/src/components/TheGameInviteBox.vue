@@ -1,11 +1,11 @@
 <template>
-	<div class="notification">
-		<div class="info">
-			<strong>Received Game invitation</strong>
-			<div>from {{senderId}}</div>
+	<div class="invite-box">
+		<strong>Received Game invitation</strong>
+		<strong>{{senderName}}</strong>
+		<div class="buttons">
+			<button @click="acceptGameInvite">Accept</button>
+			<button @click="hideAlert">Decline</button>
 		</div>
-		<button @click="acceptGameInvite">Accept</button>
-		<button @click="hideAlert">&#x2715;</button>
 	</div>
 </template>
 
@@ -29,6 +29,10 @@ export default {
 		senderId: {
 			type: Number,
 			required: true
+		},
+		senderName: {
+			type: String,
+			required: true
 		}
 	},
 
@@ -49,13 +53,6 @@ export default {
 	},
 
 	mounted() {
-		var r = document.querySelector(':root');
-
-		r.style.setProperty('--alert-text-color', '#03d0ff');
-		r.style.setProperty('--alert-background-color', 'rgba(1, 204, 220, 0.16)');
-		r.style.setProperty('--alert-background-hover-color', 'rgba(1, 204, 220, 0.16)');
-		r.style.setProperty('--alert-border-color', '#03d0ff');
-
 		this.timeoutId = setTimeout(() => {
 			this.$emit('hideAlert')
 		}, this.showDuration);
@@ -64,45 +61,50 @@ export default {
 </script>
 
 <style scoped>
-	.notification {
-		display: grid;
+	.invite-box {
+		display: flex;
 		align-items: center;
-		grid-template-rows: 1fr;
-		grid-template-columns: 5fr 1fr;
+		justify-content: space-between;
 		padding: 20px 50px;
 
-		border: 1px solid var(--alert-border-color);
-		background-color: var(--alert-background-color);
-		color: var(--alert-text-color);
+		border: 1px solid var(--blue-dark);
+		background-color: var(--grey);
+		color: var(--blue--dark);
 		transition: 0.5s;
+		font-size: 20px;
 
-		position: absolute;
-		bottom: 0;
+		position: sticky;
+		bottom: 10px;
 		left: 0;
 		right: 0;
 
 		margin: 10px;
 	}
 
-	.notification:hover{
-		background-color: var(--alert-background-hover-color);
-		transition: 0.5s;
-	}
-
-	.info {
+	.invite-box .buttons {
 		display: flex;
 		flex-direction: row;
-		gap: 50px;
-		font-size: 20px;
+		gap: 12px;
+		justify-content: center;
+		align-items: center;
 	}
 
 	button {
+		padding: 10px;
+		background-color: rgb(28, 123, 212);
+		border: 1px solid black;
+		border-radius: 5px;
+		color: white;
 		width: fit-content;
-		margin-left: auto;
-		border: none;
-		background: transparent;
+		font-weight: bold;
+		font-size: 16px;
 		cursor: pointer;
-		color: var(--alert-text-color);
-		font-size: 18px;
+	}
+
+	.close-button {
+		background-color: red;
+		border-color: red;
+		color: white;
+		font-weight: bold;
 	}
 </style>
