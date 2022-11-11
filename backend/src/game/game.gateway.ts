@@ -85,7 +85,7 @@ export class GameGateway {
 		else {
 			const roomIdentifier: string = this.gameService.createGameInstance(userId, specialActions);
 			client.join(roomIdentifier);
-			client.nsp.to(roomIdentifier).emit('createdGame');
+			client.nsp.to(client.id).emit('createdGame');
 		}
 	}
 
@@ -180,14 +180,16 @@ export class GameGateway {
 	@SubscribeMessage('sendGameInvitation')
 	async sendGameInvitation(@MessageBody() userId: number, @ConnectedSocket() client: Socket) {
 		const senderId: number = Number(client.handshake.headers.authorization);
+		const sender: User = await this.usersService.findById(senderId);
+		if (!sender)
+			return ;
 
 		const allClients: any[] = await this.server.fetchSockets()
 		const receivingClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == userId);
 		if (receivingClient === undefined)
-			return ; // client not in socket list / connected
+			return ;
 		
-		client.nsp.to(receivingClient.id).emit('receivedInvitaion', senderId);
-		// return success || failure
+		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', {id: sender.id, name: sender.username});
 	}
 
 	@SubscribeMessage('acceptGameInvite')
@@ -196,7 +198,7 @@ export class GameGateway {
 		const allClients: any[] = await this.server.fetchSockets()
 		const inviterClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == inviterId);
 		if (!inviterClient)
-			return ; // client not in socket list / connected
+			return ;
 
 		const roomIdentifier: string = this.gameService.createGameInstance(inviterId, false);
 		const gameKey: number = Number(roomIdentifier);
@@ -206,7 +208,7 @@ export class GameGateway {
 		client.join(roomIdentifier);
 		inviterClient.join(roomIdentifier);
 
-		client.nsp.to(roomIdentifier).emit('foundGame', gameKey);
+		client.nsp.to(roomIdentifier).emit('redirectToGame', gameKey);
 	}
 
 	@SubscribeMessage('fetchPlayers')

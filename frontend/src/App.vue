@@ -1,22 +1,50 @@
 <template>
-	<div class="app-wrapper">
+	<div>
 		<NavBar/>
-		<router-view class="app-main"/>
+		<router-view/>
+		<TheGameInviteBox
+			v-if="gameInviterId && gameInviterName"
+			:senderId="gameInviterId"
+			:senderName="gameInviterName"
+			:showDuration="3000"
+			@hideAlert="gameInviterId = 0"
+		/>
 	</div>
 </template>
 
 <script>
 	import NavBar from '@/components/NavBar.vue'
 	import store from '@/store/index.js'
+	import TheGameInviteBox from '@/components/TheGameInviteBox.vue'
 
 	export default {
+		data() {
+			return {
+				gameInviterId: 0,
+				gameInviterName: ''
+			}
+		},
 		components: {
 			NavBar,
+			TheGameInviteBox
 		},
 
 		async created() {
 			await store.dispatch('fetchCurrentUser');
 			await store.dispatch('setupSockets');
+
+			store.getters.getSocketGame.on('receivedGameInvitaion', ({id, name}) => {
+				this.gameInviterId = id;
+				this.gameInviterName = name;
+			})
+
+			store.getters.getSocketGame.on('redirectToGame', (gameKey) => {
+				store.commit('setCurrentGameKey', Number(gameKey));
+				store.commit('setCurrentGameRole', 'player');
+				this.gameInviterId = 0;
+				this.gameInviterName = '';
+				this.$router.push('gameroom');
+			})
 		}
 	}
 </script>
@@ -49,16 +77,5 @@
 		-moz-osx-font-smoothing: grayscale;
 		text-align: center;
 		color: #2c3e50;
-	}
-
-	.app-wrapper {
-		/* width: 100%;
-		height: 100%; */
-		/* margin: 0; */
-	}
-
-	.app-main {
-		/* height: calc(100vh - var(--nav-bar-height) - 30px); */
-		/* margin: 0; */
 	}
 </style>

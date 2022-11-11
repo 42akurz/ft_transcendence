@@ -33,7 +33,7 @@
 		socket.value.emit('searchGame', specials.value);
 	}
 
-	onBeforeMount(async () => {
+	onBeforeMount(() => {
 		socket.value.on('createdGame', () => {
 			console.log('createdGame');
 			waiting.value = true;

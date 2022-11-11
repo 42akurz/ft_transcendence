@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<div class="profile" v-if="user">
-			<button @click="goPageBack" style="color: red;" v-if="buttonsAllowed">X</button>
+			<button @click="goPageBack" class="close-button" v-if="buttonsAllowed">&#x2715;</button>
 			<div class="flex-container">
 				<div class="info">
 					<ProfileUserInfo
@@ -137,6 +137,19 @@
 		width: 60%;
 		min-width: 400px;
 		max-width: 1000px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+	}
+
+	.profile .close-button {
+		background-color: red;
+		border-color: red;
+		color: white;
+		font-weight: bold;
+		width: 35px;
+		height: 35px;
+		margin-left: auto;
 	}
 
 	.flex-container {

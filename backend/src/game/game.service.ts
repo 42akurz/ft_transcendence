@@ -370,7 +370,9 @@ export class GameService {
 	}
 
 	checkWinner(gameKey: number, client: Socket): boolean {
-		const gameInstance = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		if (gameInstance.score.left >= gameInstance.score.limit
 			|| gameInstance.score.right >= gameInstance.score.limit) {
 				this.gameOver(client, gameInstance, gameKey);
@@ -393,7 +395,9 @@ export class GameService {
 	}
 
 	gameLoop(client: Socket, gameKey: number) {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		const intervalID = setInterval(() => {
 			this.moveBall(gameKey);
 			this.resetBall(gameKey);
@@ -407,7 +411,9 @@ export class GameService {
 	}
 
 	async startGame(client: Socket, gameKey: number) {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		this.usersService.setStatus(2, gameInstance.userLeftSideID);
 		this.usersService.setStatus(2, gameInstance.userRightSideID);
 		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
@@ -430,12 +436,14 @@ export class GameService {
 	}
 
 	async exitGame(quitterId: number, gameKey: number) {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
-		const winnerId: number = this.getOtherPlayerID(gameKey, quitterId);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
+		const winnerId: number | undefined = this.getOtherPlayerID(gameKey, quitterId);
 		clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 		this.gameKeyToActionTimeout.delete(gameKey);
 		clearInterval(gameInstance.gameLoopIntervalID);
-		const newScore = new Score({
+		const newScore: Score = new Score({
 			playerOneId: winnerId,
 			playerTwoId: quitterId,
 			scorePlayerOne: 3,
@@ -470,7 +478,10 @@ export class GameService {
 	}
 
 	spectateGameInstance(gameKey: number, spectatorId: number): string {
-		const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID;
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
+		const spectators: number[] = gameInstance.spectatorsID;
 		spectators.push(spectatorId);
 		this.gameRooms.set(
 			gameKey,

@@ -6,7 +6,6 @@
 		<div class="status">
 			<button @click="setUserStatus(0)">Offline</button>
 			<button @click="setUserStatus(1)">Online</button>
-			<button @click="setUserStatus(2)">In a Game</button>
 			<button @click="setUserStatus(3)">Do not Disturb</button>
 		</div>
 	</div>

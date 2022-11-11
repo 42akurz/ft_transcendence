@@ -63,7 +63,7 @@
 			async sendFriendRequest() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/friend/add/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -73,7 +73,7 @@
 			async retrieveFriendRequest() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/friend/retrieve/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -83,7 +83,7 @@
 			async deleteFriend() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/friend/remove/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -93,7 +93,7 @@
 			async acceptFriend() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/friend/accept/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -103,7 +103,7 @@
 			async declineFriend() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/friend/decline/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -113,7 +113,7 @@
 			async blockUser() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/block/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
@@ -123,7 +123,7 @@
 			async unblockUser() {
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/unblock/${this.user.id}`, null, {withCredentials: true})
 				.then((response) => {
-					store.dispatch('setUser', response.data);
+					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
