@@ -266,9 +266,9 @@
 		router.push('gamelobby')
 	}
 
-	const quitSpectating = () => {
-		socket.value.emit('quitSpectating', currentGameKey.value);
-	}
+	// const quitSpectating = () => {
+	// 	socket.value.emit('quitSpectating', currentGameKey.value);
+	// }
 
 	const keyhooks = (e) => {
 		if (!countdown.value) {
@@ -286,15 +286,20 @@
 		}
 	}
 
-	onMounted(() => {
-		fetchPlayers();
+	const removeSocketListeners = () => {
+		socket.value.off('paused')
+		socket.value.off('unpaused')
+		socket.value.off('updateGame')
+		socket.value.off('countdown')
+		socket.value.off('killCountdown')
+		socket.value.off('playerWins')
+		socket.value.off('oponentLeft')
+	}
 
-		if (currentGameRole.value === 'player') {
-			startGame();
-
-			document.addEventListener('keydown', keyhooks)
-		}
-	})
+	const resetCurrentGameData = () => {
+		store.commit('setCurrentGameKey', 0)
+		store.commit('setCurrentGameRole', '')
+	}
 
 	onBeforeMount(async () => {
 		await store.dispatch('fetchCurrentUser');
@@ -347,10 +352,19 @@
 		})
 	})
 
+	onMounted(() => {
+		fetchPlayers();
+
+		if (currentGameRole.value === 'player') {
+			startGame();
+
+			document.addEventListener('keydown', keyhooks)
+		}
+	})
+
 	onUnmounted(() => {
-		console.log('beforeUnmounted')
-		store.commit('setCurrentGameKey', 0)
-		store.commit('setCurrentGameRole', '')
+		resetCurrentGameData();
+		removeSocketListeners();
 
 		document.removeEventListener('keydown', keyhooks)
 

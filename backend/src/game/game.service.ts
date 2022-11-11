@@ -28,7 +28,7 @@ export class GameService {
 	/************************* GAME CONFIG *************************/
 	private readonly BASE_PADDLE_SPEED: number = 40
 	private readonly BASE_BALL_SPEED: number = 0.2
-	private readonly BASE_SCORE_LIMIT: number = 10
+	private readonly BASE_SCORE_LIMIT: number = 5
 	
 	private readonly BASE_COLOR_WALL: string = 'black'
 	private readonly BASE_COLOR_BACKGROUND: string = '#EFEFEF'
@@ -147,8 +147,8 @@ export class GameService {
 		const gameInstance = this.gameRooms.get(gameKey)
 		const updatedBall = {...gameInstance.ball};
 		// move ball by its velocity with an increasing speed
-		updatedBall.x += (updatedBall.velocityX *= 1.000008);
-		updatedBall.y += (updatedBall.velocityY *= 1.000008);
+		updatedBall.x += (updatedBall.velocityX *= 1.00008);
+		updatedBall.y += (updatedBall.velocityY *= 1.00008);
 		// prevent ball from going through walls by changing its velocity
 		if (updatedBall.y < gameInstance.grid) {
 			updatedBall.y = gameInstance.grid;
@@ -356,11 +356,14 @@ export class GameService {
 		await this.usersService.setStatus(1, loserId);
 	}
 
-	checkWinner(gameKey: number, client: Socket) {
+	checkWinner(gameKey: number, client: Socket): boolean {
 		const gameInstance = this.gameRooms.get(gameKey);
 		if (gameInstance.score.left >= gameInstance.score.limit
-			|| gameInstance.score.right >= gameInstance.score.limit)
-			this.gameOver(client, gameInstance, gameKey);
+			|| gameInstance.score.right >= gameInstance.score.limit) {
+				this.gameOver(client, gameInstance, gameKey);
+				return true;
+			}
+		return false;
 	}
 
 	startGameCountdown(client: Socket, gameKey: number, countdownSeconds: number) {
@@ -381,8 +384,8 @@ export class GameService {
 		const intervalID = setInterval(() => {
 			this.moveBall(gameKey);
 			this.resetBall(gameKey);
-			this.checkWinner(gameKey, client);
-			this.ballCollision(gameKey);
+			if (!this.checkWinner(gameKey, client))
+				this.ballCollision(gameKey);
 			client.nsp.to(gameKey.toString()).emit('updateGame', this.gameRooms.get(gameKey));
 		}, 1);
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), gameLoopIntervalID: intervalID})
@@ -462,20 +465,22 @@ export class GameService {
 		return gameKey.toString();
 	}
 
-	quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
-		const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
-		this.gameRooms.set(
-			gameKey,
-			{...this.gameRooms.get(gameKey), spectatorsID: spectators}
-		);
-		return gameKey.toString();
-	}
+	// quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
+	// 	const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
+	// 	this.gameRooms.set(
+	// 		gameKey,
+	// 		{...this.gameRooms.get(gameKey), spectatorsID: spectators}
+	// 	);
+	// 	return gameKey.toString();
+	// }
 	/* MATCHMAKING */
 
 
 	/* RANDOM ACTIONS */
 	actionChangePaddleSize(gameKey: number, incDec: string) {
-		const gameInstance = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		const updatedPedalLeft = {...gameInstance.leftPaddle};
 		const updatedPedalRight = {...gameInstance.rightPaddle};
 
