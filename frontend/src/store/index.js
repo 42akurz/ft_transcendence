@@ -57,10 +57,6 @@ const store = createStore({
 			});
 			commit('setSocketGame', game);
 			commit('setSocketChat', chat);
-		},
-
-		setUser({commit}, newUser) {
-			commit('setCurrentUser', newUser);
 		}
 	},
 
