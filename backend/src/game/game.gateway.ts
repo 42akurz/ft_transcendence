@@ -85,7 +85,7 @@ export class GameGateway {
 		else {
 			const roomIdentifier: string = this.gameService.createGameInstance(userId, specialActions);
 			client.join(roomIdentifier);
-			client.nsp.to(roomIdentifier).emit('createdGame');
+			client.nsp.to(client.id).emit('createdGame');
 		}
 	}
 
