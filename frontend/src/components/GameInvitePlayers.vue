@@ -30,9 +30,7 @@
 	}
 
 	const sendGameInvitation = (userId) => {
-		socket.value.emit('sendGameInvitation', userId, (success) => {
-			// inform user if invitation was sen or not
-		})
+		socket.value.emit('sendGameInvitation', userId)
 	}
 
 	onBeforeMount(() => {

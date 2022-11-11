@@ -18,13 +18,19 @@
 					<!-- <button @click="muteUser(member.username)">Mute</button> -->
 				</div>
 			</div>
-			<h3>Banned Users</h3>
-			<div class="main__banned">
+			<h3 v-if="currentRoom.access !== 'private'">Banned Users</h3>
+			<div v-if="currentRoom.access !== 'private'" class="main__banned">
 				<div class="member" v-for="member in currentRoom.bannedUsers" :key="member">
 					<BaseCardUser :data="member"/>
 					<button v-if="adminButtonConditions(member.username)" @click="unbanUser(member.id)">unban</button>
 				</div>
 			</div>
+			<button
+				v-if="currentRoom.access === 'private'"
+				style="margin-top: 20px;"
+				@click="sendGameInvite">
+				Send Game Invite
+			</button>
 		</div>
 		<PopupNumber
 			:visible="showPopupNumber"
@@ -92,10 +98,26 @@
 		userIdImTryingToMute.value = 0;
 		showPopupNumber.value = false;
 	}
+
+	const getOtherUserInPrivateRoom = () => {
+		const user = props.currentRoom.chatUser.filter(
+			user => user.id !== currentUser.value.id
+		)
+		if (user.length !== 1)
+			return undefined
+		return user[0].id
+	}
 	/* FUNCTIONS */
 
 
 	/* SOCKET ACTIONS */
+	const sendGameInvite = () => {
+		const receiverId = getOtherUserInPrivateRoom();
+		if (!receiverId)
+			return ;
+		store.getters.getSocketGame.emit('sendGameInvitation', receiverId)
+	}
+
 	const banUser = (userId) => {
 		socket.value.emit('banUser', {
 			banUserId: userId,

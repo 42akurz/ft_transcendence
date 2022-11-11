@@ -10,9 +10,6 @@
 			<GameInvitePlayers
 				class="row-item"
 			/>
-			<GameInviteReceived
-				class="row-item"
-			/>
 		</div>
 	</div>
 </template>
@@ -21,7 +18,6 @@
 	import { computed, onBeforeMount } from 'vue'
 	import store from '@/store/index.js';
 	import GameInvitePlayers from '@/components/GameInvitePlayers.vue'
-	import GameInviteReceived from '@/components/GameInviteReceived.vue'
 	import GameSpectate from '@/components/GameSpectate.vue'
 	import GameSearch from '@/components/GameSearch.vue'
 	import { useRouter } from 'vue-router';
