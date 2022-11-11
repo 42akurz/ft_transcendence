@@ -270,27 +270,29 @@
 		socket.value.emit('quitSpectating', currentGameKey.value);
 	}
 
+	const keyhooks = (e) => {
+		if (!countdown.value) {
+			switch (e.key) {
+				case 'ArrowUp':
+					socket.value.emit('movePaddleUp')
+					break;
+				case 'ArrowDown':
+					socket.value.emit('movePaddleDown')
+					break;
+				case 'p':
+					pauseGame();
+					break;
+			}
+		}
+	}
+
 	onMounted(() => {
 		fetchPlayers();
 
 		if (currentGameRole.value === 'player') {
 			startGame();
 
-			document.addEventListener('keydown', (e) => {
-				if (!countdown.value) {
-					switch (e.key) {
-						case 'ArrowUp':
-							socket.value.emit('movePaddleUp')
-							break;
-						case 'ArrowDown':
-							socket.value.emit('movePaddleDown')
-							break;
-						case 'p':
-							pauseGame();
-							break;
-					}
-				}
-			})
+			document.addEventListener('keydown', keyhooks)
 		}
 	})
 
@@ -349,6 +351,8 @@
 		console.log('beforeUnmounted')
 		store.commit('setCurrentGameKey', 0)
 		store.commit('setCurrentGameRole', '')
+
+		document.removeEventListener('keydown', keyhooks)
 
 		if (currentGameRole.value === 'player' && !eitherPlayerExited.value) {
 			console.log('player')
