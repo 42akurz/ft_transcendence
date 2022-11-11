@@ -30,6 +30,8 @@ export class GameService {
 	private readonly BASE_BALL_SPEED: number = 0.2
 	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
 	private readonly BASE_SCORE_LIMIT: number = 5
+	private readonly BASE_ACTION_INTERVAL_MS: number = 6000
+	private readonly BASE_COUNTDOWN_SECONDS: number = 5
 	
 	private readonly BASE_COLOR_WALL: string = 'black'
 	private readonly BASE_COLOR_BACKGROUND: string = '#EFEFEF'
@@ -406,17 +408,18 @@ export class GameService {
 
 	async startGame(client: Socket, gameKey: number) {
 		const gameInstance: GameData = this.gameRooms.get(gameKey);
-		const countdownStart = 5;
 		this.usersService.setStatus(2, gameInstance.userLeftSideID);
 		this.usersService.setStatus(2, gameInstance.userRightSideID);
-		this.startGameCountdown(client, gameKey, countdownStart);
-		await this.timeout(countdownStart * 1000);
+		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
+		await this.timeout(this.BASE_COUNTDOWN_SECONDS * 1000);
 		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
 		this.gameLoop(client, gameKey);
 	}
 
 	pauseGame(gameKey: number) {
-		const gameInstance = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 		this.gameKeyToActionTimeout.delete(gameKey);
 		clearInterval(gameInstance.gameLoopIntervalID);
@@ -607,7 +610,7 @@ export class GameService {
 				this.actionChangeBallSpeed(gameKey, 0.1);
 				break ;
 			case 4:
-				this.actionChangeBallSpeed(gameKey, 0.4);
+				this.actionChangeBallSpeed(gameKey, 0.3);
 				break ;
 			case 5:
 				this.actionReversePaddles(gameKey);
@@ -626,7 +629,7 @@ export class GameService {
 			clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 			this.gameKeyToActionTimeout.delete(gameKey);
 			this.startActionInterval(gameKey)
-		}, 6000)
+		}, this.BASE_ACTION_INTERVAL_MS)
 		this.gameKeyToActionTimeout.set(gameKey, timeout);
 	}
 	/* RANDOM ACTIONS */
