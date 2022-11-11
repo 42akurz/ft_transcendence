@@ -28,7 +28,10 @@ export class GameService {
 	/************************* GAME CONFIG *************************/
 	private readonly BASE_PADDLE_SPEED: number = 40
 	private readonly BASE_BALL_SPEED: number = 0.2
-	private readonly BASE_SCORE_LIMIT: number = 10
+	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
+	private readonly BASE_SCORE_LIMIT: number = 5
+	private readonly BASE_ACTION_INTERVAL_MS: number = 6000
+	private readonly BASE_COUNTDOWN_SECONDS: number = 5
 	
 	private readonly BASE_COLOR_WALL: string = 'black'
 	private readonly BASE_COLOR_BACKGROUND: string = '#EFEFEF'
@@ -110,7 +113,9 @@ export class GameService {
 
 	/* GAME ENGINE */
 	movePedal(gameKey: number, userId: number, pedalDirection: string) {
-		const gameInstance = this.gameRooms.get(gameKey)
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey)
+		if (!gameInstance)
+			return ;
 		if (userId === gameInstance.userLeftSideID) {
 			const updatedPedalLeft = {...gameInstance.leftPaddle};
 			if (pedalDirection === 'up')
@@ -144,11 +149,13 @@ export class GameService {
 	}
 
 	moveBall(gameKey: number) {
-		const gameInstance = this.gameRooms.get(gameKey)
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey)
+		if (!gameInstance)
+			return ;
 		const updatedBall = {...gameInstance.ball};
 		// move ball by its velocity with an increasing speed
-		updatedBall.x += (updatedBall.velocityX *= 1.000008);
-		updatedBall.y += (updatedBall.velocityY *= 1.000008);
+		updatedBall.x += (updatedBall.velocityX *= this.BASE_BALL_SPEED_INCREASE);
+		updatedBall.y += (updatedBall.velocityY *= this.BASE_BALL_SPEED_INCREASE);
 		// prevent ball from going through walls by changing its velocity
 		if (updatedBall.y < gameInstance.grid) {
 			updatedBall.y = gameInstance.grid;
@@ -169,7 +176,9 @@ export class GameService {
 	}
 
 	ballCollision(gameKey: number) {
-		const gameInstance = this.gameRooms.get(gameKey)
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey)
+		if (!gameInstance)
+			return ;
 		const updatedBall = {...gameInstance.ball};
 
 		// check to see if ball collides with paddle. if they do change x velocity
@@ -207,7 +216,9 @@ export class GameService {
 
 	// TODO: give some time for the player to recover before launching the ball again
 	resetBall(gameKey: number) {
-		const gameInstance = this.gameRooms.get(gameKey)
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey)
+		if (!gameInstance)
+			return ;
 
 		const updatedBall = {...gameInstance.ball};
 		const updatedScore = {...gameInstance.score};
@@ -247,7 +258,7 @@ export class GameService {
 
 	/* UTILS */
 	gameIsWaitingForPlayer(gameKey: number): boolean {
-		const game: GameData = this.gameRooms.get(gameKey);
+		const game: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!game)
 			return false;
 		if (game.userLeftSideID && !game.userRightSideID)
@@ -259,7 +270,7 @@ export class GameService {
 		this.gameRooms.delete(gameKey);
 	}
 
-	findKeyOfAvailableGame(specialActions: boolean) {
+	findKeyOfAvailableGame(specialActions: boolean): number | undefined {
 		if (specialActions === true) {
 			for (let [key, value] of this.gameRooms.entries()) {
 				if (value.userLeftSideID && !value.userRightSideID && value.specialAction)
@@ -300,8 +311,10 @@ export class GameService {
 		return gameInstance.userLeftSideID;
 	}
 
-	getOtherPlayerID(gameKey: number, playerId: number): number {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
+	getOtherPlayerID(gameKey: number, playerId: number): number | undefined {
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return undefined;
 		if (gameInstance.userLeftSideID === playerId)
 			return gameInstance.userRightSideID;
 		if (gameInstance.userRightSideID === playerId)
@@ -326,7 +339,7 @@ export class GameService {
 	}
 
 	userIsSpectator(gameKey: number, userId: number): boolean | undefined {
-		const room = this.gameRooms.get(gameKey);
+		const room: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!room)
 			return undefined;
 		return room.spectatorsID.includes(userId);
@@ -336,13 +349,13 @@ export class GameService {
 
 	/* GAME STATE */
 	async gameOver(client: Socket, gameInstance: GameData, gameKey: number) {
-		const winnerId = this.getWinnerID(gameInstance);
-		const loserId = this.getLoserID(gameInstance);
+		const winnerId: number = this.getWinnerID(gameInstance);
+		const loserId: number = this.getLoserID(gameInstance);
 		client.nsp.to(gameKey.toString()).emit('playerWins', {winnerId, loserId});
 		clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 		this.gameKeyToActionTimeout.delete(gameKey);
 		clearInterval(gameInstance.gameLoopIntervalID);
-		const newScore = new Score({
+		const newScore: Score = new Score({
 			playerOneId: gameInstance.userLeftSideID,
 			playerTwoId: gameInstance.userRightSideID,
 			scorePlayerOne: gameInstance.score.left,
@@ -356,11 +369,14 @@ export class GameService {
 		await this.usersService.setStatus(1, loserId);
 	}
 
-	checkWinner(gameKey: number, client: Socket) {
+	checkWinner(gameKey: number, client: Socket): boolean {
 		const gameInstance = this.gameRooms.get(gameKey);
 		if (gameInstance.score.left >= gameInstance.score.limit
-			|| gameInstance.score.right >= gameInstance.score.limit)
-			this.gameOver(client, gameInstance, gameKey);
+			|| gameInstance.score.right >= gameInstance.score.limit) {
+				this.gameOver(client, gameInstance, gameKey);
+				return true;
+			}
+		return false;
 	}
 
 	startGameCountdown(client: Socket, gameKey: number, countdownSeconds: number) {
@@ -381,8 +397,8 @@ export class GameService {
 		const intervalID = setInterval(() => {
 			this.moveBall(gameKey);
 			this.resetBall(gameKey);
-			this.checkWinner(gameKey, client);
-			this.ballCollision(gameKey);
+			if (!this.checkWinner(gameKey, client))
+				this.ballCollision(gameKey);
 			client.nsp.to(gameKey.toString()).emit('updateGame', this.gameRooms.get(gameKey));
 		}, 1);
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), gameLoopIntervalID: intervalID})
@@ -392,17 +408,18 @@ export class GameService {
 
 	async startGame(client: Socket, gameKey: number) {
 		const gameInstance: GameData = this.gameRooms.get(gameKey);
-		const countdownStart = 5;
 		this.usersService.setStatus(2, gameInstance.userLeftSideID);
 		this.usersService.setStatus(2, gameInstance.userRightSideID);
-		this.startGameCountdown(client, gameKey, countdownStart);
-		await this.timeout(countdownStart * 1000);
+		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
+		await this.timeout(this.BASE_COUNTDOWN_SECONDS * 1000);
 		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
 		this.gameLoop(client, gameKey);
 	}
 
 	pauseGame(gameKey: number) {
-		const gameInstance = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 		this.gameKeyToActionTimeout.delete(gameKey);
 		clearInterval(gameInstance.gameLoopIntervalID);
@@ -462,20 +479,22 @@ export class GameService {
 		return gameKey.toString();
 	}
 
-	quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
-		const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
-		this.gameRooms.set(
-			gameKey,
-			{...this.gameRooms.get(gameKey), spectatorsID: spectators}
-		);
-		return gameKey.toString();
-	}
+	// quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
+	// 	const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
+	// 	this.gameRooms.set(
+	// 		gameKey,
+	// 		{...this.gameRooms.get(gameKey), spectatorsID: spectators}
+	// 	);
+	// 	return gameKey.toString();
+	// }
 	/* MATCHMAKING */
 
 
 	/* RANDOM ACTIONS */
 	actionChangePaddleSize(gameKey: number, incDec: string) {
-		const gameInstance = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		const updatedPedalLeft = {...gameInstance.leftPaddle};
 		const updatedPedalRight = {...gameInstance.rightPaddle};
 
@@ -542,7 +561,9 @@ export class GameService {
 	}
 
 	actionChangeBallSpeed(gameKey: number, ballSpeed: number) {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		const updatedBall = {...gameInstance.ball};
 
 		const {velocityX, velocityY} = this.changeBallSpeed(ballSpeed, updatedBall);
@@ -553,7 +574,9 @@ export class GameService {
 	}
 
 	actionReversePaddles(gameKey: number) {
-		const gameInstance: GameData = this.gameRooms.get(gameKey);
+		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!gameInstance)
+			return ;
 		if (gameInstance.paddleSpeed > 0) {
 			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
 				paddleSpeed: gameInstance.paddleSpeed *= -1
@@ -587,7 +610,7 @@ export class GameService {
 				this.actionChangeBallSpeed(gameKey, 0.1);
 				break ;
 			case 4:
-				this.actionChangeBallSpeed(gameKey, 0.4);
+				this.actionChangeBallSpeed(gameKey, 0.3);
 				break ;
 			case 5:
 				this.actionReversePaddles(gameKey);
@@ -606,7 +629,7 @@ export class GameService {
 			clearTimeout(this.gameKeyToActionTimeout.get(gameKey));
 			this.gameKeyToActionTimeout.delete(gameKey);
 			this.startActionInterval(gameKey)
-		}, 6000)
+		}, this.BASE_ACTION_INTERVAL_MS)
 		this.gameKeyToActionTimeout.set(gameKey, timeout);
 	}
 	/* RANDOM ACTIONS */
