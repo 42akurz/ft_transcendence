@@ -5,7 +5,6 @@
 		<select v-model="newRoomState">
 			<option value="public">public</option>
 			<option value="protected">protected</option>
-			<option value="private">private</option>
 		</select>
 		<input v-if="newRoomState === 'protected'" v-model="newRoomPassword" placeholder="password">
 		<button @click="(newRoomName) ? createNewRoom() : roomNameError(`Name can't be blank!`)">Create</button>
