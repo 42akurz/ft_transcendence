@@ -13,7 +13,7 @@
 		<button
 			v-if="showEnterButton"
 			@click="$emit('enterRoom', room.name)">
-			Enter
+			&rarr;
 		</button>
 	</div>
 </div>
@@ -62,10 +62,8 @@ export default {
 	}
 
 	.card:hover {
-		cursor: pointer;
-		background-color: var(--orange);
-		border-color: var(--blue-dark);
-		color: var(--blue-dark);
+		background-color: black;
+		border-color: black;
 	}
 
 	.room-info {
@@ -84,5 +82,16 @@ export default {
 	.room-info .access {
 		font-size: 16px;
 		color: var(--orange);
+	}
+
+	button {
+		width: 40px;
+		height: 40px;
+		cursor: pointer;
+		margin: 0 10px;
+		border: 1px solid var(--orange);
+		background-color: var(--blue-dark);
+		color: var(--orange);
+		border-radius: 25px;
 	}
 </style>
