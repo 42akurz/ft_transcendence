@@ -1,11 +1,11 @@
 <template>
-	<div class="wrapper">
+	<div class="change-name-wrapper">
 		<h2>Change Username</h2>
 		<div>Current Name:</div>
 		<div>{{currentUser.username}}</div>
 		<div class="name">
 			<input type="text" placeholder="enter username" v-model="newName">
-			<button @click="changeUsername">Change UserName</button>
+			<button @click="changeUsername">Submit</button>
 		</div>
 	</div>
 </template>
@@ -46,7 +46,7 @@
 </script>
 
 <style scoped>
-	.wrapper {
+	.change-name-wrapper {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -55,7 +55,29 @@
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
-		border-radius: 60px;
-		width: 400px;
+		/* border-radius: 60px; */
+	}
+
+	.name {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		gap: 5px;
+	}
+
+	input {
+		width: 150px;
+	}
+
+	button {
+		width: 150px;
+		height: 30px;
+		cursor: pointer;
+		margin: 0 10px;
+		border: 2px solid var(--blue-dark);
+		background-color: var(--blue-light);
+		color: var(--grey);
+		border-radius: 25px;
 	}
 </style>

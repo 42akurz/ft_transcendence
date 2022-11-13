@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="change-status-wrapper">
 		<h2>Change User Status</h2>
 		<div>Current Status:</div>
 		<div>{{userStatus}}</div>
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-	.wrapper {
+	.change-status-wrapper {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -57,8 +57,7 @@ export default {
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
-		border-radius: 60px;
-		width: 400px;
+		/* border-radius: 60px; */
 	}
 
 	.status {

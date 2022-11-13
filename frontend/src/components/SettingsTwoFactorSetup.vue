@@ -1,29 +1,28 @@
 <template>
-<div class="wrapper">
+<div class="two-factor-wrapper" v-if="currentUser">
 	<h2>Setup Two Factor</h2>
-	<div class="login">
+	<div class="login" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
 		<button v-on:click="gen_qrcode">Gen Code</button>
 		<br>
-		<img v-if="qrCode" :src="qrCode">
+		<img v-if="qrCode" :src="qrCode" width="100">
 	</div>
-	<form @submit.prevent="send2FA">
+	<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
 		<div>
 			<label for="2FACode">Enter Code: </label>
 			<br>
 			<input type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
 		</div>
 		<h3 v-if="errorMsg">{{errorMsg}}</h3>
-		<div class="login">
-			<button>Send</button>
-		</div>
+		<button class="confirm-button">Submit</button>
 	</form>
-	<button @click="turnOffTwoFA">Diasble</button>
+	<button v-if="currentUser.isTwoFactorAuthenticationEnabled" class="confirm-button" @click="turnOffTwoFA">Diasble</button>
 </div>
 </template>
 
 
 <script>
 import axios from 'axios'
+import store from '@/store/index.js'
 
 export default {
 	name: 'SettingsTwoFactorSetup',
@@ -65,25 +64,34 @@ export default {
 		turnOffTwoFA() {
 			axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/turn-off`, null, {withCredentials: true})
 			.then((response) => {
+				store.dispatch('fetchCurrentUser');
 				this.errorMsg = 'Successfully deactivated 2FA!'
 			})
 			.catch((error) => {
 				this.errorMsg = 'Error while deactivating!'
 			})
 		}
+	},
+
+	computed: {
+		currentUser() {
+			return store.getters.getCurrentUser;
+		}
 	}
 }
 </script>
 
 <style scoped>
-	.wrapper {
+	.two-factor-wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		border-radius: 60px;
+		/* border-radius: 60px; */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
+		gap: 14px;
 	}
 
 	h2 {
@@ -96,9 +104,24 @@ export default {
 		letter-spacing: 1px;
 		margin-top: 0px;
 	}
-	
-	.login {
-		margin: 0;
+
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 5px;
+	}
+
+	.confirm-button {
+		width: 150px;
+		height: 30px;
+		cursor: pointer;
+		margin: 0 10px;
+		border: 2px solid var(--blue-dark);
+		background-color: var(--blue-light);
+		color: var(--grey);
+		border-radius: 25px;
 	}
 
 	.login button {
