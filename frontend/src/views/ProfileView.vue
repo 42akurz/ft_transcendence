@@ -126,14 +126,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-height: calc(100vh - var(--nav-bar-height) - 30px);
 	}
 
 	.profile {
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
-		border-radius: 60px;
+		/* border-radius: 60px; */
 		width: 60%;
 		min-width: 400px;
 		max-width: 1000px;

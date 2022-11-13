@@ -102,14 +102,13 @@ export default {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-height: calc(100vh - var(--nav-bar-height) - 30px);
 	}
 
 	.wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		border-radius: 60px;
+		/* border-radius: 60px; */
 		width: 400px;
 	}
 

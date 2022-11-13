@@ -61,6 +61,10 @@
 
 <style scoped>
 	.nav-wrapper {
+		position: sticky;
+		top: 0;
+		left: 0;
+		background-color: white;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-evenly;

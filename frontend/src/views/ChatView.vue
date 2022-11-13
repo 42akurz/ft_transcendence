@@ -155,8 +155,12 @@
 </script>
 
 <style scoped>
+	* {
+		box-sizing: border-box;
+	}
+
+
 	.grid-container {
-		border: 5px solid var(--blue-dark);
 		display: grid;
 		grid-template-rows: 100px 10fr 100px;
 		grid-template-columns: 280px 1fr;
@@ -166,7 +170,6 @@
 			"sidenav footer";
 		grid-gap: 0;
 		overflow: hidden;
-		height: calc(100vh - var(--nav-bar-height) - 30px);
 	}
 
 	.header {
@@ -179,7 +182,8 @@
 	.sidenav {
 		grid-area: sidenav;
 		background-color: #ffffff;
-		overflow-y: scroll;
+		overflow-y: auto;
+		border-right: 1px solid black;
 	}
 
 	.main {
@@ -188,7 +192,7 @@
 		color: white;
 		border-top: 1px solid white;
 		border-bottom: 1px solid white;
-		overflow-y: scroll;
+		overflow-y: hidden;
 	}
 
 	.footer {

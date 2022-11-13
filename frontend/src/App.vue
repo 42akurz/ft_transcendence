@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="main-container">
 		<NavBar/>
-		<router-view/>
+		<router-view class="main-view"/>
 		<TheGameInviteBox
 			v-if="gameInviterId && gameInviterName"
 			:senderId="gameInviterId"
@@ -65,10 +65,24 @@
 		--alert-border-color: #039b00;
 	}
 
+	* {
+		box-sizing: border-box;
+	}
+
 	body {
 		height: 100vh;
 		padding: 0;
 		margin: 0;
+	}
+
+	.main-container {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	.main-view {
+		flex: 1;
 	}
 
 	#app {
