@@ -79,9 +79,9 @@ export default {
 
 	.card:hover {
 		cursor: pointer;
-		background-color: var(--orange);
-		border-color: var(--blue-dark);
-		color: var(--blue-dark);
+		background-color: black;
+		/* border-color: var(--blue-dark);
+		color: var(--blue-dark); */
 	}
 
 	.img-container {

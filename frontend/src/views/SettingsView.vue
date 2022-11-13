@@ -1,10 +1,21 @@
 <template>
-	<div class="wrapper">
+	<div class="settings-wrapper">
 		<div class="menu" v-if="currentUser">
-			<SettingsChangeAvatar :currentUser="currentUser"/>
-			<SettingsChangeStatus :currentUser="currentUser"/>
-			<SettingsChangeName :currentUser="currentUser"/>
-			<SettingsTwoFactorSetup />
+			<SettingsChangeAvatar
+				class="menu-item"
+				:currentUser="currentUser"
+			/>
+			<SettingsChangeStatus
+				class="menu-item"
+				:currentUser="currentUser"
+			/>
+			<SettingsChangeName
+				class="menu-item"
+				:currentUser="currentUser"
+			/>
+			<SettingsTwoFactorSetup
+				class="menu-item"
+			/>
 		</div>
 	</div>
 </template>
@@ -41,7 +52,7 @@
 </script>
 
 <style scoped>
-	.wrapper {
+	.settings-wrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -50,8 +61,15 @@
 
 	.menu {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
 		gap: 20px;
+	}
+
+	.menu-item {
+		width: 450px;
+		height: 450px;
 	}
 
 	a, button {

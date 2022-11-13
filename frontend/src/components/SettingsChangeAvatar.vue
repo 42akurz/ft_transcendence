@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="change-avatar-wrapper">
 		<h2>Change Profile Picture</h2>
 		<div>Current Picture:</div>
 		<img :src="imageLink" width="65">
@@ -81,11 +81,11 @@ export default {
 </script>
 
 <style scoped>
-	.wrapper {
+	.change-avatar-wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		border-radius: 60px;
+		/* border-radius: 60px; */
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -101,7 +101,18 @@ export default {
 		align-items: center;
 	}
 
-	button, input {
+	input {
+		width: 150px;
+		height: 30px;
+		cursor: pointer;
+		margin: 0 10px;
+		border: 2px solid var(--blue-dark);
+		background-color: var(--orange);
+		color: var(--blue-dark);
+		border-radius: 25px;
+	}
+
+	button {
 		width: 150px;
 		height: 30px;
 		cursor: pointer;
