@@ -74,10 +74,15 @@
 	}
 
 	a, button {
-		border: 2px solid black;
-		padding: 5px;
-		border-radius: 5px;
+		width: 100px;
+		height: 35px;
+		outline: none;
 		text-decoration: none;
+		border: 2px solid black;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 5px;
 		background-color: var(--grey);
 		font-size: 14px;
 		font-weight: bold;
