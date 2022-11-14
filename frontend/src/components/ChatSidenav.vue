@@ -1,8 +1,16 @@
 <template>
 	<aside class="sidenav">
 		<div class="sidenav__tabs">
-			<button @click="currentSidenavTab = 'Groups'">Groups</button>
-			<button @click="currentSidenavTab = 'Private'">Private</button>
+			<button
+				:style="(currentSidenavTab == 'Groups') ? 'background-color: var(--orange);' : 'background-color: var(--grey)'"
+				@click="currentSidenavTab = 'Groups'">
+				Groups
+			</button>
+			<button
+				:style="(currentSidenavTab == 'Private') ? 'background-color: var(--orange);' : 'background-color: var(--grey)'"
+				@click="currentSidenavTab = 'Private'">
+				Private
+			</button>
 		</div>
 
 		<ChatSidenavGroups
@@ -35,11 +43,20 @@
 
 <style scoped>
 	button {
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
+		width: 80px;
+		height: 35px;
+		outline: none;
+		text-decoration: none;
+		border: 2px solid black;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border-radius: 5px;
-		color: white;
+		background-color: var(--grey);
+		font-size: 12px;
+		font-weight: bold;
+		color: black;
+		cursor: pointer;
 	}
 
 	.sidenav {

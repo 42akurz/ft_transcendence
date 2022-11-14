@@ -1,8 +1,7 @@
 <template>
 	<header class="header">
-		<div>{{currentRoom.name}}</div>
-		<div v-if="currentUser">Connected as: {{currentUser.username}}</div>
-		<ChatHeaderDropdown
+		<strong>{{currentRoom.name}}</strong>
+		<DropdownChatHeader
 			@selected="dropdownAction($event)"
 			:title="dropdownTitle"
 			:options="filteredOptions"
@@ -30,7 +29,7 @@
 
 <script setup>
 	import store from '@/store/index.js';
-	import ChatHeaderDropdown from '@/components/ChatHeaderDropdown.vue';
+	import DropdownChatHeader from '@/components/DropdownChatHeader.vue';
 	import PopupPassword from '@/components/PopupPassword.vue';
 	import PopupChoice from '@/components/PopupChoice.vue';
 	import { computed, ref } from 'vue';
@@ -134,6 +133,7 @@
 	}
 
 	const dropdownAction = (actionName) => {
+		console.log(actionName)
 		switch(actionName) {
 			case 'Leave':
 				showPopup({ title: 'Leave', info: 'Leave Room?' }, 'Choice');
@@ -174,8 +174,13 @@
 
 <style scoped>
 	.header {
+		padding: 0 30px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+	}
+
+	.header strong {
+		font-size: 20px;
 	}
 </style>

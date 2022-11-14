@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-	import { defineProps, ref, computed } from 'vue'
+	import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
 	import store from '@/store/index.js'
 
 	const messageText = ref('');
@@ -36,7 +36,6 @@
 	/* FUNCTIONS */
 	const findOtherUserId = (roomName) => {
 		const id = roomName.replace(props.userId.toString(), '').replace('_', '');
-		console.log(id);
 		return Number(id);
 	}
 	/* FUNCTIONS */
@@ -52,29 +51,54 @@
 		messageText.value = '';
 	}
 	/* SOCKET ACTIONS */
+
+	const readKey = (e) => {
+		if (e.key === 'Enter' && messageText.value) {
+			sendMessage();
+		}
+	}
+
+	onUnmounted(() => {
+		document.removeEventListener('keydown', readKey);
+	})
+
+	onMounted(() => {
+		document.addEventListener('keydown', readKey);
+	})
 </script>
 
 <style scoped>
 	button {
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
+		height: 36px;
+		width: 100px;
+		background-color: var(--blue-light);
 		border-radius: 5px;
 		color: white;
+		cursor: pointer;
+		border: 1px solid var(--grey);
+		font-weight: bold;
+	}
+
+	button:hover {
+		border-color: var(--blue-light);
 	}
 
 	.footer {
 		display: flex;
 		align-items: center;
 		flex-direction: row;
-		gap: 16px;
+		gap: 10px;
+		padding: 0 30px;
 	}
 
 	.footer input {
 		flex: 1;
-		padding: 8px 16px;
 		outline: none;
-		border: 1px solid white;
+		color: black;
+		padding: 8px 16px;
+		border: 1px solid var(--blue-dark);
 		border-radius: 5px;
+		background-color: white;
+		color: black;
 	}
 </style>

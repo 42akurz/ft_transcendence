@@ -174,9 +174,8 @@
 
 	.header {
 		grid-area: header;
-		padding: 0 16px;
-		background-color: black;
-		color: white;
+		background-color: var(--grey);
+		color: var(--bue-dark);
 	}
 
 	.sidenav {
@@ -188,17 +187,16 @@
 
 	.main {
 		grid-area: main;
-		background-color: black;
+		background-color: var(--grey);
 		color: white;
-		border-top: 1px solid white;
-		border-bottom: 1px solid white;
+		border-top: 1px solid black;
+		border-bottom: 1px solid black;
 		overflow-y: hidden;
 	}
 
 	.footer {
 		grid-area: footer;
-		padding: 0 16px;
-		background-color: black;
+		background-color: var(--grey);
 		color: white;
 	}
 </style>

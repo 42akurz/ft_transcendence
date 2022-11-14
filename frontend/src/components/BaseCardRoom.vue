@@ -53,7 +53,7 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 		background-color: var(--blue-dark);
-		border: 2px solid var(--grey);
+		border: 2px solid white;
 		color: var(--grey);
 		border-radius: 60px;
 		width: 200px;
