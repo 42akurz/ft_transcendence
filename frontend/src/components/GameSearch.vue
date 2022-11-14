@@ -62,14 +62,16 @@
 	}
 
 	button {
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
-		border-radius: 5px;
-		color: white;
 		width: 100px;
-		font-weight: bold;
+		background-color: var(--blue-light);
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 22px;
+		font-weight: bold;
 		cursor: pointer;
 	}
 </style>

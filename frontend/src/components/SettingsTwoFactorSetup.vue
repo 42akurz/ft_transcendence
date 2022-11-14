@@ -7,11 +7,7 @@
 		<img v-if="qrCode" :src="qrCode" width="100">
 	</div>
 	<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
-		<div>
-			<label for="2FACode">Enter Code: </label>
-			<br>
-			<input type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
-		</div>
+		<input placeholder="enter code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
 		<h3 v-if="errorMsg">{{errorMsg}}</h3>
 		<button class="confirm-button">Submit</button>
 	</form>
@@ -113,7 +109,33 @@ export default {
 		gap: 5px;
 	}
 
+	input {
+		width: 150px;
+		outline: none;
+		color: black;
+		padding: 5px;
+		border: 1px solid black;
+		border-radius: 5px;
+		background-color: white;
+		color: black;
+	}
+
 	.confirm-button {
+		width: 150px;
+		height: 30px;
+		background-color: var(--blue-light);
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	/* .confirm-button {
 		width: 150px;
 		height: 30px;
 		cursor: pointer;
@@ -122,16 +144,22 @@ export default {
 		background-color: var(--blue-light);
 		color: var(--grey);
 		border-radius: 25px;
-	}
+	} */
 
 	.login button {
-		width: 100px;
+		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: black;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
+
+
 </style>

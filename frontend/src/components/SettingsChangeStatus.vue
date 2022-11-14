@@ -69,18 +69,22 @@ export default {
 	}
 
 	.status button {
-		width: 160px;
+		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: black;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 
 	.status button:hover {
-		border: 2px solid  var(--blue-dark);
-		color:  var(--grey);
 		background-color:  var(--blue-light);
+		color: white;
 	}
 </style>

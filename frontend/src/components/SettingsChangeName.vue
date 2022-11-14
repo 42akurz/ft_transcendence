@@ -4,7 +4,7 @@
 		<div>Current Name:</div>
 		<div>{{currentUser.username}}</div>
 		<div class="name">
-			<input type="text" placeholder="enter username" v-model="newName">
+			<input type="text" placeholder="new name" v-model="newName">
 			<button @click="changeUsername">Submit</button>
 		</div>
 	</div>
@@ -68,16 +68,27 @@
 
 	input {
 		width: 150px;
+		outline: none;
+		color: black;
+		padding: 5px;
+		border: 1px solid black;
+		border-radius: 5px;
+		background-color: white;
+		color: black;
 	}
 
 	button {
 		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--blue-light);
-		color: var(--grey);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

@@ -7,7 +7,7 @@
 			<option value="protected">protected</option>
 		</select>
 		<input v-if="newRoomState === 'protected'" v-model="newRoomPassword" placeholder="password">
-		<button @click="(newRoomName) ? createNewRoom() : roomNameError(`Name can't be blank!`)">Create</button>
+		<button @click="(newRoomName) ? createNewRoom() : roomNameError(`Name can't be blank!`)">Create Room</button>
 	</div>
 </template>
 
@@ -66,17 +66,17 @@
 	button {
 		height: 40px;
 		background-color: var(--blue-light);
-		border: 1px solid white;
-		border-radius: 5px;
+		border: 2px solid black;
 		color: white;
-		font-weight: bold;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 14px;
+		font-weight: bold;
 		cursor: pointer;
 	}
 
-	button:hover {
-		border: 1px solid var(--blue-light);
-	}
 
 	.new_room {
 		padding: 16px;
@@ -91,7 +91,7 @@
 		padding: 5px;
 		border: 1px solid black;
 		border-radius: 5px;
-		background-color: var(--grey);
+		background-color: white;
 		color: black;
 	}
 </style>
