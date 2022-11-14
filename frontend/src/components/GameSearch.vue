@@ -52,7 +52,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		gap: 40px;
+		gap: 25px;
 	}
 
 	.switch {

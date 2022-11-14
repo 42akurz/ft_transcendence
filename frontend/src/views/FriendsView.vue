@@ -4,7 +4,13 @@
 			<h2>Friends</h2>
 			<h3>Change Tab</h3>
 			<div class="tabs">
-				<button v-for="tab in tabs" :key="tab" @click="currentTab = tab">{{tab}}</button>
+				<button
+					:style="(currentTab === tab) ? 'background-color: var(--blue-light); color: white;' : 0"
+					v-for="tab in tabs"
+					:key="tab"
+					@click="currentTab = tab">
+					{{tab}}
+				</button>
 			</div>
 			<keep-alive>
 				<component
@@ -127,17 +133,23 @@ export default {
 		margin: 0;
 		display: flex;
 		flex-direction: row;
+		justify-content: center;
+		gap: 10px;
 	}
 
 	.tabs button {
-		width: 100px;
-		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
+		width: 80px;
+		height: 35px;
+		border: 2px solid black;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 5px;
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		font-size: 12px;
+		font-weight: bold;
+		color: black;
+		cursor: pointer;
 	}
 
 	.tabs button:hover {

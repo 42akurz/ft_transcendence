@@ -64,11 +64,13 @@
 
 <style scoped>
 	button {
-		padding: 10px;
+		height: 40px;
 		background-color: var(--blue-light);
 		border: 1px solid white;
 		border-radius: 5px;
 		color: white;
+		font-weight: bold;
+		font-size: 14px;
 		cursor: pointer;
 	}
 
