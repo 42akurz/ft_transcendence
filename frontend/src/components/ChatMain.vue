@@ -12,9 +12,16 @@
 				<div class="member" v-for="member in currentRoom.chatUser" :key="member">
 					<!-- {{member.username}} -->
 					<BaseCardUser :data="member"/>
-					<button v-if="adminButtonConditions(member.username)" @click="makeAdmin(member.id)">Admin</button>
+					<DropdownChatAdmin
+						v-if="adminButtonConditions(member.username)"
+						@makeAdmin="makeAdmin(member.id)"
+						@banUser="banUser(member.id)"
+						@muteUser="showMutePopup(member.id)"
+					/>
+					
+					<!-- <button v-if="adminButtonConditions(member.username)" @click="makeAdmin(member.id)">Admin</button>
 					<button v-if="adminButtonConditions(member.username)" @click="banUser(member.id)">Ban</button>
-					<button v-if="adminButtonConditions(member.username)" @click="showMutePopup(member.id)">Mute</button>
+					<button v-if="adminButtonConditions(member.username)" @click="showMutePopup(member.id)">Mute</button> -->
 					<!-- <button @click="muteUser(member.username)">Mute</button> -->
 				</div>
 			</div>
@@ -47,6 +54,7 @@
 	import { computed, ref } from 'vue'
 	import BaseCardUser from '@/components/BaseCardUser'
 	import PopupNumber from '@/components/PopupNumber'
+	import DropdownChatAdmin from '@/components/DropdownChatAdmin'
 
 
 	const userIdImTryingToMute = ref(0);
