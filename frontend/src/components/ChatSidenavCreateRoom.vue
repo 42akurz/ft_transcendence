@@ -78,8 +78,13 @@
 		gap: 8px;
 	}
 
-	input {
+	input, select {
 		outline: none;
+		color: black;
+		padding: 5px;
+		border: 1px solid black;
+		border-radius: 5px;
+		background-color: var(--grey);
 		color: black;
 	}
 </style>

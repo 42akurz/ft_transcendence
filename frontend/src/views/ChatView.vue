@@ -174,7 +174,6 @@
 
 	.header {
 		grid-area: header;
-		padding: 0 16px;
 		background-color: black;
 		color: white;
 	}
@@ -197,7 +196,7 @@
 
 	.footer {
 		grid-area: footer;
-		padding: 0 16px;
+		/* padding: 0 16px; */
 		background-color: black;
 		color: white;
 	}

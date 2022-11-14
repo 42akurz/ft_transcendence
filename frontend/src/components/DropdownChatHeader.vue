@@ -1,19 +1,19 @@
 <template>
 	<div class="button-wrapper">
-		<button id="toggle-button" @click="changeDropdownState">&uarr;</button>
-		<div class="button-dropdown" id="dropdown">
-			<button @click="emitMakeAdmin">Admin</button>
-			<button @click="emitBanUser">Ban</button>
-			<button @click="emitMuteUser">Mute</button>
+		<button id="header-toggle-button" @click="changeDropdownState">&uarr;</button>
+		<div class="button-dropdown" id="header-dropdown">
+			<div v-for="option in options" :key="option">
+				<button @click="emitSelected(option.title)">{{option.title}}</button>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'DropdownChatAdmin',
+	name: 'DropdownChatHeader',
 
-	emits: ['makeAdmin', 'banUser', 'muteUser'],
+	emits: ['selected'],
 
 	data() {
 		return {
@@ -21,41 +21,38 @@ export default {
 		}
 	},
 
+	props: {
+		options: {
+			type: Array,
+			default: []
+		}
+	},
+
 	methods: {
 		showDropdown() {
 			this.dropdownIsShown = true;
-			const elem = document.getElementById('dropdown');
+			const elem = document.getElementById('header-dropdown');
 			elem.style.display = 'flex';
 		},
 
 		hideDropdown() {
 			this.dropdownIsShown = false;
-			const elem = document.getElementById('dropdown');
+			const elem = document.getElementById('header-dropdown');
 			elem.style.display = 'none';
 		},
 
-		emitMakeAdmin() {
-			this.hideDropdown()
-			this.$emit('makeAdmin')
-		},
-
-		emitMuteUser() {
-			this.hideDropdown()
-			this.$emit('muteUser')
-		},
-
-		emitBanUser() {
-			this.hideDropdown()
-			this.$emit('banUser')
+		emitSelected(option) {
+			this.hideDropdown();
+			this.$emit('selected', option)
 		},
 
 		addAnimation() {
-			const elem = document.getElementById('toggle-button');
+			const elem = document.getElementById('header-toggle-button');
 			elem.classList.add('animate');
 		},
 
 		removeAnimation() {
-			const elem = document.getElementById('toggle-button');
+			const elem = document.getElementById('header-toggle-button');
 			elem.classList.remove('animate');
 		},
 
@@ -78,7 +75,7 @@ export default {
 		position: relative;
 	}
 
-	#toggle-button {
+	#header-toggle-button {
 		transition: 0.5s;
 		border: 1px solid white;
 		background-color: var(--blue-dark);
@@ -91,7 +88,7 @@ export default {
 		cursor: pointer;
 	}
 
-	#toggle-button:hover {
+	#header-toggle-button:hover {
 		border-color: var(--orange);
 		color: var(--orange);
 	}
@@ -112,7 +109,7 @@ export default {
 	}
 
 	.button-dropdown button {
-		width: 80px;
+		width: 100px;
 		height: 30px;
 		padding: 5px 0;
 		cursor: pointer;

@@ -52,7 +52,7 @@
 <style>
 	:root {
 		--blue-dark: #0A1931;
-		--blue-light: #185ADB;
+		--blue-light: rgb(28, 123, 212);;
 		--grey: #EFEFEF;
 		--orange: #FFC947;
 		--black: #000000;
