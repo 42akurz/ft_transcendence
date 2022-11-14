@@ -80,7 +80,6 @@
 			'wins loses'
 			'status status';
 		gap: 5px;
-		min-width: 300px;
 	}
 
 	.info .info__title {
@@ -94,6 +93,8 @@
 	.info .info__username {
 		grid-area: name;
 		border: 3px solid var(--blue-dark);
+		background-color: var(--blue-light);
+		color: white;
 		padding: 10px 0;
 		width: 100%;
 	}
@@ -123,7 +124,9 @@
 	.info .info__status {
 		grid-area: status;
 		border: 3px solid var(--blue-dark);
-		color: var(--blue-dark);
+		/* color: var(--blue-dark); */
+		background-color: var(--blue-light);
+		color: white;
 		letter-spacing: 2px;
 		width: 100%;
 		padding: 10px 0;

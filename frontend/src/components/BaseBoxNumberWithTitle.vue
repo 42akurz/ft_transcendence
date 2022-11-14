@@ -31,6 +31,8 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		background-color: var(--blue-light);
+		color: white;
 	}
 
 	.base-box-number-title .title {

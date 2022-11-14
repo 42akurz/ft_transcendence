@@ -125,6 +125,8 @@ export default {
 
 	.tabs {
 		margin: 0;
+		display: flex;
+		flex-direction: row;
 	}
 
 	.tabs button {
