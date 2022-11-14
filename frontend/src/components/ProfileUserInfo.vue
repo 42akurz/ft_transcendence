@@ -93,7 +93,7 @@
 	.info .info__username {
 		grid-area: name;
 		border: 3px solid var(--blue-dark);
-		background-color: var(--blue-light);
+		background-color: var(--blue-dark);
 		color: white;
 		padding: 10px 0;
 		width: 100%;
@@ -125,7 +125,7 @@
 		grid-area: status;
 		border: 3px solid var(--blue-dark);
 		/* color: var(--blue-dark); */
-		background-color: var(--blue-light);
+		background-color: var(--blue-dark);
 		color: white;
 		letter-spacing: 2px;
 		width: 100%;

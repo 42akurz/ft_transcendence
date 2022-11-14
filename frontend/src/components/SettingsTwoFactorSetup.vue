@@ -1,14 +1,13 @@
 <template>
 <div class="two-factor-wrapper" v-if="currentUser">
 	<h2>Setup Two Factor</h2>
-	<div class="login" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
+	<div class="code" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
 		<button v-on:click="gen_qrcode">Gen Code</button>
-		<br>
 		<img v-if="qrCode" :src="qrCode" width="100">
 	</div>
 	<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
 		<input placeholder="enter code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
-		<h3 v-if="errorMsg">{{errorMsg}}</h3>
+		<small v-if="errorMsg">{{errorMsg}}</small>
 		<button class="confirm-button">Submit</button>
 	</form>
 	<button v-if="currentUser.isTwoFactorAuthenticationEnabled" class="confirm-button" @click="turnOffTwoFA">Diasble</button>
@@ -78,16 +77,23 @@ export default {
 </script>
 
 <style scoped>
+	.code {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.two-factor-wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		/* border-radius: 60px; */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 14px;
+		gap: 10px;
 	}
 
 	h2 {
@@ -95,18 +101,12 @@ export default {
 		letter-spacing: 2px;
 	}
 
-	h3 {
-		color: var(--blue-dark);
-		letter-spacing: 1px;
-		margin-top: 0px;
-	}
-
 	form {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 5px;
+		gap: 10px;
 	}
 
 	input {
@@ -114,7 +114,7 @@ export default {
 		outline: none;
 		color: black;
 		padding: 5px;
-		border: 1px solid black;
+		border: 2px solid black;
 		border-radius: 5px;
 		background-color: white;
 		color: black;
@@ -135,18 +135,7 @@ export default {
 		cursor: pointer;
 	}
 
-	/* .confirm-button {
-		width: 150px;
-		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
-		background-color: var(--blue-light);
-		color: var(--grey);
-		border-radius: 25px;
-	} */
-
-	.login button {
+	.code button {
 		width: 150px;
 		height: 30px;
 		background-color: var(--orange);
@@ -160,6 +149,4 @@ export default {
 		font-weight: bold;
 		cursor: pointer;
 	}
-
-
 </style>

@@ -2,7 +2,7 @@
 	<div class="change-name-wrapper">
 		<h2>Change Username</h2>
 		<div>Current Name:</div>
-		<div>{{currentUser.username}}</div>
+		<strong>{{currentUser.username}}</strong>
 		<div class="name">
 			<input type="text" placeholder="new name" v-model="newName">
 			<small v-if="nameError">{{nameError}}</small>
@@ -75,7 +75,12 @@
 		justify-content: center;
 		flex-direction: column;
 		align-items: center;
-		gap: 5px;
+		gap: 10px;
+	}
+
+	h2 {
+		color: var(--blue-dark);
+		letter-spacing: 2px;
 	}
 
 	input {
@@ -83,7 +88,7 @@
 		outline: none;
 		color: black;
 		padding: 5px;
-		border: 1px solid black;
+		border: 2px solid black;
 		border-radius: 5px;
 		background-color: white;
 		color: black;

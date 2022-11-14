@@ -2,7 +2,7 @@
 	<div class="change-status-wrapper">
 		<h2>Change User Status</h2>
 		<div>Current Status:</div>
-		<div>{{userStatus}}</div>
+		<strong>{{userStatus}}</strong>
 		<div class="status">
 			<button @click="setUserStatus(0)">Offline</button>
 			<button @click="setUserStatus(1)">Online</button>
@@ -57,7 +57,11 @@ export default {
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
-		/* border-radius: 60px; */
+	}
+
+	h2 {
+		color: var(--blue-dark);
+		letter-spacing: 2px;
 	}
 
 	.status {
