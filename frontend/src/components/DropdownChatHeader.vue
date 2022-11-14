@@ -79,7 +79,7 @@ export default {
 		transition: 0.5s;
 		border: 1px solid var(--grey);
 		background-color: var(--blue-dark);
-		color: white;
+		color: var(--orange);
 		border-radius: 50%;
 		height: 35px;
 		width: 35px;
@@ -90,17 +90,16 @@ export default {
 
 	#header-toggle-button:hover {
 		border-color: var(--blue-dark);
-		color: var(--orange);
 	}
 
 	.button-dropdown {
 		display: none;
-		border-radius: 25px;
-		border: 1px solid white;
-		background-color: black;
+		border-radius: 5px;
+		border: 1px solid var(--grey);
+		background-color: var(--blue-dark);
 		position: absolute;
 		right: 0;
-		margin-top: 5px;
+		margin-top: 2px;
 		padding: 15px;
 		flex-direction: column;
 		justify-content: center;
