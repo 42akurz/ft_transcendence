@@ -1,7 +1,6 @@
 <template>
 	<main class="main">
 		<div class="main__messages">
-			<!-- {{typingDisplay}} -->
 			<div class="message"  v-for="message in currentRoom.messages" :key="message" :class="{ blue_text: message.fromName === 'ChatBot', align_right: message.fromName === currentUser.username }">
 				<div class="message__name">[{{message.fromName}}]</div>
 				<div class="text">{{message.text}}</div>
@@ -10,7 +9,6 @@
 		<div class="main__users" v-if="currentRoom && currentUser">
 			<div class="main__members">
 				<div class="member" v-for="member in currentRoom.chatUser" :key="member">
-					<!-- {{member.username}} -->
 					<BaseCardUser :data="member"/>
 					<DropdownChatAdmin
 						v-if="adminButtonConditions(member.username)"
@@ -18,14 +16,9 @@
 						@banUser="banUser(member.id)"
 						@muteUser="showMutePopup(member.id)"
 					/>
-					
-					<!-- <button v-if="adminButtonConditions(member.username)" @click="makeAdmin(member.id)">Admin</button>
-					<button v-if="adminButtonConditions(member.username)" @click="banUser(member.id)">Ban</button>
-					<button v-if="adminButtonConditions(member.username)" @click="showMutePopup(member.id)">Mute</button> -->
-					<!-- <button @click="muteUser(member.username)">Mute</button> -->
 				</div>
 			</div>
-			<h3 v-if="currentRoom.access !== 'private'">Banned Users</h3>
+			<h3 v-if="currentRoom.access !== 'private'" style="color: var(--blue-dark)">Banned Users</h3>
 			<div v-if="currentRoom.access !== 'private'" class="main__banned">
 				<div class="member" v-for="member in currentRoom.bannedUsers" :key="member">
 					<BaseCardUser :data="member"/>
@@ -175,26 +168,35 @@
 		overflow-y: auto;
 		flex: 1;
 		padding: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 	}
 
 	.main__users {
 		overflow-y: auto;
 		height: 100%;
 		margin-left: auto;
-		border-left: 1px solid white;
+		border-left: 1px solid black;
 	}
 
 	.member {
 		padding: 16px;
-		border-bottom: 1px solid white;
+		border-bottom: 1px solid black;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 
 	.message {
+		margin: 0 auto 0 0;
+		padding: 16px 20px;
+		color: black;
+		border: 1px solid black;
+		background-color: white;
 		text-align: left;
-		padding: 16px;
+		width: fit-content;
+		border-radius: 25px;
 	}
 
 	.message__name {
@@ -207,5 +209,6 @@
 
 	.align_right {
 		text-align: right;
+		margin: 0 0 0 auto;
 	}
 </style>

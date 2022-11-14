@@ -1,12 +1,6 @@
 <template>
 	<header class="header">
 		<strong>{{currentRoom.name}}</strong>
-		<!-- <ChatHeaderDropdown
-			@selected="dropdownAction($event)"
-			:title="dropdownTitle"
-			:options="filteredOptions"
-		/> -->
-
 		<DropdownChatHeader
 			@selected="dropdownAction($event)"
 			:title="dropdownTitle"

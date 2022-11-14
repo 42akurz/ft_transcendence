@@ -77,7 +77,7 @@ export default {
 
 	#header-toggle-button {
 		transition: 0.5s;
-		border: 1px solid white;
+		border: 1px solid var(--grey);
 		background-color: var(--blue-dark);
 		color: white;
 		border-radius: 50%;
@@ -89,7 +89,7 @@ export default {
 	}
 
 	#header-toggle-button:hover {
-		border-color: var(--orange);
+		border-color: var(--blue-dark);
 		color: var(--orange);
 	}
 

@@ -75,7 +75,7 @@
 		border-radius: 5px;
 		color: white;
 		cursor: pointer;
-		border: 1px solid black;
+		border: 1px solid var(--grey);
 		font-weight: bold;
 	}
 
@@ -96,9 +96,9 @@
 		outline: none;
 		color: black;
 		padding: 8px 16px;
-		border: 1px solid var(--grey);
+		border: 1px solid var(--blue-dark);
 		border-radius: 5px;
-		background-color: var(--grey);
+		background-color: white;
 		color: black;
 	}
 </style>
