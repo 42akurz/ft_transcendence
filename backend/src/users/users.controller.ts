@@ -59,6 +59,10 @@ export class UserController {
 	@UseGuards(JwtTwoFactorGuard)
 	@UseInterceptors(ClassSerializerInterceptor)
 	async updateUserName(@Req() request: RequestWithUser, @Param('username') newUserName: string) {
+		if (newUserName.length > 8)
+			throw new HttpException('Name to long', HttpStatus.CONFLICT)
+		if (newUserName.includes(' '))
+			throw new HttpException('Name cant have spaces', HttpStatus.CONFLICT)
 		if (!await this.usersService.updateName(request.user.id, newUserName))
 			throw new HttpException('Name is taken', HttpStatus.CONFLICT)
 	}

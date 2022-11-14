@@ -5,6 +5,7 @@
 		<div>{{currentUser.username}}</div>
 		<div class="name">
 			<input type="text" placeholder="new name" v-model="newName">
+			<small v-if="nameError">{{nameError}}</small>
 			<button @click="changeUsername">Submit</button>
 		</div>
 	</div>
@@ -20,6 +21,7 @@
 		data() {
 			return {
 				newName: '',
+				nameError: ''
 			}
 		},
 
@@ -32,6 +34,16 @@
 
 		methods: {
 			async changeUsername() {
+				if (this.newName.length > 8) {
+					this.nameError = 'Name cant have more then 8 characters';
+					setTimeout(() => { this.nameError = ''; }, 3000);
+					return ;
+				}
+				if (this.newName.includes(' ')) {
+					this.nameError = 'Name cant have spaces';
+					setTimeout(() => { this.nameError = ''; }, 3000);
+					return ;
+				}
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/update/name/${this.newName}`, null, { withCredentials: true })
 				.then((response) => {
 					this.newName = '';

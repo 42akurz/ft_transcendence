@@ -1,7 +1,7 @@
 <template>
 	<div class="new_room">
 		<input v-model="newRoomName" placeholder="new room name">
-		<div v-if="roomNameErrorMessage" class="room-name-error">{{roomNameErrorMessage}}</div>
+		<small v-if="roomNameErrorMessage" class="room-name-error">{{roomNameErrorMessage}}</small>
 		<select v-model="newRoomState">
 			<option value="public">public</option>
 			<option value="protected">protected</option>
@@ -44,6 +44,14 @@
 
 	/* SOCKET ACTIONS */
 	const createNewRoom = () => {
+		if (newRoomName.value.length > 10) {
+			roomNameError('Error: Maximum name length is 10')
+			return ;
+		}
+		if (newRoomPassword.value.length > 64) {
+			roomNameError('Error: Maximum password length is 64')
+			return ;
+		}
 		socket.value.emit('createRoom', {
 				roomName: newRoomName.value,
 				access: newRoomState.value,
