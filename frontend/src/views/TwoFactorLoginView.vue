@@ -1,17 +1,13 @@
 <template>
-	<div class="wrapper">
-		<h2>Login Two Factor</h2>
-		<form @submit.prevent="login2FA">
-			<div>
-				<label for="2FACode">Enter Google Authenticator Code: </label>
-				<br>
-				<input type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
-			</div>
-			<h3 v-if="errorMsg">{{errorMsg}}</h3>
-			<div class="login">
+	<div class="two-factor-login-wrapper">
+		<div class="two-factor-login">
+			<h2>Login Two Factor</h2>
+			<form @submit.prevent="login2FA">
+				<input placeholder="enter auth code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
+				<h3 v-if="errorMsg">{{errorMsg}}</h3>
 				<button>Send</button>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
 </template>
 
@@ -54,9 +50,15 @@ export default {
 </script>
 
 <style scoped>
-	.wrapper {
+	.two-factor-login-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.two-factor-login {
 		background-color: var(--grey);
-		padding: 50px;
+		padding: 100px;
 		border: 5px solid var(--blue-dark);
 		border-radius: 60px;
 		display: flex;
@@ -64,29 +66,42 @@ export default {
 		justify-content: center;
 	}
 
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+
 	h2 {
 		color: var(--blue-dark);
 		letter-spacing: 2px;
 	}
 
-	h3 {
-		color: var(--blue-dark);
-		letter-spacing: 1px;
-		margin-top: 0px;
+	input {
+		width: 150px;
+		outline: none;
+		color: black;
+		padding: 5px;
+		border: 2px solid black;
+		border-radius: 5px;
+		background-color: white;
+		color: black;
 	}
 
-	.login {
-		margin: 0;
-	}
-
-	.login button {
-		width: 100px;
+	button {
+		width: 150px;
 		height: 30px;
+		background-color: var(--blue-light);
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
 		cursor: pointer;
-		margin: 10px;
-		border: 2px solid var(--blue-dark);
-		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
 	}
 </style>

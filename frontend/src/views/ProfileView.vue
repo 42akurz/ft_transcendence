@@ -132,7 +132,6 @@
 		background-color: var(--grey);
 		border: 5px solid var(--blue-dark);
 		padding: 50px;
-		/* border-radius: 60px; */
 		width: 60%;
 		min-width: 400px;
 		max-width: 1000px;
@@ -142,13 +141,20 @@
 	}
 
 	.profile .close-button {
-		background-color: red;
-		border-color: red;
-		color: white;
+		transition: .8s;
+		background-color: transparent;
+		border: none;
+		color: red;
 		font-weight: bold;
 		width: 35px;
 		height: 35px;
+		font-size: 18px;
 		margin-left: auto;
+	}
+
+	.profile .close-button:hover {
+		transition: .8s;
+		transform: rotate(360deg);
 	}
 
 	.flex-container {
@@ -161,10 +167,13 @@
 
 	.flex-container .info {
 		flex: 1;
+		min-width: 250px;
 	}
 
 	.flex-container .history {
 		flex: 1;
+		min-width: 250px;
+		/* flex-basis: 30%; */
 		display: flex;
 		justify-content: center;
 		margin-bottom: auto;
@@ -174,7 +183,7 @@
 	button {
 		width: 100%;
 		padding: 10px;
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		border: 1px solid black;
 		border-radius: 5px;
 		color: white;

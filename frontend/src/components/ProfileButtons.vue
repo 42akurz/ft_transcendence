@@ -1,36 +1,36 @@
 <template>
 	<div class="profile-buttons">
-		<button class="green-button"
+		<button
 			v-if="!sentRequest && !isFriend && !receivedRequest"
 			@click="sendFriendRequest">
 			Send Request
 		</button>
-		<button class="yellow-button"
+		<button
 			v-if="sentRequest && !isFriend && !receivedRequest"
 			@click="retrieveFriendRequest">
 			Retrieve Request
 		</button>
-		<button class="red-button"
+		<button
 			v-if="isFriend"
 			@click="deleteFriend">
 			Delete Friend
 		</button>
-		<button class="green-button"
+		<button
 			v-if="receivedRequest && !isFriend"
 			@click="acceptFriend">
 			Accept Friend Request
 		</button>
-		<button class="red-button"
+		<button
 			v-if="receivedRequest && !isFriend"
 			@click="declineFriend">
 			Decline Friend Request
 		</button>
-		<button class="red-button"
+		<button
 			v-if="!isBlocked"
 			@click="blockUser">
 			Block User
 		</button>
-		<button class="red-button"
+		<button
 			v-if="isBlocked"
 			@click="unblockUser">
 			Unblock User
@@ -162,25 +162,33 @@
 <style scoped>
 	.profile-buttons {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
-		gap: 10px;
+		column-gap: 30px;
+		row-gap: 10px;
+		margin-top: 15px;
 	}
 
 	button {
-		width: 100%;
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
+		width: 150px;
+		height: 35px;
+		border: 2px solid black;
+		background-color: var(--orange);
+		color: black;
 		border-radius: 5px;
-		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		font-size: 12px;
 		font-weight: bold;
 	}
 
 	button:hover {
+		background-color: var(--blue-light);
 		cursor: pointer;
-		background-color: var(--orange);
-		color: var(--blue-dark);
+		color: white;
 	}
 </style>

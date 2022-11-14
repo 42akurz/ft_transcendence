@@ -1,13 +1,13 @@
 <template>
 	<div class="new_room">
 		<input v-model="newRoomName" placeholder="new room name">
-		<div v-if="roomNameErrorMessage" class="room-name-error">{{roomNameErrorMessage}}</div>
+		<small v-if="roomNameErrorMessage" class="room-name-error">{{roomNameErrorMessage}}</small>
 		<select v-model="newRoomState">
 			<option value="public">public</option>
 			<option value="protected">protected</option>
 		</select>
 		<input v-if="newRoomState === 'protected'" v-model="newRoomPassword" placeholder="password">
-		<button @click="(newRoomName) ? createNewRoom() : roomNameError(`Name can't be blank!`)">Create</button>
+		<button @click="(newRoomName) ? createNewRoom() : roomNameError(`Name can't be blank!`)">Create Room</button>
 	</div>
 </template>
 
@@ -44,6 +44,14 @@
 
 	/* SOCKET ACTIONS */
 	const createNewRoom = () => {
+		if (newRoomName.value.length > 10) {
+			roomNameError('Error: Maximum name length is 10')
+			return ;
+		}
+		if (newRoomPassword.value.length > 64) {
+			roomNameError('Error: Maximum password length is 64')
+			return ;
+		}
 		socket.value.emit('createRoom', {
 				roomName: newRoomName.value,
 				access: newRoomState.value,
@@ -64,17 +72,19 @@
 
 <style scoped>
 	button {
-		padding: 10px;
+		height: 40px;
 		background-color: var(--blue-light);
-		border: 1px solid white;
-		border-radius: 5px;
+		border: 2px solid black;
 		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		font-weight: bold;
 		cursor: pointer;
 	}
 
-	button:hover {
-		border: 1px solid var(--blue-light);
-	}
 
 	.new_room {
 		padding: 16px;
@@ -89,7 +99,7 @@
 		padding: 5px;
 		border: 1px solid black;
 		border-radius: 5px;
-		background-color: var(--grey);
+		background-color: white;
 		color: black;
 	}
 </style>

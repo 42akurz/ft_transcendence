@@ -170,6 +170,7 @@
 			"sidenav footer";
 		grid-gap: 0;
 		overflow: hidden;
+		max-height: calc(100vh - var(--nav-bar-height));
 	}
 
 	.header {

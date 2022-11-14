@@ -45,6 +45,14 @@ export default {
 	},
 
 	methods: {
+		fileError(errorMessage) {
+			this.message = errorMessage;
+			const timeout = setTimeout(() => {
+				this.message = '';
+			}, 3000);
+			this.file = '';
+		},
+
 		onSelect(e){
 			const image = e.target.files[0];
 			const reader = new FileReader();
@@ -54,16 +62,22 @@ export default {
 			}
 			const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
 			const file = this.$refs.file.files[0];
-			this.file = file;
 			if (!allowedTypes.includes(file.type)) {
-				this.message = "Filetype is wrong!!"
+				this.fileError('Filetype is wrong');
+				return ;
 			}
 			if (file.size > 500000) {
-				this.message = 'Too large, max size allowed is 500kb'
+				this.fileError('Too large, max size allowed is 500kb');
+				return ;
 			}
+			this.file = file;
 		},
 
 		async onSubmit(){
+			if (this.file === '') {
+				this.fileError('select a valid file')
+				return ;
+			}
 			const formData = new FormData();
 			formData.append('file',this.file);
 			try {
@@ -81,22 +95,26 @@ export default {
 </script>
 
 <style scoped>
+	h2 {
+		color: var(--blue-dark);
+		letter-spacing: 2px;
+	}
+
 	.change-avatar-wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		/* border-radius: 60px; */
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
-		gap: 14px;
+		gap: 10px;
 	}
 
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 5px;
+		gap: 10px;
 		justify-content: center;
 		align-items: center;
 	}
@@ -104,23 +122,31 @@ export default {
 	input {
 		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: black;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 
 	button {
 		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--blue-light);
-		color: var(--grey);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 
 	button:hover {

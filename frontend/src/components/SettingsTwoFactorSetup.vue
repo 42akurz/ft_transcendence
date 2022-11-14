@@ -1,18 +1,13 @@
 <template>
 <div class="two-factor-wrapper" v-if="currentUser">
 	<h2>Setup Two Factor</h2>
-	<div class="login" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
+	<div class="code" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
 		<button v-on:click="gen_qrcode">Gen Code</button>
-		<br>
 		<img v-if="qrCode" :src="qrCode" width="100">
 	</div>
 	<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
-		<div>
-			<label for="2FACode">Enter Code: </label>
-			<br>
-			<input type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
-		</div>
-		<h3 v-if="errorMsg">{{errorMsg}}</h3>
+		<input placeholder="enter code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
+		<small v-if="errorMsg">{{errorMsg}}</small>
 		<button class="confirm-button">Submit</button>
 	</form>
 	<button v-if="currentUser.isTwoFactorAuthenticationEnabled" class="confirm-button" @click="turnOffTwoFA">Diasble</button>
@@ -82,16 +77,23 @@ export default {
 </script>
 
 <style scoped>
+	.code {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.two-factor-wrapper {
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		/* border-radius: 60px; */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 14px;
+		gap: 10px;
 	}
 
 	h2 {
@@ -99,39 +101,52 @@ export default {
 		letter-spacing: 2px;
 	}
 
-	h3 {
-		color: var(--blue-dark);
-		letter-spacing: 1px;
-		margin-top: 0px;
-	}
-
 	form {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 5px;
+		gap: 10px;
+	}
+
+	input {
+		width: 150px;
+		outline: none;
+		color: black;
+		padding: 5px;
+		border: 2px solid black;
+		border-radius: 5px;
+		background-color: white;
+		color: black;
 	}
 
 	.confirm-button {
 		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 0 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--blue-light);
-		color: var(--grey);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 
-	.login button {
-		width: 100px;
+	.code button {
+		width: 150px;
 		height: 30px;
-		cursor: pointer;
-		margin: 10px;
-		border: 2px solid var(--blue-dark);
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: black;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

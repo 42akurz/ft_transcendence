@@ -56,8 +56,7 @@ export default {
 		border: 2px solid white;
 		color: var(--grey);
 		border-radius: 60px;
-		width: 200px;
-		margin: 5px auto;
+		width: 220px;
 		padding: 15px;
 	}
 

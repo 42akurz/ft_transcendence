@@ -23,7 +23,6 @@
 <script>
 	import store from '@/store/index.js'
 	import SettingsTwoFactorSetup from '@/components/SettingsTwoFactorSetup.vue'
-	import SettingsTwoFactorLogin from '@/components/SettingsTwoFactorLogin.vue'
 	import SettingsChangeAvatar from '@/components/SettingsChangeAvatar.vue'
 	import SettingsChangeStatus from '@/components/SettingsChangeStatus.vue'
 	import SettingsChangeName from '@/components/SettingsChangeName.vue'
@@ -33,7 +32,6 @@
 
 		components: {
 			SettingsTwoFactorSetup,
-			SettingsTwoFactorLogin,
 			SettingsChangeAvatar,
 			SettingsChangeStatus,
 			SettingsChangeName
@@ -56,7 +54,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 50px 0;
+		padding: 50px;
 	}
 
 	.menu {

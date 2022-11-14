@@ -1,5 +1,5 @@
 <template>
-	<div class="card" :class="(currentUserIsWinner) ? 'green-bg' : 'red-bg'">
+	<div class="card" :class="(currentUserIsWinner) ? 'green-border' : 'red-border'">
 		<div class="player left-side" v-if="playerLeft">
 			<div class="img-container">
 				<img id="profile-pic" :src="imageLinkLeft"/>
@@ -93,6 +93,9 @@ export default {
 </script>
 
 <style scoped>
+* {
+	box-sizing: border-box;
+}
 	.img-container {
 		display: inline-block;
 		border-radius: 50%;
@@ -110,12 +113,11 @@ export default {
 
 	.card {
 		display: flex;
-		gap: 20px;
 		flex-direction: row;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-evenly;
 		background-color: var(--blue-dark);
-		border: 2px solid var(--grey);
+		border: 3px solid var(--grey);
 		color: var(--grey);
 		border-radius: 60px;
 		padding: 15px;
@@ -123,18 +125,20 @@ export default {
 		width: 310px;
 	}
 
-	.green-bg {
-		background-color: rgb(16, 116, 16);
+	.green-border {
+		border-color: rgb(17, 207, 17);
 	}
 
-	.red-bg {
-		background-color: rgb(144, 24, 24);
+	.red-border {
+		border-color: rgb(225, 22, 22);
 	}
 
 	.player {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 10px;
+		gap: 5px;
+		width: 45%;
+		justify-content: space-between;
 	}
 </style>

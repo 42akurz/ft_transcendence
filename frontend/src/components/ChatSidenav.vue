@@ -45,8 +45,6 @@
 	button {
 		width: 80px;
 		height: 35px;
-		outline: none;
-		text-decoration: none;
 		border: 2px solid black;
 		display: flex;
 		align-items: center;

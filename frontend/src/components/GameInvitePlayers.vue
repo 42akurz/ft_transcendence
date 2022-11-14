@@ -39,14 +39,25 @@
 </script>
 
 <style scoped>
-	button {
-		width: 142px;
-		height: 42px;
-		cursor: pointer;
+	.invite {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 
-		border: 2px solid var(--blue-dark);
+	button {
+		width: 150px;
+		height: 40px;
 		background-color: var(--orange);
-		color: var(--blue-dark);
-		border-radius: 25px;
+		border: 2px solid black;
+		color: black;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

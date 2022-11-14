@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="game-lobby-wrapper">
 		<GameSearch 
 			@enterGame="enterGameRoom($event)"
 		/>
@@ -47,18 +47,21 @@
 </script>
 
 <style scoped>
-	.wrapper {
+	.game-lobby-wrapper {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		gap: 60px;
-		padding: 5vh 30px;
+		padding: 50px;
+
 	}
 
 	.rows {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 5px;
+		gap: 25px;
 		justify-content: center;
 		padding: 5px;
 	}
