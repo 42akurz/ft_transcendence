@@ -65,10 +65,15 @@
 <style scoped>
 	button {
 		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
+		background-color: var(--blue-light);
+		border: 1px solid white;
 		border-radius: 5px;
 		color: white;
+		cursor: pointer;
+	}
+
+	button:hover {
+		border: 1px solid var(--blue-light);
 	}
 
 	.new_room {

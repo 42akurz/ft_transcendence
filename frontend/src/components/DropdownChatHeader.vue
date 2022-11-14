@@ -96,8 +96,8 @@ export default {
 	.button-dropdown {
 		display: none;
 		border-radius: 25px;
-		border: 1px solid var(--grey);
-		background-color: var(--grey);
+		border: 1px solid white;
+		background-color: black;
 		position: absolute;
 		right: 0;
 		margin-top: 5px;
@@ -111,16 +111,15 @@ export default {
 	.button-dropdown button {
 		width: 100px;
 		height: 30px;
-		padding: 5px 0;
 		cursor: pointer;
-		border: 2px solid var(--blue-dark);
-		background-color: var(--orange);
-		color: black;
-		border-radius: 25px;
+		background-color: rgb(28, 123, 212);
+		border: 1px solid black;
+		border-radius: 5px;
+		color: white;
 	}
 
 	.button-dropdown button:hover {
-		border: none;
+		border: 1px solid var(--blue-light);
 	}
 
 	.animate {
