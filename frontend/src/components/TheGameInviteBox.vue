@@ -1,7 +1,6 @@
 <template>
 	<div class="invite-box">
-		<strong>Received Game invitation</strong>
-		<strong>{{senderName}}</strong>
+		<strong>Received Game invitation from: {{senderName}}</strong>
 		<div class="buttons">
 			<button @click="acceptGameInvite">Accept</button>
 			<button @click="hideAlert">Decline</button>
@@ -67,7 +66,7 @@ export default {
 		justify-content: space-between;
 		padding: 20px 50px;
 
-		border: 1px solid var(--blue-dark);
+		border: 3px solid var(--blue-dark);
 		background-color: var(--grey);
 		color: var(--blue--dark);
 		transition: 0.5s;
@@ -89,22 +88,18 @@ export default {
 		align-items: center;
 	}
 
-	button {
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
+	button {	
+		width: 150px;
+		height: 40px;
+		background-color: var(--blue-light);
+		border: 2px solid black;
+		color: white;
 		border-radius: 5px;
-		color: white;
-		width: fit-content;
-		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 16px;
-		cursor: pointer;
-	}
-
-	.close-button {
-		background-color: red;
-		border-color: red;
-		color: white;
 		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

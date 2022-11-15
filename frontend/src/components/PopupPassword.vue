@@ -91,15 +91,29 @@ export default {
 	}
 
 	.modal input {
-		margin: 0 50px;
+		width: 170px;
+		margin: 0 auto;
+		outline: none;
+		color: black;
+		padding: 5px;
+		border: 2px solid black;
+		border-radius: 5px;
+		background-color: white;
+		color: black;
 	}
 
 	button {
-		margin: 0 20px;
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
-		border-radius: 5px;
+		width: 80px;
+		height: 40px;
+		background-color: var(--blue-light);
+		border: 2px solid black;
 		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

@@ -34,7 +34,7 @@
 		</div>
 		<PopupNumber
 			:visible="showPopupNumber"
-			:info="'time to Mute in Minutes'"
+			:info="'Time to mute in minutes'"
 			:confirmButtonText="'Mute'"
 			@confirmed="muteUser(userIdImTryingToMute, $event)"
 			@canceled="hidePopup"
