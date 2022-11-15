@@ -26,7 +26,7 @@ export class GameService {
 	/************************** GAME DATA **************************/
 	
 	/************************* GAME CONFIG *************************/
-	private readonly BASE_PADDLE_SPEED: number = 40
+	private readonly BASE_PADDLE_SPEED: number = 45
 	private readonly BASE_BALL_SPEED: number = 0.2
 	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
 	private readonly BASE_SCORE_LIMIT: number = 5
@@ -489,15 +489,6 @@ export class GameService {
 		);
 		return gameKey.toString();
 	}
-
-	// quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
-	// 	const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
-	// 	this.gameRooms.set(
-	// 		gameKey,
-	// 		{...this.gameRooms.get(gameKey), spectatorsID: spectators}
-	// 	);
-	// 	return gameKey.toString();
-	// }
 	/* MATCHMAKING */
 
 
@@ -511,7 +502,8 @@ export class GameService {
 
 		switch (incDec) {
 			case 'reset':
-				if (gameInstance.leftPaddle.height == 37.5 || gameInstance.leftPaddle.height == 150) {
+				if (gameInstance.leftPaddle.height == (this.BASE_PADDLE_HEIGHT / 2)
+					|| gameInstance.leftPaddle.height == (this.BASE_PADDLE_HEIGHT * 2)) {
 					updatedPedalLeft.height = this.BASE_PADDLE_HEIGHT;
 					updatedPedalRight.height = this.BASE_PADDLE_HEIGHT;
 	
@@ -524,13 +516,14 @@ export class GameService {
 
 			case 'increase':
 				// only change pedal size if its not biggest size already
-				if (gameInstance.leftPaddle.height == 37.5 || gameInstance.leftPaddle.height == 75) {
+				if (gameInstance.leftPaddle.height == (this.BASE_PADDLE_HEIGHT / 2)
+					|| gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT) {
 					// change pedal height
 					updatedPedalLeft.height *= 2;
 					updatedPedalRight.height *= 2;
 					this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
 					// change pedal position if it collides with wall
-					if (gameInstance.leftPaddle.height == 75) {
+					if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT) {
 						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
 							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT * 2
 						})
@@ -544,13 +537,14 @@ export class GameService {
 				break;
 			case 'decrease':
 				// only change pedal size if its not smallest size already
-				if (gameInstance.leftPaddle.height == 75 || gameInstance.leftPaddle.height == 150) {
+				if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT
+					|| gameInstance.leftPaddle.height == (this.BASE_PADDLE_HEIGHT * 2)) {
 					// change pedal height
 					updatedPedalLeft.height /= 2;
 					updatedPedalRight.height /= 2;
 					this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
 					// change pedal position if it collides with wall
-					if (gameInstance.leftPaddle.height == 75) {
+					if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT) {
 						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
 							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT / 2
 						})
@@ -606,10 +600,10 @@ export class GameService {
 
 		switch(this.randomNumberBetween(1, 7)) {
 			case 1:
-				this.actionChangePaddleSize(gameKey, "increase");
+				this.actionChangePaddleSize(gameKey, 'increase');
 				break ;
 			case 2:
-				this.actionChangePaddleSize(gameKey, "decrease");
+				this.actionChangePaddleSize(gameKey, 'decrease');
 				break ;
 			case 3:
 				this.actionChangeBallSpeed(gameKey, 0.1);
@@ -622,7 +616,7 @@ export class GameService {
 				this.actionChangeBackgroundColor(gameKey, 'red');
 				break ;
 			case 6:
-				this.actionChangePaddleSpeed(gameKey, 50);
+				this.actionChangePaddleSpeed(gameKey, 60);
 				this.actionChangeBackgroundColor(gameKey, 'blue');
 				break ;
 		}

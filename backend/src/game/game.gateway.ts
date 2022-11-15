@@ -41,7 +41,6 @@ export class GameGateway {
 		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)
 			return ;
-
 		if (this.gameService.gameIsWaitingForPlayer(gameKey)) {
 			this.gameService.deleteGame(gameKey);
 			return ;
@@ -73,7 +72,7 @@ export class GameGateway {
 	@SubscribeMessage('searchGame')
 	searchGame(@MessageBody() specialActions: boolean, @ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const userIsInGame: number = this.gameService.findGameKeyByPlayerID(userId);
+		const userIsInGame: number | undefined= this.gameService.findGameKeyByPlayerID(userId);
 		if (userIsInGame) // maybe throw exception instead
 			this.gameService.deleteGame(userIsInGame)
 		const gameKey: number = this.gameService.findKeyOfAvailableGame(specialActions);
@@ -92,7 +91,9 @@ export class GameGateway {
 	@SubscribeMessage('pauseGame')
 	pauseGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
+		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (!gameKey)
+			return ;
 		if (this.gameService.userIsSpectator(gameKey, userId))
 			return ;
 		this.gameService.pauseGame(gameKey);
@@ -103,7 +104,9 @@ export class GameGateway {
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
+		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (!gameKey)
+			return ;
 		if (this.gameService.userIsSpectator(gameKey, userId))
 			return ;
 		this.gameService.resumeGame(client, gameKey);
@@ -135,7 +138,9 @@ export class GameGateway {
 	@SubscribeMessage('movePaddleUp')
 	async rightPaddleUp(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
+		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (!gameKey)
+			return ;
 		if (this.gameService.userIsSpectator(gameKey, userId))
 			return ;
 		this.gameService.movePedal(gameKey, userId, 'up')
@@ -144,7 +149,9 @@ export class GameGateway {
 	@SubscribeMessage('movePaddleDown')
 	async rightPaddleDown(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
+		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (!gameKey)
+			return ;
 		if (this.gameService.userIsSpectator(gameKey, userId))
 			return ;
 		this.gameService.movePedal(gameKey, userId, 'down')
