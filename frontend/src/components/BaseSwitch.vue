@@ -55,6 +55,7 @@
 		transition: .5s;
 		transform: scale(1.1);
 		box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+		cursor: pointer;
 	}
 
 	input:checked[type="checkbox"]:before {
