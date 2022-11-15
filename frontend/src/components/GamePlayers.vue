@@ -3,11 +3,15 @@
 		<BaseCardUser
 			v-if="playerLeft"
 			:data="playerLeft"
+			:showStatus="false"
+			:allowPrivatePageOnClick="false"
 		/>
 		VS
 		<BaseCardUser
 			v-if="playerRight"
 			:data="playerRight"
+			:showStatus="false"
+			:allowPrivatePageOnClick="false"
 		/>
 	</div>
 </template>

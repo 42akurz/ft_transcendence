@@ -414,8 +414,8 @@ export class GameService {
 		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!gameInstance)
 			return ;
-		this.usersService.setStatus(2, gameInstance.userLeftSideID);
-		this.usersService.setStatus(2, gameInstance.userRightSideID);
+		await this.usersService.setStatus(2, gameInstance.userLeftSideID);
+		await this.usersService.setStatus(2, gameInstance.userRightSideID);
 		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
 		await this.timeout(this.BASE_COUNTDOWN_SECONDS * 1000);
 		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
