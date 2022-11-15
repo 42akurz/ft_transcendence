@@ -257,7 +257,6 @@ export class UsersService {
 		if (status < 0 || status > 3)
 			throw new HttpException('Please enter a valid status', HttpStatus.CONFLICT);
 		await this.usersRepository.update({id: userId}, {status: status})
-		console.log('updated status for user ' + userId + ' to ' + status);
 		return await this.findById(userId);
 	}
 
