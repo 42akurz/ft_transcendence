@@ -6,7 +6,7 @@
 		</div>
 		<div class="user-info">
 			<span class="username">{{data.username}}</span>
-			<span class="status">{{userStatus}}</span>
+			<span v-if="showStatus" class="status">{{userStatus}}</span>
 		</div>
 	</div>
 </div>
@@ -25,6 +25,10 @@ export default {
 			required: true
 		},
 		allowPrivatePageOnClick: {
+			type: Boolean,
+			default: true
+		},
+		showStatus: {
 			type: Boolean,
 			default: true
 		}

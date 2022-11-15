@@ -26,7 +26,7 @@ export class GameService {
 	/************************** GAME DATA **************************/
 	
 	/************************* GAME CONFIG *************************/
-	private readonly BASE_PADDLE_SPEED: number = 40
+	private readonly BASE_PADDLE_SPEED: number = 45
 	private readonly BASE_BALL_SPEED: number = 0.2
 	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
 	private readonly BASE_SCORE_LIMIT: number = 5
@@ -344,6 +344,17 @@ export class GameService {
 			return undefined;
 		return room.spectatorsID.includes(userId);
 	}
+
+	async getPlayersByGameKey(gameKey: number): Promise<Object | void> {
+		const game: GameData | undefined = this.gameRooms.get(gameKey);
+		if (!game)
+			return ;
+		const playerLeft: User | null = await this.usersService.findById(game.userLeftSideID);
+		const playerRight: User | null = await this.usersService.findById(game.userRightSideID);
+		if (!playerLeft || !playerRight)
+			return ;
+		return {playerLeft, playerRight}
+	}
 	/* UTILS */
 
 
@@ -414,8 +425,8 @@ export class GameService {
 		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!gameInstance)
 			return ;
-		this.usersService.setStatus(2, gameInstance.userLeftSideID);
-		this.usersService.setStatus(2, gameInstance.userRightSideID);
+		await this.usersService.setStatus(2, gameInstance.userLeftSideID);
+		await this.usersService.setStatus(2, gameInstance.userRightSideID);
 		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
 		await this.timeout(this.BASE_COUNTDOWN_SECONDS * 1000);
 		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
@@ -477,6 +488,14 @@ export class GameService {
 		return gameKey.toString();
 	}
 
+	sendGameInvitation(senderId: number) {
+		const gameInstance: GameData = new GameData()
+		gameInstance.userLeftSideID = senderId
+		gameInstance.specialAction = false
+		gameInstance.spectatorsID = []
+		this.pendingInvitations.set(senderId, gameInstance);
+	}
+
 	spectateGameInstance(gameKey: number, spectatorId: number): string {
 		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!gameInstance)
@@ -489,84 +508,91 @@ export class GameService {
 		);
 		return gameKey.toString();
 	}
-
-	// quitSpectatingGameInstance(gameKey: number, spectatorId: number): string {
-	// 	const spectators: number[] = this.gameRooms.get(gameKey).spectatorsID.filter(id => id !== spectatorId);
-	// 	this.gameRooms.set(
-	// 		gameKey,
-	// 		{...this.gameRooms.get(gameKey), spectatorsID: spectators}
-	// 	);
-	// 	return gameKey.toString();
-	// }
 	/* MATCHMAKING */
 
 
 	/* RANDOM ACTIONS */
+	actionIncreasePedalSize(gameKey: number, gameInstance: GameData) {
+		// only change pedal size if its not biggest size already
+		if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT * 2)
+			return ;
+
+		const updatedPedalLeft = {...gameInstance.leftPaddle};
+		const updatedPedalRight = {...gameInstance.rightPaddle};
+
+		// change pedal height
+		updatedPedalLeft.height *= 2;
+		updatedPedalRight.height *= 2;
+		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
+
+		// change pedal position if it collides with wall
+		if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT) {
+			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT * 2
+			})
+		}
+		else {
+			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT
+			})
+		}
+	}
+
+	actionDecreasePedalSize(gameKey: number, gameInstance: GameData) {
+		// only change pedal size if its not smallest size already
+		if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT / 2)
+			return ;
+
+		const updatedPedalLeft = {...gameInstance.leftPaddle};
+		const updatedPedalRight = {...gameInstance.rightPaddle};
+
+		// change pedal height
+		updatedPedalLeft.height /= 2;
+		updatedPedalRight.height /= 2;
+		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
+
+		// change pedal position if it collides with wall
+		if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT) {
+			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT / 2
+			})
+		}
+		else {
+			this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+				maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - this.BASE_PADDLE_HEIGHT
+			})
+		}
+	}
+
+	actionResetPedalSize(gameKey: number, gameInstance: GameData) {
+		if (gameInstance.leftPaddle.height == this.BASE_PADDLE_HEIGHT)
+			return ;
+
+		const updatedPedalLeft = {...gameInstance.leftPaddle};
+		const updatedPedalRight = {...gameInstance.rightPaddle};
+		
+		updatedPedalLeft.height = this.BASE_PADDLE_HEIGHT;
+		updatedPedalRight.height = this.BASE_PADDLE_HEIGHT;
+
+		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
+		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
+			maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight
+		})
+	}
+
 	actionChangePaddleSize(gameKey: number, incDec: string) {
 		const gameInstance: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!gameInstance)
 			return ;
-		const updatedPedalLeft = {...gameInstance.leftPaddle};
-		const updatedPedalRight = {...gameInstance.rightPaddle};
-
 		switch (incDec) {
 			case 'reset':
-				updatedPedalLeft.height = this.BASE_PADDLE_HEIGHT;
-				updatedPedalRight.height = this.BASE_PADDLE_HEIGHT;
-
-				this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
-				// change pedal position if it collides with wall
-				// if (gameInstance.paddleHeight == 75) {
-				// 	this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-				// 		maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight * 2
-				// 	})
-				// }
-				// else {
-				// 	this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-				// 		maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight
-				// 	})
-				// }
+				this.actionResetPedalSize(gameKey, gameInstance);
 				break;
-
 			case 'increase':
-				// only change pedal size if its not biggest size already
-				if (gameInstance.paddleHeight == 37.5 || gameInstance.paddleHeight == 75) {
-					// change pedal height
-					updatedPedalLeft.height *= 2;
-					updatedPedalRight.height *= 2;
-					this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
-					// change pedal position if it collides with wall
-					if (gameInstance.paddleHeight == 75) {
-						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight * 2
-						})
-					}
-					else {
-						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight
-						})
-					}
-				}
+				this.actionIncreasePedalSize(gameKey, gameInstance);
 				break;
 			case 'decrease':
-				// only change pedal size if its not smallest size already
-				if (gameInstance.paddleHeight == 75 || gameInstance.paddleHeight == 150) {
-					// change pedal height
-					updatedPedalLeft.height /= 2;
-					updatedPedalRight.height /= 2;
-					this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), leftPaddle: updatedPedalLeft, rightPaddle: updatedPedalRight})
-					// change pedal position if it collides with wall
-					if (gameInstance.paddleHeight == 75) {
-						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight / 2
-						})
-					}
-					else {
-						this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey),
-							maxPaddleY: gameInstance.canvasHeight - gameInstance.grid - gameInstance.paddleHeight
-						})
-					}
-				}
+				this.actionDecreasePedalSize(gameKey, gameInstance);
 				break;
 		}
 	}
@@ -612,10 +638,10 @@ export class GameService {
 
 		switch(this.randomNumberBetween(1, 7)) {
 			case 1:
-				this.actionChangePaddleSize(gameKey, "increase");
+				this.actionChangePaddleSize(gameKey, 'increase');
 				break ;
 			case 2:
-				this.actionChangePaddleSize(gameKey, "decrease");
+				this.actionChangePaddleSize(gameKey, 'decrease');
 				break ;
 			case 3:
 				this.actionChangeBallSpeed(gameKey, 0.1);
@@ -628,7 +654,7 @@ export class GameService {
 				this.actionChangeBackgroundColor(gameKey, 'red');
 				break ;
 			case 6:
-				this.actionChangePaddleSpeed(gameKey, 50);
+				this.actionChangePaddleSpeed(gameKey, 60);
 				this.actionChangeBackgroundColor(gameKey, 'blue');
 				break ;
 		}
@@ -644,23 +670,4 @@ export class GameService {
 		this.gameKeyToActionTimeout.set(gameKey, timeout);
 	}
 	/* RANDOM ACTIONS */
-
-	sendGameInvitation(senderId: number) {
-		const gameInstance: GameData = new GameData()
-		gameInstance.userLeftSideID = senderId
-		gameInstance.specialAction = false
-		gameInstance.spectatorsID = []
-		this.pendingInvitations.set(senderId, gameInstance);
-	}
-
-	async getPlayersByGameKey(gameKey: number): Promise<Object | void> {
-		const game: GameData | undefined = this.gameRooms.get(gameKey);
-		if (!game)
-			return ;
-		const playerLeft: User | null = await this.usersService.findById(game.userLeftSideID);
-		const playerRight: User | null = await this.usersService.findById(game.userRightSideID);
-		if (!playerLeft || !playerRight)
-			return ;
-		return {playerLeft, playerRight}
-	}
 }
