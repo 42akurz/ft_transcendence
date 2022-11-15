@@ -1,14 +1,35 @@
 <template>
-	<div class="wrapper">
-		<h2>TOP 10</h2>
-		<div class="user" v-for="(user, index) in scoreboard" :key="user">
-			{{index + 1}}.
-			<BaseCardUser
-				:data="user"
-			/>
-			wins: {{user.wins}}
+	<div class="score-board-wrapper">
+		<div class="score-board">
+			<h2>TOP 10</h2>
+			<table>
+				<tr>
+					<th>
+						Rank
+					</th>
+					<th>
+						Player
+					</th>
+					<th>
+						Wins
+					</th>
+				</tr>
+				<tr class="user" v-for="(user, index) in scoreboard" :key="user">
+					<td class="stat-text">
+						{{index + 1}}
+					</td>
+					<td>
+						<BaseCardUser
+							:data="user"
+						/>
+					</td>
+					<td class="stat-text">
+						{{user.wins}}
+					</td>
+				</tr>
+			</table>
+			<small v-if="errorMsg">{{errorMsg}}</small>
 		</div>
-		<small v-if="errorMsg">{{errorMsg}}</small>
 	</div>
 </template>
 
@@ -51,11 +72,34 @@
 </script>
 
 <style scoped>
-	.user {
+	.score-board-wrapper {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
 		justify-content: center;
-		gap: 40px;
+		align-items: center;
+		padding: 50px;
+	}
+
+	.score-board {
+		background-color: var(--grey);
+		padding: 50px;
+		border: 5px solid var(--blue-dark);
+		width: 800px;
+	}
+
+	table {
+		margin: 0 auto;
+		width: 100%;
+		border-collapse: collapse;
+		/* background-color: white; */
+	}
+
+	table th, td {
+		border: 1px solid black;
+		padding: 20px;
+	}
+
+	.stat-text {
+		font-weight: bold;
+		font-size: 20px;
 	}
 </style>
