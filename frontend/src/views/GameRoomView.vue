@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="wrapper" v-if="currentUser">
 		<GamePauseMenu
 			v-if="gameIsPaused"
 			@resumeGame="resumeGame"
@@ -304,10 +304,10 @@
 	onBeforeMount(async () => {
 		await store.dispatch('fetchCurrentUser');
 
-		// if (!currentUser.value) {
-		// 	error.value = "Unauthorized"
-		// 	return ;
-		// }
+		if (!currentUser.value) {
+			router.push('/');
+			return ;
+		}
 
 		initCanvas();
 

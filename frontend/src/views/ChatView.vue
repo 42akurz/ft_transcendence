@@ -32,7 +32,6 @@
 			:userId="currentUser.id"
 		/>
 	</div>
-	<div v-else>{{error}}</div>
 </template>
 
 <script setup>
@@ -43,13 +42,14 @@
 	import ChatHeader from '@/components/ChatHeader.vue'
 	import ChatSidenav from '@/components/ChatSidenav.vue'
 	import ChatMain from '@/components/ChatMain.vue'
+	import { useRouter } from 'vue-router';
+	
+	const router = useRouter()
 
 	const currentRoom = ref(null);
 	const groupRooms = ref([]);
 	const showInformationPopup = ref(false);
 	const popupData = ref(null);
-
-	const error = ref('')
 
 
 	/* COMPUTED */
@@ -68,7 +68,7 @@
 		await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
-			error.value = "Unauthorized"
+			router.push('/');
 			return ;
 		}
 

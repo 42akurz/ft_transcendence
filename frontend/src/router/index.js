@@ -9,10 +9,16 @@ import SettingsView from '@/views/SettingsView.vue'
 import TwoFactorLoginView from '@/views/TwoFactorLoginView.vue'
 import GameLobbyView from '@/views/GameLobbyView.vue'
 import GameRoomView from '@/views/GameRoomView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const routes = [
 {
 	path: '/',
+	name: 'login',
+	component: LoginView,
+},
+{
+	path: '/profile',
 	name: 'profile',
 	component: ProfileView,
 },

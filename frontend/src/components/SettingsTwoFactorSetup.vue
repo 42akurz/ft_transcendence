@@ -41,9 +41,10 @@ export default {
 			}
 			else {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/turn-on`, this.formData, {withCredentials: true})
-				.then((response) => {
-					this.errorMsg = 'Successfully activated 2FA!'
-					this.$router.push('2falogin');
+				.then(async (response) => {
+					// this.errorMsg = 'Successfully activated 2FA!'
+					await store.dispatch('fetchCurrentUser');
+					this.$router.push('/');
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error while activating!'

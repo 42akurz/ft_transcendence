@@ -38,7 +38,7 @@ export default {
 		goToProfilePage() {
 			if (this.allowPrivatePageOnClick) {
 				store.commit('setWatchingCurrentProfileID', this.data.id)
-				this.$router.push('/');
+				this.$router.push('profile');
 			}
 		}
 	},

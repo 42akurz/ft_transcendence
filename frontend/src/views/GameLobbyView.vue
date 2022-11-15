@@ -1,5 +1,5 @@
 <template>
-	<div class="game-lobby-wrapper">
+	<div class="game-lobby-wrapper" v-if="currentUser">
 		<GameSearch 
 			@enterGame="enterGameRoom($event)"
 		/>
@@ -39,10 +39,10 @@
 	onBeforeMount(async () => {
 		await store.dispatch('fetchCurrentUser');
 
-		// if (!currentUser.value) {
-		// 	error.value = "Unauthorized"
-		// 	return ;
-		// }
+		if (!currentUser.value) {
+			router.push('/');
+			return ;
+		}
 	})
 </script>
 
