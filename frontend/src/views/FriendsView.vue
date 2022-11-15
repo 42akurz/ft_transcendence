@@ -67,6 +67,10 @@ export default {
 		currentTabComponent() {
 			return 'Friends' + this.currentTab;
 		},
+
+		currentUser() {
+			return store.getters.getCurrentUser;
+		}
 	},
 
 	methods: {
@@ -95,7 +99,10 @@ export default {
 	},
 
 	async beforeMount() {
-		console.log('beforeMount');
+		if (!this.currentUser) {
+			this.$router.push('/');
+			return ;
+		}
 		await this.getAllUsers();
 		await this.getAllOtherUsers();
 		await store.dispatch('fetchCurrentUser');

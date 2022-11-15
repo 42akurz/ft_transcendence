@@ -1,5 +1,5 @@
 <template>
-	<div class="nav-wrapper" v-if="navbarAllowed">
+	<div class="nav-wrapper" v-if="navbarAllowed && currentUser">
 		<router-link to="/profile">Profile</router-link>
 		<!-- <router-link to="/test">Play</router-link>
 		<router-link to="/game">Game</router-link> -->
@@ -28,6 +28,10 @@
 		computed: {
 			currentRoute() {
 				return this.$route.name;
+			},
+
+			currentUser() {
+				return store.getters.getCurrentUser;
 			},
 
 			navbarAllowed() {

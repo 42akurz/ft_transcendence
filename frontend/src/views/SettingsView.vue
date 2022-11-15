@@ -1,6 +1,6 @@
 <template>
-	<div class="settings-wrapper">
-		<div class="menu" v-if="currentUser">
+	<div class="settings-wrapper" v-if="currentUser">
+		<div class="menu">
 			<SettingsChangeAvatar
 				class="menu-item"
 				:currentUser="currentUser"
@@ -37,8 +37,13 @@
 			SettingsChangeName
 		},
 
-		async created() {
+		async beforeMount() {
 			await store.dispatch('fetchCurrentUser');
+
+			if (!this.currentUser) {
+				this.$router.push('/')
+				return ;
+			}
 		},
 
 		computed: {

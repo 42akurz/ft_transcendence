@@ -28,6 +28,10 @@
 	const socket = computed(() => {
 		return store.getters.getSocketGame;
 	})
+
+	const currentUser = computed(() => {
+		return store.getters.getCurrentUser;
+	})
 	/* COMPUTED */
 
 	const enterGameRoom = (gameKey) => {
@@ -36,8 +40,8 @@
 		router.push('gameroom');
 	}
 
-	onBeforeMount(async () => {
-		await store.dispatch('fetchCurrentUser');
+	onBeforeMount(() => {
+		// await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
 			router.push('/');

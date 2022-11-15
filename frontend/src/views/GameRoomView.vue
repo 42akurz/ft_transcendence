@@ -301,8 +301,8 @@
 		store.commit('setCurrentGameRole', '')
 	}
 
-	onBeforeMount(async () => {
-		await store.dispatch('fetchCurrentUser');
+	onBeforeMount(() => {
+		// await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
 			router.push('/');

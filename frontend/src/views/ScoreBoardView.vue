@@ -1,5 +1,5 @@
 <template>
-	<div class="score-board-wrapper">
+	<div class="score-board-wrapper" v-if="currentUser">
 		<div class="score-board">
 			<h2>TOP 10</h2>
 			<table>
@@ -36,9 +36,16 @@
 <script>
 	import BaseCardUser from '@/components/BaseCardUser.vue'
 	import axios from 'axios'
+	import store from '@/store/index.js'
 	
 	export default {
 		name: 'ScoreBoardView',
+
+		computed: {
+			currentUser() {
+				return store.getters.getCurrentUser;
+			}
+		},
 
 		components: {
 			BaseCardUser
@@ -62,6 +69,15 @@
 				.catch((error) => {
 					this.errorMsg = 'Error: ' + error.response.data.message
 				})
+			}
+		},
+
+		async beforeMount() {
+			await store.dispatch('fetchCurrentUser');
+
+			if (!this.currentUser) {
+				this.$router.push('/')
+				return ;
 			}
 		},
 
