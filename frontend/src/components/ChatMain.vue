@@ -1,6 +1,6 @@
 <template>
 	<main class="main">
-		<div class="main__messages">
+		<div class="main__messages" id="chat-feed">
 			<div class="message"  v-for="message in currentRoom.messages" :key="message" :class="{ blue_text: message.fromName === 'ChatBot', align_right: message.fromName === currentUser.username }">
 				<div class="message__name">[{{message.fromName}}]</div>
 				<div class="text">{{message.text}}</div>
@@ -174,7 +174,6 @@
 	.main__messages {
 		overflow-y: auto;
 		flex: 1;
-		padding: 16px;
 		display: flex;
 		flex-direction: column;
 		gap: 5px;

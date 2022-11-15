@@ -75,6 +75,8 @@
 		getGroupRooms();
 
 		socket.value.on('refreshCurrentRoom', (roomName) => {
+			const el = document.getElementById('chat-feed');
+			if (el) { el.scrollTop = el.scrollHeight; }
 			if (currentRoom.value && currentRoom.value.name === roomName)
 				getCurrentRoom(roomName);
 		})
