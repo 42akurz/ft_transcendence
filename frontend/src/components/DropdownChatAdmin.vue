@@ -2,9 +2,10 @@
 	<div class="button-wrapper">
 		<button id="toggle-button" @click="changeDropdownState">&uarr;</button>
 		<div class="button-dropdown" id="dropdown">
-			<button @click="emitMakeAdmin">Admin</button>
-			<button @click="emitBanUser">Ban</button>
-			<button @click="emitMuteUser">Mute</button>
+			<button v-if="adminButton" @click="emitMakeAdmin">Admin</button>
+			<button v-if="muteButton" @click="emitMuteUser">Mute</button>
+			<button v-if="banButton" @click="emitBanUser">Ban</button>
+			<button v-if="unBanButton" @click="emitUnBanUser">Unban</button>
 		</div>
 	</div>
 </template>
@@ -13,11 +14,30 @@
 export default {
 	name: 'DropdownChatAdmin',
 
-	emits: ['makeAdmin', 'banUser', 'muteUser'],
+	emits: ['makeAdmin', 'banUser', 'muteUser', 'unBanUser'],
 
 	data() {
 		return {
 			dropdownIsShown: false
+		}
+	},
+
+	props: {
+		adminButton: {
+			type: Boolean,
+			default: true,
+		},
+		muteButton: {
+			type: Boolean,
+			default: true,
+		},
+		banButton: {
+			type: Boolean,
+			default: true,
+		},
+		unBanButton: {
+			type: Boolean,
+			default: true,
 		}
 	},
 
@@ -47,6 +67,11 @@ export default {
 		emitBanUser() {
 			this.hideDropdown()
 			this.$emit('banUser')
+		},
+
+		emitUnBanUser() {
+			this.hideDropdown()
+			this.$emit('unBanUser')
 		},
 
 		addAnimation() {

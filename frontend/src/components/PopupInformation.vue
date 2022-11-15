@@ -1,9 +1,7 @@
 <template>
 	<div class="modal" v-if="visible">
 		<div class="text">{{info}}</div>
-		<div class="choices">
-			<button class="confirm" @click="userConfirmed">{{confirmButtonText}}</button>
-		</div>
+		<button class="confirm" @click="userConfirmed">{{confirmButtonText}}</button>
 	</div>
 </template>
 
@@ -52,27 +50,29 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+		padding: 50px;
+		min-width: 300px;
 	}
 
 	.modal .text {
 		color: black;
 		font-weight: 700;
 		font-size: 22px;
-		padding: 30px;
-	}
-
-	.modal .choices {
-		display: flex;
-		justify-content: space-between;
-		padding: 30px;
 	}
 
 	button {
-		margin: 0 20px;
-		padding: 10px;
-		background-color: rgb(28, 123, 212);
-		border: 1px solid black;
-		border-radius: 5px;
+		margin: 25px auto 0 auto;
+		width: 80px;
+		height: 40px;
+		background-color: var(--blue-light);
+		border: 2px solid black;
 		color: white;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 </style>

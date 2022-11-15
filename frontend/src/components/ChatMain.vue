@@ -12,6 +12,7 @@
 					<BaseCardUser :data="member"/>
 					<DropdownChatAdmin
 						v-if="adminButtonConditions(member.username)"
+						:unBanButton="false"
 						@makeAdmin="makeAdmin(member.id)"
 						@banUser="banUser(member.id)"
 						@muteUser="showMutePopup(member.id)"
@@ -22,7 +23,13 @@
 			<div v-if="currentRoom.access !== 'private'" class="main__banned">
 				<div class="member" v-for="member in currentRoom.bannedUsers" :key="member">
 					<BaseCardUser :data="member"/>
-					<button v-if="adminButtonConditions(member.username)" @click="unbanUser(member.id)">unban</button>
+					<DropdownChatAdmin
+						v-if="adminButtonConditions(member.username)"
+						:adminButton="false"
+						:muteButton="false"
+						:banButton="false"
+						@unBanUser="unbanUser(member.id)"
+					/>
 				</div>
 			</div>
 			<button
@@ -34,7 +41,7 @@
 		</div>
 		<PopupNumber
 			:visible="showPopupNumber"
-			:info="'time to Mute in Minutes'"
+			:info="'Time to mute in minutes'"
 			:confirmButtonText="'Mute'"
 			@confirmed="muteUser(userIdImTryingToMute, $event)"
 			@canceled="hidePopup"

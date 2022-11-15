@@ -97,7 +97,7 @@
 		outline: none;
 		color: black;
 		padding: 5px;
-		border: 1px solid black;
+		border: 2px solid black;
 		border-radius: 5px;
 		background-color: white;
 		color: black;
