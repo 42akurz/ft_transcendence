@@ -30,7 +30,6 @@
 						:banButton="false"
 						@unBanUser="unbanUser(member.id)"
 					/>
-					<!-- <button v-if="adminButtonConditions(member.username)" @click="unbanUser(member.id)">unban</button> -->
 				</div>
 			</div>
 			<button

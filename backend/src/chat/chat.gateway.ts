@@ -234,6 +234,9 @@ export class ChatGateway {
 		await this.chatService.banUserFromRoom(data.roomName, data.banUserId);
 		await this.chatService.createBotMessage(data.roomName, `${banUser.username} got banned from group!`);
 		client.nsp.to(data.roomName).emit('refreshCurrentRoom', data.roomName);
+		const allClients: any[] = await this.server.fetchSockets()
+		const otherClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == data.banUserId);
+		client.nsp.to(otherClient.id).emit('banned', data.roomName)
 	}
 
 	@SubscribeMessage('unbanUser')
