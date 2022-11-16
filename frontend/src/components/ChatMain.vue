@@ -1,6 +1,6 @@
 <template>
 	<main class="main">
-		<div class="main__messages">
+		<div class="main__messages" id="chat-feed">
 			<div class="message"  v-for="message in currentRoom.messages" :key="message" :class="{ blue_text: message.fromName === 'ChatBot', align_right: message.fromName === currentUser.username }">
 				<div class="message__name">[{{message.fromName}}]</div>
 				<div class="text">{{message.text}}</div>
@@ -51,11 +51,10 @@
 
 <script setup>
 	import store from '@/store/index.js';
-	import { computed, ref } from 'vue'
+	import { computed, ref, onMounted } from 'vue'
 	import BaseCardUser from '@/components/BaseCardUser'
 	import PopupNumber from '@/components/PopupNumber'
 	import DropdownChatAdmin from '@/components/DropdownChatAdmin'
-
 
 	const userIdImTryingToMute = ref(0);
 	const showPopupNumber = ref(false);
@@ -68,6 +67,13 @@
 		},
 	})
 	/* PROPS */
+
+	onMounted(() => {
+		const el = document.getElementById('chat-feed');
+		if (el) {
+			el.scrollTop = el.scrollHeight;
+		}
+	})
 
 
 	/* COMPUTED */

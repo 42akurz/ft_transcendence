@@ -75,8 +75,10 @@
 		getGroupRooms();
 
 		socket.value.on('refreshCurrentRoom', (roomName) => {
-			if (currentRoom.value && currentRoom.value.name === roomName)
+			if (currentRoom.value && currentRoom.value.name === roomName) {
 				getCurrentRoom(roomName);
+				scrollToLastMessage();
+			}
 		})
 
 		socket.value.on('refreshRooms', () => {
@@ -135,6 +137,15 @@
 	const showPopup = (data) => {
 		popupData.value = data;
 		showInformationPopup.value = true;
+	}
+
+	const scrollToLastMessage = () => {
+		const el = document.getElementById('chat-feed');
+		if (el) {
+			setTimeout(() => {
+				el.scrollTop = el.scrollHeight;
+			}, 50);
+		}
 	}
 	/* FUNCTIONS */
 
