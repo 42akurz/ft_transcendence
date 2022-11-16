@@ -26,9 +26,9 @@ export class GameService {
 	/************************** GAME DATA **************************/
 	
 	/************************* GAME CONFIG *************************/
-	private readonly BASE_PADDLE_SPEED: number = 45
-	private readonly BASE_BALL_SPEED: number = 0.2
-	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
+	private readonly BASE_PADDLE_SPEED: number = 30
+	private readonly BASE_BALL_SPEED: number = 4
+	private readonly BASE_BALL_SPEED_INCREASE: number = 1
 	private readonly BASE_SCORE_LIMIT: number = 5
 	private readonly BASE_ACTION_INTERVAL_MS: number = 6000
 	private readonly BASE_COUNTDOWN_SECONDS: number = 5
@@ -429,7 +429,7 @@ export class GameService {
 			if (!this.checkWinner(gameKey, client))
 				this.ballCollision(gameKey);
 			client.nsp.to(gameKey.toString()).emit('updateGame', this.gameRooms.get(gameKey));
-		}, 1);
+		}, 16);
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), gameLoopIntervalID: intervalID})
 		if (gameInstance.specialAction)
 			this.startActionInterval(gameKey);
@@ -658,18 +658,18 @@ export class GameService {
 				this.actionChangePaddleSize(gameKey, 'decrease');
 				break ;
 			case 3:
-				this.actionChangeBallSpeed(gameKey, 0.1);
+				this.actionChangeBallSpeed(gameKey, 4.5);
 				break ;
 			case 4:
-				this.actionChangeBallSpeed(gameKey, 0.3);
+				this.actionChangeBallSpeed(gameKey, 3);
 				break ;
 			case 5:
 				this.actionReversePaddles(gameKey);
 				this.actionChangeBackgroundColor(gameKey, 'red');
 				break ;
 			case 6:
-				this.actionChangePaddleSpeed(gameKey, 60);
-				this.actionChangeBackgroundColor(gameKey, 'blue');
+				this.actionChangePaddleSpeed(gameKey, 15);
+				this.actionChangeBackgroundColor(gameKey, '#FFC947');
 				break ;
 		}
 	}
