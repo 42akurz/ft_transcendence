@@ -345,6 +345,16 @@ export class GameService {
 		return room.spectatorsID.includes(userId);
 	}
 
+	userIsInWaitingRoom(userId: number): number | undefined {
+		for (let [key, value] of this.gameRooms.entries()) {
+			if (value.userLeftSideID && !value.userRightSideID) {
+				if (userId === value.userLeftSideID)
+					return key;
+			}
+		}
+		return undefined;
+	}
+
 	async getPlayersByGameKey(gameKey: number): Promise<Object | void> {
 		const game: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!game)

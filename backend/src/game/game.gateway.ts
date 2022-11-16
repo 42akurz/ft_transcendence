@@ -57,11 +57,10 @@ export class GameGateway {
 		else if (gameRoom.userLeftSideID === userId || gameRoom.userRightSideID === userId) {
 			const readyUsers: number[] | undefined = this.gameService.gameKeyToReadyPlayers.get(gameKey)
 			if (!readyUsers) {
-				console.log('first user ready')
 				this.gameService.gameKeyToReadyPlayers.set(gameKey, [userId])
 			}
 			else if (readyUsers.some(id => id !== userId)) {
-				console.log('second user ready')
+				this.logger.log('startGame')
 				this.gameService.startGame(client, gameKey);
 				this.gameService.gameKeyToReadyPlayers.delete(gameKey);
 			}
@@ -216,6 +215,15 @@ export class GameGateway {
 
 		client.join(roomIdentifier);
 		inviterClient.join(roomIdentifier);
+
+		const waitingRoomKey1: number | undefined = this.gameService.userIsInWaitingRoom(inviterId);
+		if (waitingRoomKey1) {
+			this.gameService.gameRooms.delete(waitingRoomKey1);
+		}
+		const waitingRoomKey2: number | undefined = this.gameService.userIsInWaitingRoom(receiverId);
+		if (waitingRoomKey2) {
+			this.gameService.gameRooms.delete(waitingRoomKey2);
+		}
 
 		client.nsp.to(roomIdentifier).emit('redirectToGame', gameKey);
 	}
