@@ -86,6 +86,16 @@ export class GameGateway {
 		}
 	}
 
+	@SubscribeMessage('cancelSearchGame')
+	cancelSearchGame(@ConnectedSocket() client: Socket): boolean {
+		const userId: number = Number(client.handshake.headers.authorization);
+		const userIsInGame: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (userIsInGame) {
+			this.gameService.deleteGame(userIsInGame)
+		}
+		return true;
+	}
+
 	@SubscribeMessage('pauseGame')
 	pauseGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
@@ -98,7 +108,6 @@ export class GameGateway {
 		client.nsp.to(gameKey.toString()).emit('paused');
 	}
 
-	// add counter
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);

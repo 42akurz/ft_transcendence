@@ -7,12 +7,13 @@
 				@checked="specials = $event"
 			/>
 		</div>
-		<button @click="searchGame">Play</button>
+		<button v-if="!waiting" @click="searchGame">Play</button>
+		<button v-if="waiting" @click="cancelSearchGame">Cancel</button>
 	</div>
 </template>
 
 <script setup>
-	import { computed, ref, onMounted } from 'vue'
+	import { computed, ref, onMounted, onUnmounted } from 'vue'
 	import store from '@/store/index.js';
 	import BaseSwitch from '@/components/BaseSwitch.vue'
 
@@ -32,6 +33,17 @@
 	const searchGame = () => {
 		socket.value.emit('searchGame', specials.value);
 	}
+
+	const cancelSearchGame = () => {
+		socket.value.emit('cancelSearchGame', (response) => {
+			waiting.value = false;
+		});
+	}
+
+	onUnmounted(() => {
+		if (socket.value && waiting.value === true)
+			cancelSearchGame();
+	})
 
 	onMounted(() => {
 		socket.value.on('createdGame', () => {
