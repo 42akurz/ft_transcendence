@@ -18,8 +18,9 @@ export class ChatController {
 	async getByName(@Param('name') name: string):Promise<ChatRoom>{
 		return await this.roomService.findByName(name);
 	}
-
+	
 	@Get('all')
+	@UseInterceptors(ClassSerializerInterceptor)
 	async getAll():Promise<ChatRoom[]>{
 		return await this.roomService.findAll();
 	}

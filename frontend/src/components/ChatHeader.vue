@@ -1,6 +1,7 @@
 <template>
 	<header class="header">
-		<strong>{{currentRoom.name}}</strong>
+		<strong v-if="currentRoom.access !== 'private'">{{currentRoom.name}}</strong>
+		<strong v-if="currentRoom.access === 'private'">{{otherUserName}}</strong>
 		<DropdownChatHeader
 			@selected="dropdownAction($event)"
 			:title="dropdownTitle"
@@ -86,6 +87,13 @@
 	const socket = computed(() => {
 		return store.getters.getSocketChat;
 	})
+
+	const otherUserName = computed(() => {
+		const user =  props.currentRoom.chatUser.find(user => user.id !== currentUser.value.id);
+		if (!user)
+			return ;
+		return user.username;
+	})
 	/* COMPUTED */
 
 
@@ -133,7 +141,6 @@
 	}
 
 	const dropdownAction = (actionName) => {
-		console.log(actionName)
 		switch(actionName) {
 			case 'Leave':
 				showPopup({ title: 'Leave', info: 'Leave Room?' }, 'Choice');
