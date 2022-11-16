@@ -34,14 +34,21 @@
 			gameSocket() {
 				return store.getters.getSocketGame;
 			},
+	
+			chatSocket() {
+				return store.getters.getSocketChat;
+			},
 
 			currentUser() {
 				return store.getters.getCurrentUser;
 			}
 		},
 
+		unmounted() {
+			store.dispatch('closeSockets');
+		},
+
 		async beforeMount() {
-			console.log('appBeforeMount')
 			await store.dispatch('fetchCurrentUser');
 			if (this.currentUser)
 				await store.dispatch('setupSockets');

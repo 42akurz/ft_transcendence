@@ -60,6 +60,17 @@ const store = createStore({
 			});
 			commit('setSocketGame', game);
 			commit('setSocketChat', chat);
+		},
+
+		closeSockets() {
+			if (this.getters.getSocketChat) {
+				this.getters.getSocketChat.off();
+				this.getters.getSocketChat.disconnect();
+			}
+			if (this.getters.getSocketGame) {
+				this.getters.getSocketGame.off();
+				this.getters.getSocketGame.disconnect();
+			}
 		}
 	},
 

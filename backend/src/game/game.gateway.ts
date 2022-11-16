@@ -26,18 +26,16 @@ export class GameGateway {
 	logger: Logger = new Logger(GameGateway.name)
 	
 	async handleConnection(@ConnectedSocket() client: Socket) {
-		this.logger.log('auth token in game: ' +  client.handshake.headers.authorization)
 		const user = await this.gameService.validateToken(client);
 		if (!user)
 			return ;
-		this.logger.log('client connected to game with token: ' + client.handshake.headers.authorization);
 		client.data.user = user;
-		(await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
+		this.logger.log('client connected to Game');
+		// (await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
 	}
 	
-	// when user disconnects kick him out of waiting room
-	// if hes in game give win to other player
 	handleDisconnect(@ConnectedSocket() client: Socket) {
+		this.logger.log('client disconnected from Game');
 		const userId: number = Number(client.handshake.headers.authorization);
 		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)
@@ -73,7 +71,7 @@ export class GameGateway {
 	@SubscribeMessage('searchGame')
 	searchGame(@MessageBody() specialActions: boolean, @ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const userIsInGame: number | undefined= this.gameService.findGameKeyByPlayerID(userId);
+		const userIsInGame: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
 		if (userIsInGame) // maybe throw exception instead
 			this.gameService.deleteGame(userIsInGame)
 		const gameKey: number = this.gameService.findKeyOfAvailableGame(specialActions);
@@ -125,7 +123,8 @@ export class GameGateway {
 		
 		const otherUserId: number = this.gameService.getOtherPlayerID(gameKey, userId);
 		const allClients: any[] = await this.server.fetchSockets()
-		const otherClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == otherUserId);
+		const reversedClients: any[] = allClients.reverse()
+		const otherClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == otherUserId);
 		if (!otherClient)
 			return ;
 		
@@ -187,22 +186,17 @@ export class GameGateway {
 
 	@SubscribeMessage('sendGameInvitation')
 	async sendGameInvitation(@MessageBody() userId: number, @ConnectedSocket() client: Socket) {
-		console.log('sendGameInvitation')
 		const senderId: number = Number(client.handshake.headers.authorization);
 		const sender: User = await this.usersService.findById(senderId);
 		if (!sender)
 			return ;
 		
-		const allClients: any[] = await this.server.fetchSockets()
-		const receivingClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == userId);
+		const allClients: any[] = await this.server.fetchSockets();
+		const reversedClients: any[] = allClients.reverse()
+		const receivingClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == userId);
 		if (receivingClient === undefined)
 			return ;
 
-		// (await this.server.fetchSockets()).forEach(x => console.log(x.id))
-		
-		// console.log('emit', sender.id, sender.username)
-		console.log('my id', client.id)
-		console.log('receiving id', receivingClient.id)
 		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', {id: sender.id, name: sender.username});
 	}
 
@@ -210,7 +204,8 @@ export class GameGateway {
 	async acceptInvitation(@MessageBody() inviterId: number, @ConnectedSocket() client: Socket) {
 		const receiverId: number = Number(client.handshake.headers.authorization);
 		const allClients: any[] = await this.server.fetchSockets()
-		const inviterClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == inviterId);
+		const reversedClients: any[] = allClients.reverse()
+		const inviterClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == inviterId);
 		if (!inviterClient)
 			return ;
 
