@@ -44,7 +44,7 @@ export class GameGateway {
 			this.gameService.deleteGame(gameKey);
 			return ;
 		}
-		this.gameService.exitGame(userId, gameKey);
+		this.exitGame(client);
 		client.broadcast.to(gameKey.toString()).emit('oponentLeft');
 	}
 
@@ -122,6 +122,7 @@ export class GameGateway {
 
 	@SubscribeMessage('exitGame')
 	async exitGame(@ConnectedSocket() client: Socket) {
+		this.logger.log('exitGame');
 		const userId: number = Number(client.handshake.headers.authorization);
 		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)

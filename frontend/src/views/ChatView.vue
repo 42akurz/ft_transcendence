@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-	import { computed, onBeforeMount, ref } from 'vue'
+	import { computed, onBeforeMount, ref, onUnmounted } from 'vue'
 	import store from '@/store/index.js';
 	import PopupInformation from '../components/PopupInformation.vue'
 	import ChatFooter from '@/components/ChatFooter.vue'
@@ -62,6 +62,11 @@
 	})
 	/* COMPUTED */
 
+	onUnmounted(() => {
+		if (socket.value) {
+			socket.value.off();
+		}
+	})
 
 	/* SETUP && LISTENERS */
 	onBeforeMount(async () => {

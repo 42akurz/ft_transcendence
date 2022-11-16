@@ -40,7 +40,15 @@
 		});
 	}
 
+	const turnOffSocketListeners = () => {
+		if (socket.value) {
+			socket.value.off('searchGame');
+			socket.value.off('cancelSearchGame');
+		}
+	}
+
 	onUnmounted(() => {
+		turnOffSocketListeners();
 		if (socket.value && waiting.value === true)
 			cancelSearchGame();
 	})
