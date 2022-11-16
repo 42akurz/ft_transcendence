@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
 	name: 'BaseCardMatchHistory',
 
@@ -42,22 +40,9 @@ export default {
 		}
 	},
 
-	methods: {
-		async getUserById(id) {
-			return await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/users/id/${Number(id)}`, {withCredentials: true})
-			.then((response) => {
-				return response.data
-			})
-			.catch((error) => {
-				console.log('Error: ' + error.response.data.message)
-				return null;
-			})
-		}
-	},
-
 	async created() {
-		this.playerLeft = await this.getUserById(this.gameInfo.playerOneId);
-		this.playerRight = await this.getUserById(this.gameInfo.playerTwoId);
+		this.playerLeft = this.gameInfo.matchHistoryUsers.find(user => user.id === this.gameInfo.playerOneId);
+		this.playerRight = this.gameInfo.matchHistoryUsers.find(user => user.id === this.gameInfo.playerTwoId);
 	},
 
 	computed: {

@@ -51,5 +51,14 @@ export class ScoreService {
 			.limit(limit)
 			.getMany()
 	}
+
+	async getMatchHistoryByUserID(userId: number, limit: number): Promise<Score[]> {
+		return await this.scoreRepository.createQueryBuilder('score')
+			.where('score.playerOneId = :id', {id: userId})
+			.orWhere('score.playerTwoId = :id', {id: userId})
+			.leftJoinAndSelect('score.matchHistoryUsers', 'matchHistoryUsers')
+			.limit(limit)
+			.getMany()
+	}
 }
 
