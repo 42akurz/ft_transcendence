@@ -286,16 +286,6 @@
 		}
 	}
 
-	// const removeSocketListeners = () => {
-	// 	socket.value.off('paused')
-	// 	socket.value.off('unpaused')
-	// 	socket.value.off('updateGame')
-	// 	socket.value.off('countdown')
-	// 	socket.value.off('killCountdown')
-	// 	socket.value.off('playerWins')
-	// 	socket.value.off('oponentLeft')
-	// }
-
 	const resetCurrentGameData = () => {
 		store.commit('setCurrentGameKey', 0)
 		store.commit('setCurrentGameRole', '')
@@ -364,7 +354,6 @@
 
 	onUnmounted(() => {
 		resetCurrentGameData();
-		// removeSocketListeners();
 
 		document.removeEventListener('keydown', keyhooks)
 
@@ -374,7 +363,6 @@
 		}
 		else if (currentGameRole.value === 'spectator') {
 			console.log('spectator')
-			// quitSpectating();
 		}
 	})
 </script>

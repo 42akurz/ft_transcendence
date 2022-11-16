@@ -32,8 +32,6 @@ export class ScoreService {
 	}
 
 	async addScore(score: Score, winnerId: number, loserId: number): Promise<Score> {
-		this.logger.log('winnerId: ' + winnerId);
-		this.logger.log('loserId: ' + loserId);
 		const winner = await this.usersService.findById(winnerId);
 		const loser = await this.usersService.findById(loserId);
 		const serializedWinner = plainToClass(UserFriendsSerializer, winner, {excludeExtraneousValues: true});

@@ -35,16 +35,22 @@
 			}
 		},
 
-		async mounted() {
-			this.limitedMatchHistory = await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/score/matchHistory/${this.user.id}/${5}`, {withCredentials: true})
-			.then(async (response) => {
-				return await response.data;
-			})
-			.catch((error) => {
-				console.log('Error: ' + error.response.data.message)
-			})
-			console.log(this.limitedMatchHistory)
+		methods: {
+			async fetchHistory() {
+				this.limitedMatchHistory = await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/score/matchHistory/${this.user.id}/${10}`, {withCredentials: true})
+				.then(async (response) => {
+					return await response.data;
+				})
+				.catch((error) => {
+					console.log('Error: ' + error.response.data.message)
+				})
+				console.log(this.limitedMatchHistory)
+			}
 		},
+
+		mounted() {
+			this.fetchHistory();
+		}
 	}
 </script>
 
