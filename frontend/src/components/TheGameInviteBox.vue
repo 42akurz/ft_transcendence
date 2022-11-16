@@ -1,5 +1,5 @@
 <template>
-	<div class="invite-box">
+	<div class="invite-box" v-if="invitesAllowed">
 		<strong>Received Game invitation from: {{senderName}}</strong>
 		<div class="buttons">
 			<button @click="acceptGameInvite">Accept</button>
@@ -17,6 +17,20 @@ export default {
 	data() {
 		return {
 			timeoutId: 0,
+		}
+	},
+
+	computed: {
+		currentRoute() {
+			return this.$route.name;
+		},
+
+		invitesAllowed() {
+			if (this.currentRoute === '2falogin'
+				|| this.currentRoute === 'login'
+				|| this.currentRoute === 'gameroom')
+				return false;
+			return true;
 		}
 	},
 
