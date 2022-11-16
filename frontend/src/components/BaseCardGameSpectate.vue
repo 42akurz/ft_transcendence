@@ -1,5 +1,11 @@
 <template>
-	<div class="card" @click="$emit('spectateGame', gameKey)">
+	<div
+		v-if="playerLeft && playerRight
+			&& (playerLeft.id != currentUser.id)
+			&& (playerRight.id != currentUser.id)"
+		class="card"
+		@click="$emit('spectateGame', gameKey)"
+	>
 		<div class="player left-side" v-if="playerLeft">
 			<div class="img-container">
 				<img id="profile-pic" :src="imageLinkLeft"/>
@@ -77,6 +83,10 @@ export default {
 
 		socket() {
 			return store.getters.getSocketGame;
+		},
+
+		currentUser() {
+			return store.getters.getCurrentUser;
 		}
 	}
 }

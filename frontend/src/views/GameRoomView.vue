@@ -295,6 +295,11 @@
 			return ;
 		}
 
+		if (!socket.value) {
+			router.push('gamelobby');
+			return ;
+		}
+
 		initCanvas();
 
 		socket.value.on('paused', () => {
@@ -338,18 +343,37 @@
 		})
 	})
 
+	const turnOffSocketListeners = () => {
+		if (socket.value) {
+			socket.value.off('oponentLeft');
+			socket.value.off('playerWins');
+			socket.value.off('killCountdown');
+			socket.value.off('countdown');
+			socket.value.off('updateGame');
+			socket.value.off('unpaused');
+			socket.value.off('paused');
+		}
+	}
+
 	onMounted(() => {
+		if (!socket.value) {
+			router.push('gamelobby');
+			return ;
+		}
+
+
 		fetchPlayers();
 
 		if (currentGameRole.value === 'player') {
 			startGame();
-
 			document.addEventListener('keydown', keyhooks)
 		}
 	})
 
 	onUnmounted(() => {
 		resetCurrentGameData();
+
+		turnOffSocketListeners();
 
 		document.removeEventListener('keydown', keyhooks)
 

@@ -2,7 +2,7 @@
 	<div class="spectate">
 		<h2>Spectate Game</h2>
 		<button @click="showGames">Refresh Games</button>
-		<div class="live-games" v-for="game in filteredLiveGames" :key="game">
+		<div class="live-games" v-for="game in liveGames" :key="game">
 			<BaseCardGameSpectate
 				:gameInfo="game"
 				@spectateGame="spectateGame($event)"
@@ -23,17 +23,6 @@
 
 	const socket = computed(() => {
 		return store.getters.getSocketGame;
-	})
-
-	const currentUser = computed(() => {
-		return store.getters.getCurrentUser;
-	})
-
-	const filteredLiveGames = computed(() => {
-		return liveGames.value.filter(game => {
-			return ((game.userLeftSideID !== currentUser.id)
-				&& (game.userRightSideID !== currentUser.id));
-		})
 	})
 
 	const showGames = () => {
