@@ -32,6 +32,7 @@ export class GameGateway {
 			return ;
 		this.logger.log('client connected to game with token: ' + client.handshake.headers.authorization);
 		client.data.user = user;
+		(await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
 	}
 	
 	// when user disconnects kick him out of waiting room
@@ -186,16 +187,22 @@ export class GameGateway {
 
 	@SubscribeMessage('sendGameInvitation')
 	async sendGameInvitation(@MessageBody() userId: number, @ConnectedSocket() client: Socket) {
+		console.log('sendGameInvitation')
 		const senderId: number = Number(client.handshake.headers.authorization);
 		const sender: User = await this.usersService.findById(senderId);
 		if (!sender)
 			return ;
-
+		
 		const allClients: any[] = await this.server.fetchSockets()
 		const receivingClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == userId);
 		if (receivingClient === undefined)
 			return ;
+
+		// (await this.server.fetchSockets()).forEach(x => console.log(x.id))
 		
+		// console.log('emit', sender.id, sender.username)
+		console.log('my id', client.id)
+		console.log('receiving id', receivingClient.id)
 		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', {id: sender.id, name: sender.username});
 	}
 

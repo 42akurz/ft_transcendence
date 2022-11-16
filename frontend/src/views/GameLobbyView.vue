@@ -1,7 +1,8 @@
 <template>
-	<div class="game-lobby-wrapper" v-if="currentUser">
+	<div class="game-lobby-wrapper" v-if="currentUser && socket">
 		<GameSearch 
 			@enterGame="enterGameRoom($event)"
+			:socket="socket"
 		/>
 		<div class="rows">
 			<GameSpectate
@@ -40,8 +41,8 @@
 		router.push('gameroom');
 	}
 
-	onBeforeMount(() => {
-		// await store.dispatch('fetchCurrentUser');
+	onBeforeMount(async () => {
+		await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
 			router.push('/');

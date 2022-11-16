@@ -1,22 +1,22 @@
 <template>
-	<div class="wrapper" v-if="currentUser">
+	<div class="wrapper">
 		<GamePauseMenu
-			v-if="gameIsPaused"
+			v-if="gameIsPaused && socket"
 			@resumeGame="resumeGame"
 			@exitGame="exitGame"
 		/>
 		<GameResult
-			v-if="gameResult"
+			v-if="gameResult && socket"
 			:message="gameResult"
 			@goToLobby="gameOver"
 		/>
 		<GamePlayers
-			v-if="players.playerLeft && players.playerRight"
+			v-if="players.playerLeft && players.playerRight && socket"
 			:playerLeft="players.playerLeft"
 			:playerRight="players.playerRight"
 		/>
 		<GameScore
-			v-if="gameData && gameData.score"
+			v-if="gameData && gameData.score && socket"
 			:score="gameData.score"
 		/>
 		<div class="options" v-if="!gameData">
@@ -286,23 +286,23 @@
 		}
 	}
 
-	const removeSocketListeners = () => {
-		socket.value.off('paused')
-		socket.value.off('unpaused')
-		socket.value.off('updateGame')
-		socket.value.off('countdown')
-		socket.value.off('killCountdown')
-		socket.value.off('playerWins')
-		socket.value.off('oponentLeft')
-	}
+	// const removeSocketListeners = () => {
+	// 	socket.value.off('paused')
+	// 	socket.value.off('unpaused')
+	// 	socket.value.off('updateGame')
+	// 	socket.value.off('countdown')
+	// 	socket.value.off('killCountdown')
+	// 	socket.value.off('playerWins')
+	// 	socket.value.off('oponentLeft')
+	// }
 
 	const resetCurrentGameData = () => {
 		store.commit('setCurrentGameKey', 0)
 		store.commit('setCurrentGameRole', '')
 	}
 
-	onBeforeMount(() => {
-		// await store.dispatch('fetchCurrentUser');
+	onBeforeMount(async () => {
+		await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
 			router.push('/');
@@ -364,7 +364,7 @@
 
 	onUnmounted(() => {
 		resetCurrentGameData();
-		removeSocketListeners();
+		// removeSocketListeners();
 
 		document.removeEventListener('keydown', keyhooks)
 

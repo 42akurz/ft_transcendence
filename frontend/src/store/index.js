@@ -15,6 +15,7 @@ const store = createStore({
 	},
 
 	getters: {
+		// isAuthenticated: (state) => !!state.currentUser,
 		getCurrentUser: (state) => state.currentUser,
 		getSocketChat: (state) => state.socketChat,
 		getSocketGame: (state) => state.socketGame,
@@ -44,13 +45,15 @@ const store = createStore({
 			})
 		},
 
-		setupSockets({commit}) {
-			const game = io(`${process.env.VUE_APP_HOST_URL}:3000/game`, {
+		async setupSockets({commit}) {
+			commit('setSocketGame', null);
+			commit('setSocketChat', null);
+			const game = await io(`${process.env.VUE_APP_HOST_URL}:3000/game`, {
 				extraHeaders: {
 					Authorization: this.state.currentUser.id
 				}
 			});
-			const chat = io(`${process.env.VUE_APP_HOST_URL}:3000/chat`, {
+			const chat = await io(`${process.env.VUE_APP_HOST_URL}:3000/chat`, {
 				extraHeaders: {
 					Authorization: this.state.currentUser.id
 				}

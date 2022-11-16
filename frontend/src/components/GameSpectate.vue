@@ -13,7 +13,7 @@
 
 <script setup>
 	import BaseCardGameSpectate from '@/components/BaseCardGameSpectate.vue'
-	import { onBeforeMount, ref, computed } from 'vue'
+	import { onBeforeMount, ref, computed, onMounted } from 'vue'
 	import store from '@/store/index.js'
 	import { useRouter } from 'vue-router';
 	
@@ -39,7 +39,7 @@
 		})
 	}
 
-	onBeforeMount(() => {
+	onMounted(() => {
 		showGames();
 		// liveGames.value = [
 		// 	{

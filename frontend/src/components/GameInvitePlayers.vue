@@ -14,7 +14,7 @@
 
 <script setup>
 	import BaseCardUser from '@/components/BaseCardUser.vue'
-	import { onBeforeMount, ref, computed } from 'vue'
+	import { onBeforeMount, ref, computed, onMounted } from 'vue'
 	import store from '@/store/index.js'
 
 	const availableUsers = ref([]);
@@ -30,10 +30,11 @@
 	}
 
 	const sendGameInvitation = (userId) => {
+		console.log('????????')
 		socket.value.emit('sendGameInvitation', userId)
 	}
 
-	onBeforeMount(() => {
+	onMounted(() => {
 		showAvailableUsers();
 	})
 </script>

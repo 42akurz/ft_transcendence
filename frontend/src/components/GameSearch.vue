@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-	import { computed, onBeforeMount, ref } from 'vue'
+	import { computed, ref, onMounted } from 'vue'
 	import store from '@/store/index.js';
 	import BaseSwitch from '@/components/BaseSwitch.vue'
 
@@ -33,7 +33,7 @@
 		socket.value.emit('searchGame', specials.value);
 	}
 
-	onBeforeMount(() => {
+	onMounted(() => {
 		socket.value.on('createdGame', () => {
 			console.log('createdGame');
 			waiting.value = true;

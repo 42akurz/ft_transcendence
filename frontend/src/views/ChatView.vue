@@ -1,5 +1,5 @@
 <template>
-	<div class="grid-container" v-if="currentUser">
+	<div class="grid-container" v-if="currentUser && socket">
 		<ChatHeader
 			class="header"
 			v-if="currentRoom"

@@ -52,15 +52,14 @@
 			logoutAPI() {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/authentication/logout`, null, {withCredentials: true})
 				.then((response) => {
-					// console.log(response)
-					// this.errorMsg = 'Successfully logged out!'
+					store.dispatch('setUserStatus', 0);
+					store.commit('setCurrentUser', null);
 					this.$router.push('/')
 				})
 				.catch((error) => {
 					console.log(error)
 					this.errorMsg = 'Error: ' + error.response.data.message
 				})
-				store.dispatch('setUserStatus', 0);
 			},
 		}
 	}
