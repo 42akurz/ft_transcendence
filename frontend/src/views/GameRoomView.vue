@@ -266,10 +266,6 @@
 		router.push('gamelobby')
 	}
 
-	// const quitSpectating = () => {
-	// 	socket.value.emit('quitSpectating', currentGameKey.value);
-	// }
-
 	const keyhooks = (e) => {
 		if (!countdown.value) {
 			switch (e.key) {
