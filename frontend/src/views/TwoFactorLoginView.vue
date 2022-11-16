@@ -36,7 +36,8 @@ export default {
 			else {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/authenticate`, this.formData, {withCredentials: true})
 				.then((response) => {
-					this.errorMsg = 'Successfully logged in with 2FA!'
+					this.$router.push('profile');
+					// this.errorMsg = 'Successfully logged in with 2FA!'
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error while login!'

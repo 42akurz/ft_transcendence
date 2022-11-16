@@ -7,7 +7,6 @@ import { RoomMutedUsers } from './muted.entity'
 
 @Entity()
 export class ChatRoom {
-
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -17,7 +16,7 @@ export class ChatRoom {
 	@Column({nullable: false})
 	access: string;
 
-	// @Exclude()
+	@Exclude()
 	@Column({nullable: true})
 	password: string;
 

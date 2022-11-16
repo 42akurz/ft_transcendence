@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<div class="profile" v-if="user">
+		<div class="profile" v-if="user && currentUser">
 			<button @click="goPageBack" class="close-button" v-if="buttonsAllowed">&#x2715;</button>
 			<div class="flex-container">
 				<div class="info">
@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<ProfileButtons
-				v-if="buttonsAllowed"
+				v-if="buttonsAllowed && (currentUser.id !== user.id)"
 				:user="user"
 			/>
 		</div>
@@ -46,6 +46,14 @@
 				buttonsAllowed: true,
 			}
 		},
+	
+		async beforeMount() {
+			await store.dispatch('fetchCurrentUser');
+			if (!this.currentUser) {
+				this.$router.push('/');
+				return ;
+			}
+		},
 
 		created() {
 			this.fetchUser(this.watchingCurrentProfileID);
@@ -54,6 +62,7 @@
 		unmounted() {
 			store.commit('setWatchingCurrentProfileID', 0);
 		},
+
 
 		methods: {
 			async fetchUser(id) {

@@ -24,21 +24,42 @@
 				gameInviterName: ''
 			}
 		},
+
 		components: {
 			NavBar,
 			TheGameInviteBox
 		},
 
-		async created() {
-			await store.dispatch('fetchCurrentUser');
-			await store.dispatch('setupSockets');
+		computed: {
+			gameSocket() {
+				return store.getters.getSocketGame;
+			},
+	
+			chatSocket() {
+				return store.getters.getSocketChat;
+			},
 
-			store.getters.getSocketGame.on('receivedGameInvitaion', ({id, name}) => {
+			currentUser() {
+				return store.getters.getCurrentUser;
+			}
+		},
+
+		unmounted() {
+			store.dispatch('closeSockets');
+		},
+
+		async beforeMount() {
+			await store.dispatch('fetchCurrentUser');
+			if (this.currentUser)
+				await store.dispatch('setupSockets');
+
+			this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
+				console.log('received')
 				this.gameInviterId = id;
 				this.gameInviterName = name;
 			})
 
-			store.getters.getSocketGame.on('redirectToGame', (gameKey) => {
+			this.gameSocket.on('redirectToGame', (gameKey) => {
 				store.commit('setCurrentGameKey', Number(gameKey));
 				store.commit('setCurrentGameRole', 'player');
 				this.gameInviterId = 0;

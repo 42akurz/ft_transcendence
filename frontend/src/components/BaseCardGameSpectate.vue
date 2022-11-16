@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import store from '@/store/index.js'
 
 export default {
 	name: 'BaseCardGameSpectate',
@@ -40,22 +40,20 @@ export default {
 	},
 
 	methods: {
-		async getUserById(id) {
-			return await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/users/id/${Number(id)}`, {withCredentials: true})
-			.then((response) => {
-				return response.data
-			})
-			.catch((error) => {
-				console.log('Error: ' + error.response.data.message)
-				return null;
+		fetchPlayers() {
+			this.socket.emit('fetchPlayers', this.gameKey, (newPlayers) => {
+				const players = newPlayers;
+				if (players) {
+					this.playerLeft = players.playerLeft;
+					this.playerRight = players.playerRight;
+				}
 			})
 		}
 	},
 
 	async created() {
 		this.gameKey = this.gameInfo.userLeftSideID;
-		this.playerLeft = await this.getUserById(this.gameInfo.userLeftSideID);
-		this.playerRight = await this.getUserById(this.gameInfo.userRightSideID);
+		this.fetchPlayers();
 	},
 
 	computed: {
@@ -75,6 +73,10 @@ export default {
 				else
 					return `${process.env.VUE_APP_HOST_URL}:3000/database-files/${this.playerRight.avatarId}`;
 			}
+		},
+
+		socket() {
+			return store.getters.getSocketGame;
 		}
 	}
 }

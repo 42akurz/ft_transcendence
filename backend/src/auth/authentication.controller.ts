@@ -60,7 +60,7 @@ export class AuthenticationController {
 			Logger.log('2fa is disabled')
 			// user is logged in after authenticating 2fa --> status = online
 			await this.usersService.setStatus(1, user.id);
-			response.status(302).redirect(`${process.env.VUE_APP_HOST_URL}:8080/`);
+			response.status(302).redirect(`${process.env.VUE_APP_HOST_URL}:8080/profile`);
 		}
 
 		return await this.usersService.findById(user.id);

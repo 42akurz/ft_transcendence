@@ -13,12 +13,19 @@
 <script>
 	import store from '@/store/index.js'
 	import BaseCardMatchHistory from '@/components/BaseCardMatchHistory.vue'
+	import axios from 'axios'
 
 	export default {
 		name: 'ProfileMatchHistory',
 
 		components: {
 			BaseCardMatchHistory
+		},
+
+		data() {
+			return {
+				limitedMatchHistory: []
+			}
 		},
 
 		props: {
@@ -28,10 +35,21 @@
 			}
 		},
 
-		computed: {
-			limitedMatchHistory() {
-				return this.user.matchHistory.slice(0, 5);
+		methods: {
+			async fetchHistory() {
+				this.limitedMatchHistory = await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/score/matchHistory/${this.user.id}/${10}`, {withCredentials: true})
+				.then(async (response) => {
+					return await response.data;
+				})
+				.catch((error) => {
+					console.log('Error: ' + error.response.data.message)
+				})
+				console.log(this.limitedMatchHistory)
 			}
+		},
+
+		mounted() {
+			this.fetchHistory();
 		}
 	}
 </script>

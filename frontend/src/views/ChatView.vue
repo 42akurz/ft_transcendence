@@ -1,5 +1,5 @@
 <template>
-	<div class="grid-container" v-if="currentUser">
+	<div class="grid-container" v-if="currentUser && socket">
 		<ChatHeader
 			class="header"
 			v-if="currentRoom"
@@ -32,7 +32,6 @@
 			:userId="currentUser.id"
 		/>
 	</div>
-	<div v-else>{{error}}</div>
 </template>
 
 <script setup>
@@ -43,13 +42,14 @@
 	import ChatHeader from '@/components/ChatHeader.vue'
 	import ChatSidenav from '@/components/ChatSidenav.vue'
 	import ChatMain from '@/components/ChatMain.vue'
+	import { useRouter } from 'vue-router';
+	
+	const router = useRouter()
 
 	const currentRoom = ref(null);
 	const groupRooms = ref([]);
 	const showInformationPopup = ref(false);
 	const popupData = ref(null);
-
-	const error = ref('')
 
 
 	/* COMPUTED */
@@ -68,15 +68,17 @@
 		await store.dispatch('fetchCurrentUser');
 
 		if (!currentUser.value) {
-			error.value = "Unauthorized"
+			router.push('/');
 			return ;
 		}
 
 		getGroupRooms();
 
 		socket.value.on('refreshCurrentRoom', (roomName) => {
-			if (currentRoom.value && currentRoom.value.name === roomName)
+			if (currentRoom.value && currentRoom.value.name === roomName) {
 				getCurrentRoom(roomName);
+				scrollToLastMessage();
+			}
 		})
 
 		socket.value.on('refreshRooms', () => {
@@ -135,6 +137,15 @@
 	const showPopup = (data) => {
 		popupData.value = data;
 		showInformationPopup.value = true;
+	}
+
+	const scrollToLastMessage = () => {
+		const el = document.getElementById('chat-feed');
+		if (el) {
+			setTimeout(() => {
+				el.scrollTop = el.scrollHeight;
+			}, 50);
+		}
 	}
 	/* FUNCTIONS */
 

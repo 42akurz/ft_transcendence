@@ -1,7 +1,8 @@
 <template>
-	<div class="game-lobby-wrapper">
+	<div class="game-lobby-wrapper" v-if="currentUser && socket">
 		<GameSearch 
 			@enterGame="enterGameRoom($event)"
+			:socket="socket"
 		/>
 		<div class="rows">
 			<GameSpectate
@@ -28,6 +29,10 @@
 	const socket = computed(() => {
 		return store.getters.getSocketGame;
 	})
+
+	const currentUser = computed(() => {
+		return store.getters.getCurrentUser;
+	})
 	/* COMPUTED */
 
 	const enterGameRoom = (gameKey) => {
@@ -39,10 +44,10 @@
 	onBeforeMount(async () => {
 		await store.dispatch('fetchCurrentUser');
 
-		// if (!currentUser.value) {
-		// 	error.value = "Unauthorized"
-		// 	return ;
-		// }
+		if (!currentUser.value) {
+			router.push('/');
+			return ;
+		}
 	})
 </script>
 
@@ -71,7 +76,5 @@
 		background-color: var(--grey);
 		padding: 50px;
 		border: 5px solid var(--blue-dark);
-		/* border-radius: 60px; */
-		/* width: 400px; */
 	}
 </style>

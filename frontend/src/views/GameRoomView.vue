@@ -1,22 +1,22 @@
 <template>
 	<div class="wrapper">
 		<GamePauseMenu
-			v-if="gameIsPaused"
+			v-if="gameIsPaused && socket"
 			@resumeGame="resumeGame"
 			@exitGame="exitGame"
 		/>
 		<GameResult
-			v-if="gameResult"
+			v-if="gameResult && socket"
 			:message="gameResult"
 			@goToLobby="gameOver"
 		/>
 		<GamePlayers
-			v-if="players.playerLeft && players.playerRight"
+			v-if="players.playerLeft && players.playerRight && socket"
 			:playerLeft="players.playerLeft"
 			:playerRight="players.playerRight"
 		/>
 		<GameScore
-			v-if="gameData && gameData.score"
+			v-if="gameData && gameData.score && socket"
 			:score="gameData.score"
 		/>
 		<div class="options" v-if="!gameData">
@@ -266,10 +266,6 @@
 		router.push('gamelobby')
 	}
 
-	// const quitSpectating = () => {
-	// 	socket.value.emit('quitSpectating', currentGameKey.value);
-	// }
-
 	const keyhooks = (e) => {
 		if (!countdown.value) {
 			switch (e.key) {
@@ -286,16 +282,6 @@
 		}
 	}
 
-	const removeSocketListeners = () => {
-		socket.value.off('paused')
-		socket.value.off('unpaused')
-		socket.value.off('updateGame')
-		socket.value.off('countdown')
-		socket.value.off('killCountdown')
-		socket.value.off('playerWins')
-		socket.value.off('oponentLeft')
-	}
-
 	const resetCurrentGameData = () => {
 		store.commit('setCurrentGameKey', 0)
 		store.commit('setCurrentGameRole', '')
@@ -304,10 +290,10 @@
 	onBeforeMount(async () => {
 		await store.dispatch('fetchCurrentUser');
 
-		// if (!currentUser.value) {
-		// 	error.value = "Unauthorized"
-		// 	return ;
-		// }
+		if (!currentUser.value) {
+			router.push('/');
+			return ;
+		}
 
 		initCanvas();
 
@@ -364,7 +350,6 @@
 
 	onUnmounted(() => {
 		resetCurrentGameData();
-		removeSocketListeners();
 
 		document.removeEventListener('keydown', keyhooks)
 
@@ -374,7 +359,6 @@
 		}
 		else if (currentGameRole.value === 'spectator') {
 			console.log('spectator')
-			// quitSpectating();
 		}
 	})
 </script>

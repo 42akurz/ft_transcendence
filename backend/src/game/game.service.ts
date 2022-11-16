@@ -26,9 +26,9 @@ export class GameService {
 	/************************** GAME DATA **************************/
 	
 	/************************* GAME CONFIG *************************/
-	private readonly BASE_PADDLE_SPEED: number = 45
-	private readonly BASE_BALL_SPEED: number = 0.2
-	private readonly BASE_BALL_SPEED_INCREASE: number = 1.00008
+	private readonly BASE_PADDLE_SPEED: number = 30
+	private readonly BASE_BALL_SPEED: number = 4
+	private readonly BASE_BALL_SPEED_INCREASE: number = 1
 	private readonly BASE_SCORE_LIMIT: number = 5
 	private readonly BASE_ACTION_INTERVAL_MS: number = 6000
 	private readonly BASE_COUNTDOWN_SECONDS: number = 5
@@ -169,10 +169,14 @@ export class GameService {
 	}
 
 	collides(obj1: any, obj2: any) {
-		return obj1.x < obj2.x + obj2.width &&
-				obj1.x + obj1.width > obj2.x &&
-				obj1.y < obj2.y + obj2.height &&
-				obj1.y + obj1.height > obj2.y;
+		if (obj1.x && obj2.x && obj1.y && obj2.y && obj1.width && obj2.width && obj1.height && obj2.height) {
+			return obj1.x < obj2.x + obj2.width &&
+					obj1.x + obj1.width > obj2.x &&
+					obj1.y < obj2.y + obj2.height &&
+					obj1.y + obj1.height > obj2.y;
+		}
+		else
+			return false
 	}
 
 	ballCollision(gameKey: number) {
@@ -345,6 +349,16 @@ export class GameService {
 		return room.spectatorsID.includes(userId);
 	}
 
+	userIsInWaitingRoom(userId: number): number | undefined {
+		for (let [key, value] of this.gameRooms.entries()) {
+			if (value.userLeftSideID && !value.userRightSideID) {
+				if (userId === value.userLeftSideID)
+					return key;
+			}
+		}
+		return undefined;
+	}
+
 	async getPlayersByGameKey(gameKey: number): Promise<Object | void> {
 		const game: GameData | undefined = this.gameRooms.get(gameKey);
 		if (!game)
@@ -415,7 +429,7 @@ export class GameService {
 			if (!this.checkWinner(gameKey, client))
 				this.ballCollision(gameKey);
 			client.nsp.to(gameKey.toString()).emit('updateGame', this.gameRooms.get(gameKey));
-		}, 1);
+		}, 16);
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), gameLoopIntervalID: intervalID})
 		if (gameInstance.specialAction)
 			this.startActionInterval(gameKey);
@@ -644,18 +658,18 @@ export class GameService {
 				this.actionChangePaddleSize(gameKey, 'decrease');
 				break ;
 			case 3:
-				this.actionChangeBallSpeed(gameKey, 0.1);
+				this.actionChangeBallSpeed(gameKey, 4.5);
 				break ;
 			case 4:
-				this.actionChangeBallSpeed(gameKey, 0.3);
+				this.actionChangeBallSpeed(gameKey, 3);
 				break ;
 			case 5:
 				this.actionReversePaddles(gameKey);
 				this.actionChangeBackgroundColor(gameKey, 'red');
 				break ;
 			case 6:
-				this.actionChangePaddleSpeed(gameKey, 60);
-				this.actionChangeBackgroundColor(gameKey, 'blue');
+				this.actionChangePaddleSpeed(gameKey, 15);
+				this.actionChangeBackgroundColor(gameKey, '#FFC947');
 				break ;
 		}
 	}

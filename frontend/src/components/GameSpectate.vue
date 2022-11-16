@@ -2,7 +2,7 @@
 	<div class="spectate">
 		<h2>Spectate Game</h2>
 		<button @click="showGames">Refresh Games</button>
-		<div class="live-games" v-for="game in liveGames" :key="game">
+		<div class="live-games" v-for="game in filteredLiveGames" :key="game">
 			<BaseCardGameSpectate
 				:gameInfo="game"
 				@spectateGame="spectateGame($event)"
@@ -13,7 +13,7 @@
 
 <script setup>
 	import BaseCardGameSpectate from '@/components/BaseCardGameSpectate.vue'
-	import { onBeforeMount, ref, computed } from 'vue'
+	import { onBeforeMount, ref, computed, onMounted } from 'vue'
 	import store from '@/store/index.js'
 	import { useRouter } from 'vue-router';
 	
@@ -23,6 +23,17 @@
 
 	const socket = computed(() => {
 		return store.getters.getSocketGame;
+	})
+
+	const currentUser = computed(() => {
+		return store.getters.getCurrentUser;
+	})
+
+	const filteredLiveGames = computed(() => {
+		return liveGames.value.filter(game => {
+			return ((game.userLeftSideID !== currentUser.id)
+				&& (game.userRightSideID !== currentUser.id));
+		})
 	})
 
 	const showGames = () => {
@@ -39,7 +50,7 @@
 		})
 	}
 
-	onBeforeMount(() => {
+	onMounted(() => {
 		showGames();
 		// liveGames.value = [
 		// 	{

@@ -1,6 +1,6 @@
 <template>
-	<div class="nav-wrapper">
-		<router-link to="/">Profile</router-link>
+	<div class="nav-wrapper" v-if="navbarAllowed && currentUser">
+		<router-link to="/profile">Profile</router-link>
 		<!-- <router-link to="/test">Play</router-link>
 		<router-link to="/game">Game</router-link> -->
 		<router-link to="/gamelobby">Play</router-link>
@@ -8,8 +8,7 @@
 		<router-link to="/chat">Chat</router-link>
 		<router-link to="/scoreboard">Scoreboard</router-link>
 		<router-link to="/settings">Settings</router-link>
-		<button v-if="currentUserStatus" @click="logoutAPI">Logout</button>
-		<button v-if="!currentUserStatus" @click="login">Login</button>
+		<button @click="logoutAPI">Logout</button>
 	</div>
 </template>
 
@@ -27,9 +26,20 @@
 		},
 
 		computed: {
-			currentUserStatus() {
-				if (store.getters.getCurrentUser)
-					return store.getters.getCurrentUser.status
+			currentRoute() {
+				return this.$route.name;
+			},
+
+			currentUser() {
+				return store.getters.getCurrentUser;
+			},
+
+			navbarAllowed() {
+				if (this.currentRoute === '2falogin'
+					|| this.currentRoute === 'login'
+					|| this.currentRoute === 'gameroom')
+					return false;
+				return true;
 			}
 		},
 
@@ -42,19 +52,15 @@
 			logoutAPI() {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/authentication/logout`, null, {withCredentials: true})
 				.then((response) => {
-					console.log(response)
-					this.errorMsg = 'Successfully logged out!'
+					store.dispatch('setUserStatus', 0);
+					store.commit('setCurrentUser', null);
+					this.$router.push('/')
 				})
 				.catch((error) => {
 					console.log(error)
 					this.errorMsg = 'Error: ' + error.response.data.message
 				})
-				store.dispatch('setUserStatus', 0);
 			},
-
-			login() {
-				location.replace(`${process.env.VUE_APP_HOST_URL}:3000/authentication/callback`);
-			}
 		}
 	}
 </script>

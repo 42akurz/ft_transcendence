@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, ManyToOne } from 'typeorm';
 import { User } from '../users/users.entity'
 
 import { UserFriendsSerializer } from 'src/users/users.serializer';
@@ -31,7 +31,4 @@ export class Score {
 		onDelete: 'CASCADE',
 	})
 	matchHistoryUsers: UserFriendsSerializer[];
-	
-	// @Column()
-	// roomID: number
 }

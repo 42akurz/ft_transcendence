@@ -32,8 +32,6 @@ export class ScoreService {
 	}
 
 	async addScore(score: Score, winnerId: number, loserId: number): Promise<Score> {
-		this.logger.log('winnerId: ' + winnerId);
-		this.logger.log('loserId: ' + loserId);
 		const winner = await this.usersService.findById(winnerId);
 		const loser = await this.usersService.findById(loserId);
 		const serializedWinner = plainToClass(UserFriendsSerializer, winner, {excludeExtraneousValues: true});
@@ -48,6 +46,15 @@ export class ScoreService {
 	async getPlayersSortedByWins(limit: number): Promise<User[]> {
 		return await this.usersRepository.createQueryBuilder('user')
 			.orderBy('user.wins', 'DESC')
+			.limit(limit)
+			.getMany()
+	}
+
+	async getMatchHistoryByUserID(userId: number, limit: number): Promise<Score[]> {
+		return await this.scoreRepository.createQueryBuilder('score')
+			.where('score.playerOneId = :id', {id: userId})
+			.orWhere('score.playerTwoId = :id', {id: userId})
+			.leftJoinAndSelect('score.matchHistoryUsers', 'matchHistoryUsers')
 			.limit(limit)
 			.getMany()
 	}

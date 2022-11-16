@@ -29,17 +29,15 @@ export class ChatGateway {
 	logger: Logger = new Logger(ChatGateway.name)
 	
 	async handleConnection(@ConnectedSocket() client: Socket) {
-		this.logger.log('auth token in chat: ' +  client.handshake.headers.authorization)
-		const userId: number = Number(client.handshake.headers.authorization);
 		const user = await this.chatService.validateToken(client);
 		if (!user)
 			return ;
-		this.logger.log('client connected to chat with token: ' + client.handshake.headers.authorization);
 		client.data.user = user;
+		this.logger.log('client connected to Chat');
 	}
 	
 	handleDisconnect(@ConnectedSocket() client: Socket) {
-		this.logger.log('user disconncted from chat')
+		this.logger.log('client disconnected from Chat');
 	}
 
 	@SubscribeMessage('enterPrivateRoom')

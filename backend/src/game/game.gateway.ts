@@ -26,17 +26,16 @@ export class GameGateway {
 	logger: Logger = new Logger(GameGateway.name)
 	
 	async handleConnection(@ConnectedSocket() client: Socket) {
-		this.logger.log('auth token in game: ' +  client.handshake.headers.authorization)
 		const user = await this.gameService.validateToken(client);
 		if (!user)
 			return ;
-		this.logger.log('client connected to game with token: ' + client.handshake.headers.authorization);
 		client.data.user = user;
+		this.logger.log('client connected to Game');
+		// (await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
 	}
 	
-	// when user disconnects kick him out of waiting room
-	// if hes in game give win to other player
 	handleDisconnect(@ConnectedSocket() client: Socket) {
+		this.logger.log('client disconnected from Game');
 		const userId: number = Number(client.handshake.headers.authorization);
 		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)
@@ -58,11 +57,10 @@ export class GameGateway {
 		else if (gameRoom.userLeftSideID === userId || gameRoom.userRightSideID === userId) {
 			const readyUsers: number[] | undefined = this.gameService.gameKeyToReadyPlayers.get(gameKey)
 			if (!readyUsers) {
-				console.log('first user ready')
 				this.gameService.gameKeyToReadyPlayers.set(gameKey, [userId])
 			}
 			else if (readyUsers.some(id => id !== userId)) {
-				console.log('second user ready')
+				this.logger.log('startGame')
 				this.gameService.startGame(client, gameKey);
 				this.gameService.gameKeyToReadyPlayers.delete(gameKey);
 			}
@@ -72,7 +70,7 @@ export class GameGateway {
 	@SubscribeMessage('searchGame')
 	searchGame(@MessageBody() specialActions: boolean, @ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
-		const userIsInGame: number | undefined= this.gameService.findGameKeyByPlayerID(userId);
+		const userIsInGame: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
 		if (userIsInGame) // maybe throw exception instead
 			this.gameService.deleteGame(userIsInGame)
 		const gameKey: number = this.gameService.findKeyOfAvailableGame(specialActions);
@@ -88,6 +86,16 @@ export class GameGateway {
 		}
 	}
 
+	@SubscribeMessage('cancelSearchGame')
+	cancelSearchGame(@ConnectedSocket() client: Socket): boolean {
+		const userId: number = Number(client.handshake.headers.authorization);
+		const userIsInGame: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
+		if (userIsInGame) {
+			this.gameService.deleteGame(userIsInGame)
+		}
+		return true;
+	}
+
 	@SubscribeMessage('pauseGame')
 	pauseGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
@@ -100,7 +108,6 @@ export class GameGateway {
 		client.nsp.to(gameKey.toString()).emit('paused');
 	}
 
-	// add counter
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
@@ -124,7 +131,8 @@ export class GameGateway {
 		
 		const otherUserId: number = this.gameService.getOtherPlayerID(gameKey, userId);
 		const allClients: any[] = await this.server.fetchSockets()
-		const otherClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == otherUserId);
+		const reversedClients: any[] = allClients.reverse()
+		const otherClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == otherUserId);
 		if (!otherClient)
 			return ;
 		
@@ -190,12 +198,13 @@ export class GameGateway {
 		const sender: User = await this.usersService.findById(senderId);
 		if (!sender)
 			return ;
-
-		const allClients: any[] = await this.server.fetchSockets()
-		const receivingClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == userId);
+		
+		const allClients: any[] = await this.server.fetchSockets();
+		const reversedClients: any[] = allClients.reverse()
+		const receivingClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == userId);
 		if (receivingClient === undefined)
 			return ;
-		
+
 		client.nsp.to(receivingClient.id).emit('receivedGameInvitaion', {id: sender.id, name: sender.username});
 	}
 
@@ -203,7 +212,8 @@ export class GameGateway {
 	async acceptInvitation(@MessageBody() inviterId: number, @ConnectedSocket() client: Socket) {
 		const receiverId: number = Number(client.handshake.headers.authorization);
 		const allClients: any[] = await this.server.fetchSockets()
-		const inviterClient: Socket | undefined = allClients.find(client => Number(client.handshake.headers.authorization) == inviterId);
+		const reversedClients: any[] = allClients.reverse()
+		const inviterClient: Socket | undefined = reversedClients.find(client => Number(client.handshake.headers.authorization) == inviterId);
 		if (!inviterClient)
 			return ;
 
@@ -214,6 +224,15 @@ export class GameGateway {
 
 		client.join(roomIdentifier);
 		inviterClient.join(roomIdentifier);
+
+		const waitingRoomKey1: number | undefined = this.gameService.userIsInWaitingRoom(inviterId);
+		if (waitingRoomKey1) {
+			this.gameService.gameRooms.delete(waitingRoomKey1);
+		}
+		const waitingRoomKey2: number | undefined = this.gameService.userIsInWaitingRoom(receiverId);
+		if (waitingRoomKey2) {
+			this.gameService.gameRooms.delete(waitingRoomKey2);
+		}
 
 		client.nsp.to(roomIdentifier).emit('redirectToGame', gameKey);
 	}
