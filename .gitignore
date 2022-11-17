@@ -1,4 +1,4 @@
-/data/database/**
+/data/database/*
 
 .env
 db.env
