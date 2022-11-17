@@ -6,11 +6,13 @@ import { GameService } from './game.service';
 import { UsersModule } from 'src/users/users.module';
 import { ScoreModule } from 'src/scoreboard/score.module';
 import { GameController } from './game.controller';
+import { ChatModule } from 'src/chat/modules/chat.module';
 
 @Module({
 	imports: [
 		UsersModule,
 		ScoreModule,
+		ChatModule,
 		TypeOrmModule.forFeature([Score])
 	],
 	providers: [GameService, GameGateway],
