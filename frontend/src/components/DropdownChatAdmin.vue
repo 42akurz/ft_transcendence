@@ -1,7 +1,7 @@
 <template>
 	<div class="button-wrapper">
-		<button id="toggle-button" @click="changeDropdownState">&uarr;</button>
-		<div class="button-dropdown" id="dropdown">
+		<button :id="componentId + 'toggle-button'" class="toggle-button" @click="changeDropdownState">&uarr;</button>
+		<div class="button-dropdown" :id="componentId + 'dropdown'">
 			<button v-if="adminButton" @click="emitMakeAdmin">Admin</button>
 			<button v-if="muteButton" @click="emitMuteUser">Mute</button>
 			<button v-if="banButton" @click="emitBanUser">Ban</button>
@@ -18,7 +18,8 @@ export default {
 
 	data() {
 		return {
-			dropdownIsShown: false
+			dropdownIsShown: false,
+			componentId: null,
 		}
 	},
 
@@ -41,16 +42,25 @@ export default {
 		}
 	},
 
+	mounted() {
+		this.componentId = this.uuidv4();
+	},
+
 	methods: {
+		uuidv4() {
+			return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+				(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+		);
+},
 		showDropdown() {
 			this.dropdownIsShown = true;
-			const elem = document.getElementById('dropdown');
+			const elem = document.getElementById(this.componentId + 'dropdown');
 			elem.style.display = 'flex';
 		},
 
 		hideDropdown() {
 			this.dropdownIsShown = false;
-			const elem = document.getElementById('dropdown');
+			const elem = document.getElementById(this.componentId + 'dropdown');
 			elem.style.display = 'none';
 		},
 
@@ -75,12 +85,12 @@ export default {
 		},
 
 		addAnimation() {
-			const elem = document.getElementById('toggle-button');
+			const elem = document.getElementById(this.componentId + 'toggle-button');
 			elem.classList.add('animate');
 		},
 
 		removeAnimation() {
-			const elem = document.getElementById('toggle-button');
+			const elem = document.getElementById(this.componentId + 'toggle-button');
 			elem.classList.remove('animate');
 		},
 
@@ -103,7 +113,7 @@ export default {
 		position: relative;
 	}
 
-	#toggle-button {
+	.toggle-button {
 		transition: 0.5s;
 		border: 1px solid var(--grey);
 		background-color: var(--blue-dark);
@@ -116,11 +126,12 @@ export default {
 		cursor: pointer;
 	}
 
-	#toggle-button:hover {
+	.toggle-button:hover {
 		border-color: var(--blue-dark);
 	}
 
 	.button-dropdown {
+		z-index: 1;
 		display: none;
 		border-radius: 5px;
 		border: 1px solid var(--grey);
