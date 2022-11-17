@@ -7,7 +7,7 @@ services:
     env_file:
       - db.env
     networks:
-      - open
+      - closed
     restart: always
 
   backend:
@@ -22,7 +22,7 @@ services:
     env_file:
       - ../backend/.env
     networks:
-      - open
+      - closed
     restart: always
 
   frontend:
@@ -39,5 +39,4 @@ services:
     restart: always
 
 networks:
-  open:
-    driver: bridge
+  closed: {}
