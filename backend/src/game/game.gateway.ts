@@ -2,6 +2,7 @@ import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, Conne
 import { Server, Socket } from 'socket.io';
 import { UsersService } from '../users/users.service';
 import { GameService } from './game.service';
+import { ChatService } from '../chat/services/chat.service';
 import { Logger } from '@nestjs/common';
 import { GameData } from './game.entity';
 import { User } from 'src/users/users.entity';
@@ -19,6 +20,7 @@ export class GameGateway {
 	constructor(
 		private readonly usersService: UsersService,
 		private readonly gameService: GameService,
+		private readonly chatService: ChatService,
 	) {}
 
 	logger: Logger = new Logger(GameGateway.name)
@@ -194,7 +196,12 @@ export class GameGateway {
 	async sendGameInvitation(@MessageBody() userId: number, @ConnectedSocket() client: Socket) {
 		const senderId: number = Number(client.handshake.headers.authorization);
 		const sender: User = await this.usersService.findById(senderId);
-		if (!sender)
+		const receiver: User = await this.usersService.findById(userId);
+		if (!sender || !receiver)
+			return ;
+		if (receiver.status !== 1)
+			return ;
+		if (await this.chatService.isBlocked(senderId, receiver.id))
 			return ;
 		
 		const allClients: any[] = await this.server.fetchSockets();
