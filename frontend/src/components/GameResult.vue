@@ -26,7 +26,7 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
 		display: flex;

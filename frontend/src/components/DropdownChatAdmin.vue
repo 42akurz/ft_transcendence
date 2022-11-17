@@ -152,7 +152,7 @@ export default {
 		height: 30px;
 		padding: 5px 0;
 		cursor: pointer;
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		border: 1px solid var(--blue-dark);
 		border-radius: 5px;
 		color: white;

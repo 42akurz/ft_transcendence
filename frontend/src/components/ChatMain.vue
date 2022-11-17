@@ -167,7 +167,7 @@
 <style scoped>
 	button {
 		padding: 10px;
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		border: 1px solid black;
 		border-radius: 5px;
 		color: white;
@@ -218,7 +218,7 @@
 	}
 
 	.blue_text {
-		color: rgb(28, 123, 212);
+		color: var(--blue-light);
 	}
 
 	.align_right {
