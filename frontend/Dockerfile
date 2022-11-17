@@ -7,6 +7,7 @@ RUN npm update -g npm
 WORKDIR /frontend
 
 COPY package*.json .
+COPY vue.config.js .
 
 RUN  npm install
 
