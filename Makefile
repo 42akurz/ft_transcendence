@@ -1,5 +1,5 @@
 all:
-	docker-compose -f ./docker/docker-compose.yml up
+	docker-compose -f ./docker/docker-compose.yml up --build
 
 clean:
 	docker-compose -f ./docker/docker-compose.yml down
