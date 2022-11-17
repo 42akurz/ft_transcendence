@@ -28,10 +28,11 @@ export class ScoreController {
 	async getAll():Promise<Score[]>{
 		return await this.scoreService.findAll();
 	}
-
+	
 	@Post('add')
 	@HttpCode(201)
 	@UseGuards(JwtTwoFactorGuard)
+	@UseInterceptors(ClassSerializerInterceptor)
 	async addScore(@Body() score: Score, userId: number, user2Id: number): Promise<Score> {
 		return await this.scoreService.addScore(score, userId, user2Id);
 	}

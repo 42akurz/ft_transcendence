@@ -53,19 +53,21 @@
 			if (this.currentUser)
 				await store.dispatch('setupSockets');
 
-			this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
-				console.log('received')
-				this.gameInviterId = id;
-				this.gameInviterName = name;
-			})
-
-			this.gameSocket.on('redirectToGame', (gameKey) => {
-				store.commit('setCurrentGameKey', Number(gameKey));
-				store.commit('setCurrentGameRole', 'player');
-				this.gameInviterId = 0;
-				this.gameInviterName = '';
-				this.$router.push('gameroom');
-			})
+			if (this.gameSocket) {
+				this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
+					console.log('received')
+					this.gameInviterId = id;
+					this.gameInviterName = name;
+				})
+	
+				this.gameSocket.on('redirectToGame', (gameKey) => {
+					store.commit('setCurrentGameKey', Number(gameKey));
+					store.commit('setCurrentGameRole', 'player');
+					this.gameInviterId = 0;
+					this.gameInviterName = '';
+					this.$router.push('gameroom');
+				})
+			}
 		}
 	}
 </script>

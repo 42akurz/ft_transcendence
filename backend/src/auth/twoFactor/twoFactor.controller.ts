@@ -59,6 +59,7 @@ export class TwoFactorAuthenticationController {
 
 	@Post('authenticate')
 	@HttpCode(200)
+	@UseInterceptors(ClassSerializerInterceptor)
 	@UseGuards(JwtAuthenticationGuard)
 	async authenticate(
 		@Req() request: RequestWithUser,
