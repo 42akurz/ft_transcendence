@@ -24,15 +24,6 @@ export class AuthenticationController {
 		return user;
 	}
 
-	// @UseGuards(JwtRefreshGuard)
-	// @Get('refresh')
-	// refresh(@Req() request: RequestWithUser) {
-	// 	const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(request.user.loginName);
-
-	// 	request.res.setHeader('Set-Cookie', accessTokenCookie);
-	// 	return request.user;
-	// }
-
 	@UseInterceptors(ClassSerializerInterceptor)
 	@UseGuards(FortyTwoAuthGuard)
 	@Get('callback')

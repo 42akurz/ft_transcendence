@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../users/users.service';
 import {Strategy} from 'passport-42';
 import { User } from 'src/users/users.entity';
-// const Strategy = require('passport-42').Strategy;
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(Strategy){
