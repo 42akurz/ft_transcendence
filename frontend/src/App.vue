@@ -1,6 +1,6 @@
 <template>
 	<div class="main-container">
-		<NavBar/>
+		<TheNavBar/>
 		<router-view class="main-view"/>
 		<TheGameInviteBox
 			v-if="gameInviterId && gameInviterName"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import NavBar from '@/components/NavBar.vue'
+	import TheNavBar from '@/components/TheNavBar.vue'
 	import store from '@/store/index.js'
 	import TheGameInviteBox from '@/components/TheGameInviteBox.vue'
 
@@ -26,7 +26,7 @@
 		},
 
 		components: {
-			NavBar,
+			TheNavBar,
 			TheGameInviteBox
 		},
 

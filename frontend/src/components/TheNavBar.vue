@@ -15,7 +15,7 @@
 	import store from '@/store/index.js';
 
 	export default {
-		name: 'NavBar',
+		name: 'TheNavBar',
 
 		data() {
 			return {
