@@ -44,7 +44,6 @@
 				.catch((error) => {
 					console.log('Error: ' + error.response.data.message)
 				})
-				console.log(this.limitedMatchHistory)
 			}
 		},
 

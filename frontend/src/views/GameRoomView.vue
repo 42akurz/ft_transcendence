@@ -378,11 +378,7 @@
 		document.removeEventListener('keydown', keyhooks)
 
 		if (currentGameRole.value === 'player' && !eitherPlayerExited.value) {
-			console.log('player')
 			exitGame();
-		}
-		else if (currentGameRole.value === 'spectator') {
-			console.log('spectator')
 		}
 	})
 </script>

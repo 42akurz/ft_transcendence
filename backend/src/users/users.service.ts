@@ -238,16 +238,6 @@ export class UsersService {
 		}
 	}
 
-	// async randomName(length: number) {
-	// 	let result: string = '';
-	// 	const characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	// 	const charactersLength: number = characters.length;
-	// 	for ( var i = 0; i < length; i++ ) {
-	// 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	// 	}
-	// 	return result;
-	// }
-
 	async setStatus(status: number, userId: number): Promise<User> {
 		// offline 0
 		// online 1
@@ -442,14 +432,5 @@ export class UsersService {
 		user.loses++;
 		return await this.usersRepository.save(user);
 	}
-
-	// async getMatchHistory(userId: number, limit: number): Promise<Score[]> {
-	// 	return await this.usersRepository.createQueryBuilder('user')
-	// 		.where('user.id = :id', {id: userId})
-	// 		.leftJoinAndSelect('user.matchHistory', 'matchHistory')
-	// 		.select('matchHistory')
-	// 		.limit(limit)
-	// 		.getRawMany()
-	// }
 }
 

@@ -146,34 +146,3 @@ We want a chat server that allows clients to:
 * write messages (create event)
 * read all previous existing messages (findAll event)
 * see when someone is typing (typing event)
-
-## JS PROMISES
-
-* Promises are great when you do something that takes a long time in the background and you want to do something after its complete
-* you can easily catch it if it fails
-* Promise is either completed - "resolved"
-* or failed - "rejected"
-
-### creating a promise
-```bash
-	let p = new Promise((resolve, reject) => {
-		let a = 1 + 1
-		if (a == 2) {
-			resolve('success')
-		}
-		else {
-			reject('failed')
-		}
-	})
-```
-
-### working with the promise
-```bash
-	// then is called when promise is resolved
-	// catch is called when promise is rejected
-	p.then((message) => {
-		console.log('This is in the then ' + message)
-	}).catch((message) => {
-		console.log('This is in the catch ' + message)
-	})
-```

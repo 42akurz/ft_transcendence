@@ -326,13 +326,13 @@ export class GameService {
 		return undefined;
 	}
 
-	printGameRooms() {
-		console.log('Game rooms start ---');
-		this.gameRooms.forEach((value: GameData, key: number) => {
-			console.log(key, value);
-		});
-		console.log('Game rooms end -----');
-	}
+	// printGameRooms() {
+	// 	console.log('Game rooms start ---');
+	// 	this.gameRooms.forEach((value: GameData, key: number) => {
+	// 		console.log(key, value);
+	// 	});
+	// 	console.log('Game rooms end -----');
+	// }
 
 	timeout(ms: number) {
 		return new Promise(resolve => setTimeout(resolve, ms));

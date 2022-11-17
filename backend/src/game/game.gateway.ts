@@ -31,7 +31,6 @@ export class GameGateway {
 			return ;
 		client.data.user = user;
 		this.logger.log('client connected to Game');
-		// (await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
 	}
 	
 	handleDisconnect(@ConnectedSocket() client: Socket) {

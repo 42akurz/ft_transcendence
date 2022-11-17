@@ -35,14 +35,12 @@ export default {
 	methods: {
 		send2FA() {
 			if (this.formData.code == '') {
-				console.log("No code provided!");
 				this.errorMsg = 'Please enter your code!';
 				return;
 			}
 			else {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/turn-on`, this.formData, {withCredentials: true})
 				.then(async (response) => {
-					// this.errorMsg = 'Successfully activated 2FA!'
 					await store.dispatch('fetchCurrentUser');
 					this.$router.push('/');
 				})

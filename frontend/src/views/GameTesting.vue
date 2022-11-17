@@ -360,7 +360,6 @@ export default {
 
 		startActionInterval() {
 			this.actionIntervalID = setInterval(() => {
-				console.log('action');
 				this.randomActions();
 			}, 7000);
 		},

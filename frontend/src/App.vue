@@ -55,7 +55,6 @@
 
 			if (this.gameSocket) {
 				this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
-					console.log('received')
 					this.gameInviterId = id;
 					this.gameInviterName = name;
 				})
