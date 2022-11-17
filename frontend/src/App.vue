@@ -74,16 +74,10 @@
 <style>
 	:root {
 		--blue-dark: #0A1931;
-		--blue-light: rgb(28, 123, 212);;
+		--blue-light: rgb(28, 123, 212);
 		--grey: #EFEFEF;
 		--orange: #FFC947;
-		--black: #000000;
 		--nav-bar-height: 60px;
-
-		--alert-text-color: #039b00;
-		--alert-background-color: rgba(66, 224, 132, 0.424);
-		--alert-background-hover-color: rgba(8, 165, 74, 0.35);
-		--alert-border-color: #039b00;
 	}
 
 	* {
