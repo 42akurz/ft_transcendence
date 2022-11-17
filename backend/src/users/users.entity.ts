@@ -31,9 +31,6 @@ export class User {
 	@Column({unique: true})
 	username: string;
 
-	@Column({unique: true})
-	profileId: string;
-
 	@Exclude()
 	@Column({ nullable: true })
 	twoFactorAuthenticationSecret?: string;
