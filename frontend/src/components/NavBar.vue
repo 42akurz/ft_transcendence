@@ -1,8 +1,6 @@
 <template>
 	<div class="nav-wrapper" v-if="navbarAllowed && currentUser">
 		<router-link to="/profile">Profile</router-link>
-		<!-- <router-link to="/test">Play</router-link>
-		<router-link to="/game">Game</router-link> -->
 		<router-link to="/gamelobby">Play</router-link>
 		<router-link to="/friends">Friends</router-link>
 		<router-link to="/chat">Chat</router-link>
@@ -46,7 +44,6 @@
 		async created() {
 			await store.dispatch('fetchCurrentUser');
 		},
-
 
 		methods: {
 			logoutAPI() {

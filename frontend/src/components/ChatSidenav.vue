@@ -31,14 +31,12 @@
 
 	const currentSidenavTab = ref('Groups');
 
-	/* PROPS */
 	const props = defineProps({
 		groupRooms: {
 			type: Array,
 			required: true
 		}
 	})
-	/* PROPS */
 </script>
 
 <style scoped>

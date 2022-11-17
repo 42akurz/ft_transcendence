@@ -89,7 +89,6 @@ export default {
 		color: black;
 		font-weight: 700;
 		font-size: 22px;
-		/* padding: 30px; */
 	}
 
 	.modal .choices {

@@ -41,20 +41,6 @@
 
 	onMounted(() => {
 		showGames();
-		// liveGames.value = [
-		// 	{
-		// 		"userLeftSideID": 1, 
-		// 		"specialAction": false, 
-		// 		"spectatorsID": [], 
-		// 		"userRightSideID": 1
-		// 	},
-		// 	{
-		// 		"userLeftSideID": 1, 
-		// 		"specialAction": false, 
-		// 		"spectatorsID": [], 
-		// 		"userRightSideID": 1
-		// 	}
-		// ]
 	})
 </script>
 

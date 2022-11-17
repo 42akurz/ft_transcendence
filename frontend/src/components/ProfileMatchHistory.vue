@@ -11,7 +11,6 @@
 </template>
 
 <script>
-	import store from '@/store/index.js'
 	import BaseCardMatchHistory from '@/components/BaseCardMatchHistory.vue'
 	import axios from 'axios'
 

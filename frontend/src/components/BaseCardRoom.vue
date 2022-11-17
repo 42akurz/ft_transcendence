@@ -38,11 +38,7 @@ export default {
 			type: Boolean,
 			required: true
 		}
-	},
-
-	methods: {
-		
-	},
+	}
 }
 </script>
 

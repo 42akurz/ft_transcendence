@@ -124,7 +124,6 @@
 	.info .info__status {
 		grid-area: status;
 		border: 3px solid var(--blue-dark);
-		/* color: var(--blue-dark); */
 		background-color: var(--blue-dark);
 		color: white;
 		letter-spacing: 2px;

@@ -80,7 +80,6 @@
 		--black: #000000;
 		--nav-bar-height: 60px;
 
-
 		--alert-text-color: #039b00;
 		--alert-background-color: rgba(66, 224, 132, 0.424);
 		--alert-background-hover-color: rgba(8, 165, 74, 0.35);

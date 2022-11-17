@@ -106,7 +106,6 @@
 		margin: 0 auto;
 		width: 100%;
 		border-collapse: collapse;
-		/* background-color: white; */
 	}
 
 	table th, td {
