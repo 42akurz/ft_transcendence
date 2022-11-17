@@ -4,7 +4,7 @@ volumes:
   database:
     driver: local
     driver_opts:
-      device: '${PWD}/data'
+      device: '${PWD}/data/database'
       o: bind
       type: none
 
