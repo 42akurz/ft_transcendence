@@ -21,7 +21,8 @@
 		data() {
 			return {
 				newName: '',
-				nameError: ''
+				nameError: '',
+				timeoutId: 0
 			}
 		},
 
@@ -33,15 +34,19 @@
 		},
 
 		methods: {
+			showNameError(message) {
+				clearTimeout(this.timeoutId);
+				this.nameError = message;
+				this.timeoutId = setTimeout(() => { this.nameError = ''; }, 3000);
+			},
+
 			async changeUsername() {
 				if (this.newName.length > 8) {
-					this.nameError = 'Name cant have more then 8 characters';
-					setTimeout(() => { this.nameError = ''; }, 3000);
+					this.showNameError('Name cant have more then 8 characters')
 					return ;
 				}
 				if (this.newName.includes(' ')) {
-					this.nameError = 'Name cant have spaces';
-					setTimeout(() => { this.nameError = ''; }, 3000);
+					this.showNameError('Name cant have spaces')
 					return ;
 				}
 				await axios.post(`${process.env.VUE_APP_HOST_URL}:3000/users/update/name/${this.newName}`, null, { withCredentials: true })
@@ -50,6 +55,9 @@
 					store.dispatch('fetchCurrentUser');
 				})
 				.catch((error) => {
+					if (error.response.data.message == 'Name is taken') {
+						this.showNameError('Name is taken')
+					}
 					this.newName = '';
 				})
 			}

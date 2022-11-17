@@ -441,9 +441,9 @@ export class GameService {
 			return ;
 		await this.usersService.setStatus(2, gameInstance.userLeftSideID);
 		await this.usersService.setStatus(2, gameInstance.userRightSideID);
+		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
 		this.startGameCountdown(client, gameKey, this.BASE_COUNTDOWN_SECONDS);
 		await this.timeout(this.BASE_COUNTDOWN_SECONDS * 1000);
-		this.gameRooms.set(gameKey, this.initGameData(gameInstance))
 		this.gameLoop(client, gameKey);
 	}
 
