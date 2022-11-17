@@ -1,12 +1,11 @@
 all:
-	mkdir -p ${PWD}/data
-	docker-compose -f ./docker/docker-compose.yml up
+	docker-compose -f ./docker/docker-compose.yml up --build
 
 clean:
 	docker-compose -f ./docker/docker-compose.yml down
 
 fclean:
-	rm -rf ./data
+	rm -rf ./data/database/*
 	docker-compose -f ./docker/docker-compose.yml down --volumes --rmi all
 
 re: fclean all
