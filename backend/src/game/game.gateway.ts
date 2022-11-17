@@ -70,7 +70,7 @@ export class GameGateway {
 	searchGame(@MessageBody() specialActions: boolean, @ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);
 		const userIsInGame: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
-		if (userIsInGame) // maybe throw exception instead
+		if (userIsInGame)
 			this.gameService.deleteGame(userIsInGame)
 		const gameKey: number = this.gameService.findKeyOfAvailableGame(specialActions);
 		if (gameKey) {

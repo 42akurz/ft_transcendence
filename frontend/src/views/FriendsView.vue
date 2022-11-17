@@ -44,9 +44,6 @@ export default {
 			// used to store response for API
 			response: null,
 
-			// used to catch erros in API
-			errorMsg: '',
-
 			// tabs thats currently displayed
 			currentTab: 'List',
 
@@ -81,7 +78,7 @@ export default {
 				this.usersData.allUsers = response.data
 			})
 			.catch((error) => {
-				this.errorMsg = 'Error: ' + error.response.data.message
+				console.log('Error: ' + error.response.data.message)
 			})
 		},
 
@@ -92,7 +89,7 @@ export default {
 				this.usersData.otherUsers = response.data;
 			})
 			.catch((error) => {
-				this.errorMsg = 'Error: ' + error.response.data.message
+				console.log('Error: ' + error.response.data.message)
 			})
 		},
 	},
