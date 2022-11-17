@@ -171,6 +171,7 @@
 		border: 1px solid black;
 		border-radius: 5px;
 		color: white;
+		cursor: pointer;
 	}
 
 	.main {
