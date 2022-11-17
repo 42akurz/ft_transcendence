@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-	import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
+	import { ref, computed, onMounted, onUnmounted } from 'vue'
 	import store from '@/store/index.js'
 
 	const messageText = ref('');

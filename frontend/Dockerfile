@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:buster
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -10,5 +10,7 @@ COPY package*.json .
 COPY vue.config.js .
 
 RUN  npm install
+
+EXPOSE 8080
 
 ENTRYPOINT ["npm", "run", "serve"]
