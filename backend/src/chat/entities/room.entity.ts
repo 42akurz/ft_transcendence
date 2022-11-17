@@ -1,6 +1,5 @@
 import { Exclude } from 'class-transformer';
-import DatabaseFile from 'src/files/databaseFile.entity';
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany, ManyToOne, AfterLoad, AfterInsert, AfterUpdate, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
 import { User } from '../../users/users.entity';
 import { Message } from './message.entity'
 import { RoomMutedUsers } from './muted.entity'

@@ -1,10 +1,8 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-
 import { UsersService } from '../users/users.service';
 import { GameService } from './game.service';
-
-import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { GameData } from './game.entity';
 import { User } from 'src/users/users.entity';
 

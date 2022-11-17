@@ -1,7 +1,6 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { Connection, Repository, ReturningStatementNotSupportedError, Not } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Message } from '../entities/message.entity';
 
 @Injectable()

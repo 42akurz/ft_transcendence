@@ -5,7 +5,6 @@ import {
 	UseGuards,
 } from '@nestjs/common';
 import JwtTwoFactorGuard from 'src/auth/twoFactor/twoFactor.guard';
-import { GameGateway } from './game.gateway';
 
 @Controller('game')
 export class GameController {

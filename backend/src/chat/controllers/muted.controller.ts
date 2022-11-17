@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Delete, Param, HttpCode, UseGuards, UseInterceptors, Req, UploadedFile, Logger, Header, Headers, ClassSerializerInterceptor } from '@nestjs/common';
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
-
+import {
+	Controller,
+	Get,
+	Post,
+	Param,
+	UseGuards,
+	UseInterceptors,
+	Req,
+	ClassSerializerInterceptor,
+	HttpException,
+	HttpStatus
+} from '@nestjs/common';
 import { MutedService } from '../services/muted.service';
 import { RoomMutedUsers } from '../entities/muted.entity';
 import JwtAuthenticationGuard from 'src/auth/jwt/jwt.guard';
@@ -17,14 +26,15 @@ export class MutedController {
 	){}
 
 	@Get('all')
+	@UseGuards(JwtAuthenticationGuard)
 	@UseInterceptors(ClassSerializerInterceptor)
 	async getAll():Promise<RoomMutedUsers[]>{
 		return await this.mutedService.findAll();
 	}
 
 	@Post('create/:roomName')
-	@UseInterceptors(ClassSerializerInterceptor)
 	@UseGuards(JwtAuthenticationGuard)
+	@UseInterceptors(ClassSerializerInterceptor)
 	async sendFriendReqeuest(@Req() request: RequestWithUser, @Param('roomName') roomName: string): Promise<RoomMutedUsers> {
 		const user = await this.usersService.findById(request.user.id);
 		const room = await this.roomService.findByName(roomName);
