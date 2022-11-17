@@ -202,7 +202,6 @@ export class GameService {
 	}
 
 	changeBallSpeed(x: number = this.BASE_BALL_SPEED, updatedBall: any) {
-		// changes the ball speed, x = 5 is the default speed
 		if (updatedBall.velocityX < 0)
 			updatedBall.velocityX = -x;
 		else
@@ -239,8 +238,6 @@ export class GameService {
 			const {velocityX, velocityY} = this.changeBallSpeed(this.BASE_BALL_SPEED, updatedBall);
 			updatedBall.velocityX = velocityX;
 			updatedBall.velocityY = velocityY;
-
-			// give some time for the player to recover before launching the ball again
 			updatedBall.resetting = false;
 			// reset ball to center of screen
 			updatedBall.x = gameInstance.canvasWidth / 2;

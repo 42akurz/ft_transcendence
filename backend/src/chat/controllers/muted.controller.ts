@@ -15,7 +15,7 @@ import { RoomMutedUsers } from '../entities/muted.entity';
 import JwtAuthenticationGuard from 'src/auth/jwt/jwt.guard';
 import RequestWithUser from 'src/auth/interfaces/requestWithUser.interface';
 import { RoomService } from '../services/room.service';
-import { UsersService } from '../..//users/users.service';
+import { UsersService } from '../../users/users.service';
 
 @Controller('muted')
 export class MutedController {
