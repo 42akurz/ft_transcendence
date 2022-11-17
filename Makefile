@@ -5,7 +5,6 @@ clean:
 	docker-compose -f ./docker/docker-compose.yml down
 
 fclean:
-	rm -rf ./data/database/*
 	docker-compose -f ./docker/docker-compose.yml down --volumes --rmi all
 
 re: fclean all
