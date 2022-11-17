@@ -36,7 +36,7 @@
 		height: 40px;
 		width: 80px;
 		-webkit-appearance: none;
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		outline: none;
 		border-radius: 20px;
 		box-shadow: inset 0 0 5px rgba(0, 0, 0, .2);

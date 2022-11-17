@@ -1,9 +1,7 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-
 import { RoomService } from './services/room.service';
 import { UsersService } from '../users/users.service';
-
 import { ChatService } from './services/chat.service';
 import { MutedService } from './services/muted.service';
 import { HttpException, HttpStatus, Logger } from '@nestjs/common';
@@ -138,8 +136,6 @@ export class ChatGateway {
 		this.logger.log(`joined room: ${roomName}`);
 	}
 	
-	// if room is now empty --> delete
-	// if only admin left --> set new admin
 	@SubscribeMessage('leaveRoom')
 	async leaveRoom(@MessageBody() roomName: string, @ConnectedSocket() client: Socket) {
 		const userId: number = Number(client.handshake.headers.authorization);

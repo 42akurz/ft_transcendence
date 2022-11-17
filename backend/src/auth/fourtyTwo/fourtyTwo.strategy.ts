@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../users/users.service';
 import {Strategy} from 'passport-42';
 import { User } from 'src/users/users.entity';
-// const Strategy = require('passport-42').Strategy;
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(Strategy){
@@ -27,9 +26,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy){
 	logger: Logger = new Logger(FortyTwoStrategy.name)
 
 	async validate(accessToken: string, refreshToken: string, profile: any){
-		this.logger.log('profile.id : ' + profile.id)
 		this.logger.log('profile.username : ' + profile.username)
-		this.logger.log('profile.image_url : ' + profile.image_url)
 		const user = await this.userService.findByLoginName(profile.username)
 		if (user) {
 			return user
@@ -39,7 +36,6 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy){
 				loginName: profile.username,
 				username: profile.username,
 				profilePictureURL: profile.image_url,
-				profileId: profile.id,
 				friends: [],
 				sendFriendRequests: [],
 				receivedFriendRequests: [],

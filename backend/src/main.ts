@@ -2,19 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
-	// app.useStaticAssets(join(__dirname, '..', 'static'));
 	app.enableCors({
 		credentials: true,
 		origin: process.env.VUE_APP_HOST_URL + ':8080',
 	});
 	app.use(cookieParser());
 
-	//initialize swagger
+	// initialize swagger
 	const config = new DocumentBuilder()
 		.setTitle('Transcendence')
 		.setDescription('Collection of APIs')

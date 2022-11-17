@@ -1,6 +1,4 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { Connection, Repository, ReturningStatementNotSupportedError, Not } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 import { Socket } from 'socket.io';
@@ -326,14 +324,6 @@ export class GameService {
 		return undefined;
 	}
 
-	printGameRooms() {
-		console.log('Game rooms start ---');
-		this.gameRooms.forEach((value: GameData, key: number) => {
-			console.log(key, value);
-		});
-		console.log('Game rooms end -----');
-	}
-
 	timeout(ms: number) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
@@ -643,7 +633,6 @@ export class GameService {
 		this.gameRooms.set(gameKey, {...this.gameRooms.get(gameKey), backgroundColor: color});
 	}
 
-	// try only setting the map properties once
 	randomActions(gameKey: number) {
 		this.actionChangePaddleSpeed(gameKey, this.BASE_PADDLE_SPEED);
 		this.actionChangeBallSpeed(gameKey, this.BASE_BALL_SPEED);

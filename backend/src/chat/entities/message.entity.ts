@@ -1,6 +1,4 @@
-import { Exclude } from 'class-transformer';
-import DatabaseFile from 'src/files/databaseFile.entity';
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne, AfterLoad, AfterInsert, AfterUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { ChatRoom } from './room.entity';
 
 @Entity()

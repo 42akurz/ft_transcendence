@@ -1,12 +1,11 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { Connection, Repository, ReturningStatementNotSupportedError, Not, UpdateResult, QueryRunner } from 'typeorm';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Connection, Repository, Not, QueryRunner } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import * as bcrypt from 'bcrypt';
 import DatabaseFilesService from 'src/files/databaseFiles.service';
 import { plainToClass } from 'class-transformer';
 import { UserFriendsSerializer } from './users.serializer';
-import { Score } from 'src/scoreboard/score.entity';
 
 
 @Injectable()
@@ -238,16 +237,6 @@ export class UsersService {
 		}
 	}
 
-	// async randomName(length: number) {
-	// 	let result: string = '';
-	// 	const characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	// 	const charactersLength: number = characters.length;
-	// 	for ( var i = 0; i < length; i++ ) {
-	// 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	// 	}
-	// 	return result;
-	// }
-
 	async setStatus(status: number, userId: number): Promise<User> {
 		// offline 0
 		// online 1
@@ -442,14 +431,5 @@ export class UsersService {
 		user.loses++;
 		return await this.usersRepository.save(user);
 	}
-
-	// async getMatchHistory(userId: number, limit: number): Promise<Score[]> {
-	// 	return await this.usersRepository.createQueryBuilder('user')
-	// 		.where('user.id = :id', {id: userId})
-	// 		.leftJoinAndSelect('user.matchHistory', 'matchHistory')
-	// 		.select('matchHistory')
-	// 		.limit(limit)
-	// 		.getRawMany()
-	// }
 }
 

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-	import store from '@/store/index.js'
 	import BaseCardMatchHistory from '@/components/BaseCardMatchHistory.vue'
 	import axios from 'axios'
 
@@ -44,7 +43,6 @@
 				.catch((error) => {
 					console.log('Error: ' + error.response.data.message)
 				})
-				console.log(this.limitedMatchHistory)
 			}
 		},
 

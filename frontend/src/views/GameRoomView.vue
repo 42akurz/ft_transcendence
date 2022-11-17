@@ -38,131 +38,17 @@
 	import { useRouter } from 'vue-router';
 	
 	const router = useRouter()
-
 	const canvas = ref(null);
 	const context = ref(null);
-	
 	const gameData = ref(null);
-
 	const eitherPlayerExited = ref(false);
-
-	// gameData.value = {
-	// 	"userLeftSideID": 2,
-	// 	"specialAction": false,
-	// 	"spectatorsID": [],
-	// 	"userRightSideID": 1,
-	// 	"canvasHeight": 585,
-	// 	"canvasWidth": 750,
-	// 	"grid": 15,
-	// 	"paddleHeight": 75,
-	// 	"maxPaddleY": 495,
-	// 	"paddleSpeed": 20,
-	// 	"ballSpeed": 0.2,
-	// 	"wallColor": "black",
-	// 	"backgroundColor": "#EFEFEF",
-	// 	"gameLoopIntervalID": {
-	// 		"_idleTimeout": 1,
-	// 		"_idlePrev": null,
-	// 		"_idleNext": null,
-	// 		"_idleStart": 252148,
-	// 		"_repeat": 1,
-	// 		"_destroyed": false
-	// 	},
-	// 	"leftPaddle": {
-	// 		"x": 30,
-	// 		"y": 255,
-	// 		"width": 15,
-	// 		"height": 75,
-	// 		"velocity": 0,
-	// 		"color": "black"
-	// 	},
-	// 	"rightPaddle": {
-	// 		"x": 705,
-	// 		"y": 255,
-	// 		"width": 15,
-	// 		"height": 75,
-	// 		"velocity": 0,
-	// 		"color": "black"
-	// 	},
-	// 	"ball": {
-	// 		"x": 464.9333625609796,
-	// 		"y": 382.4333625609796,
-	// 		"width": 15,
-	// 		"height": 15,
-	// 		"resetting": false,
-	// 		"velocityY": 0.2718891787058107,
-	// 		"velocityX": 0.2718891787058107,
-	// 		"color": "#185ADB"
-	// 	},
-	// 	"score": {
-	// 		"limit": 10,
-	// 		"left": 4,
-	// 		"right": 5
-	// 	}
-	// }
-
 	const gameIsPaused = ref(false);
 	const gameResult = ref('');
-
 	const countdown = ref(0);
-
 	const players = ref({
 		playerLeft: null,
 		playerRight: null,
 	});
-
-	// players.value = {
-	// 	"playerLeft": {
-	// 		"id": 2,
-	// 		"loginName": "hntest1",
-	// 		"username": "hntest1",
-	// 		"profileId": "111952",
-	// 		"twoFactorAuthenticationSecret": null,
-	// 		"isTwoFactorAuthenticationEnabled": false,
-	// 		"currentHashedRefreshToken": "$2b$10$AfwWEx3zuOpFJTuulPzkjudptMKg23K.QZHG9nQrLKhewT.lh5TSm",
-	// 		"profilePictureURL": null,
-	// 		"avatarId": 1,
-	// 		"status": 1,
-	// 		"rank": 0,
-	// 		"wins": 0,
-	// 		"loses": 0,
-	// 		"chatRoom": [],
-	// 		"roomAdmin": [],
-	// 		"friends": [],
-	// 		"receivedFriendRequests": [],
-	// 		"sendFriendRequests": [],
-	// 		"bannedRooms": [],
-	// 		"blockedUsers": [],
-	// 		"blockedFromUsers": [],
-	// 		"roomMutedUsers": [],
-	// 		"matchHistory": []
-	// 	},
-	// 	"playerRight": {
-	// 		"id": 1,
-	// 		"loginName": "akurz",
-	// 		"username": "akurz",
-	// 		"profileId": "83420",
-	// 		"twoFactorAuthenticationSecret": null,
-	// 		"isTwoFactorAuthenticationEnabled": false,
-	// 		"currentHashedRefreshToken": "$2b$10$1x/xyzEJMqVjtXTuDIj.aeCkefwPjde8Ba0npN91A1uF5SxKRjnqG",
-	// 		"profilePictureURL": "https://cdn.intra.42.fr/users/9f3ad9875c70026b63fd7d570fd81098/akurz.jpg",
-	// 		"avatarId": 1,
-	// 		"status": 1,
-	// 		"rank": 0,
-	// 		"wins": 0,
-	// 		"loses": 0,
-	// 		"chatRoom": [],
-	// 		"roomAdmin": [],
-	// 		"friends": [],
-	// 		"receivedFriendRequests": [],
-	// 		"sendFriendRequests": [],
-	// 		"bannedRooms": [],
-	// 		"blockedUsers": [],
-	// 		"blockedFromUsers": [],
-	// 		"roomMutedUsers": [],
-	// 		"matchHistory": []
-	// 	}
-	// }
 
 
 	/* COMPUTED */
@@ -182,7 +68,6 @@
 		return store.getters.getCurrentGameRole;
 	})
 	/* COMPUTED */
-
 
 
 	const drawBackground = (width, height, color) => {
@@ -360,10 +245,7 @@
 			router.push('gamelobby');
 			return ;
 		}
-
-
 		fetchPlayers();
-
 		if (currentGameRole.value === 'player') {
 			startGame();
 			document.addEventListener('keydown', keyhooks)
@@ -372,17 +254,10 @@
 
 	onUnmounted(() => {
 		resetCurrentGameData();
-
 		turnOffSocketListeners();
-
 		document.removeEventListener('keydown', keyhooks)
-
 		if (currentGameRole.value === 'player' && !eitherPlayerExited.value) {
-			console.log('player')
 			exitGame();
-		}
-		else if (currentGameRole.value === 'spectator') {
-			console.log('spectator')
 		}
 	})
 </script>

@@ -85,7 +85,6 @@
 		cursor: pointer;
 	}
 
-
 	.new_room {
 		padding: 16px;
 		display: flex;

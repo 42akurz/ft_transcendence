@@ -1,17 +1,17 @@
 <template>
-<div class="two-factor-wrapper" v-if="currentUser">
-	<h2>Setup Two Factor</h2>
-	<div class="code" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
-		<button v-on:click="gen_qrcode">Gen Code</button>
-		<img v-if="qrCode" :src="qrCode" width="100">
+	<div class="two-factor-wrapper" v-if="currentUser">
+		<h2>Setup Two Factor</h2>
+		<div class="code" v-if="!currentUser.isTwoFactorAuthenticationEnabled">
+			<button v-on:click="gen_qrcode">Gen Code</button>
+			<img v-if="qrCode" :src="qrCode" width="100">
+		</div>
+		<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
+			<input placeholder="enter code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
+			<small v-if="errorMsg">{{errorMsg}}</small>
+			<button class="confirm-button">Submit</button>
+		</form>
+		<button v-if="currentUser.isTwoFactorAuthenticationEnabled" class="confirm-button" @click="turnOffTwoFA">Diasble</button>
 	</div>
-	<form v-if="!currentUser.isTwoFactorAuthenticationEnabled" @submit.prevent="send2FA">
-		<input placeholder="enter code" type="text" id="2FACode" v-model="formData.twoFactorAuthenticationCode" />
-		<small v-if="errorMsg">{{errorMsg}}</small>
-		<button class="confirm-button">Submit</button>
-	</form>
-	<button v-if="currentUser.isTwoFactorAuthenticationEnabled" class="confirm-button" @click="turnOffTwoFA">Diasble</button>
-</div>
 </template>
 
 
@@ -35,14 +35,12 @@ export default {
 	methods: {
 		send2FA() {
 			if (this.formData.code == '') {
-				console.log("No code provided!");
 				this.errorMsg = 'Please enter your code!';
 				return;
 			}
 			else {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/turn-on`, this.formData, {withCredentials: true})
 				.then(async (response) => {
-					// this.errorMsg = 'Successfully activated 2FA!'
 					await store.dispatch('fetchCurrentUser');
 					this.$router.push('/');
 				})

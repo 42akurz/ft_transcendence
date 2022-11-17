@@ -1,12 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
-import * as bcrypt from 'bcrypt';
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import { Logger } from '@nestjs/common';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from "@nestjs/passport";
-import { Request } from 'express';
 
 @Injectable()
 export class AuthenticationService {

@@ -1,6 +1,6 @@
 <template>
 	<div class="main-container">
-		<NavBar/>
+		<TheNavBar/>
 		<router-view class="main-view"/>
 		<TheGameInviteBox
 			v-if="gameInviterId && gameInviterName"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import NavBar from '@/components/NavBar.vue'
+	import TheNavBar from '@/components/TheNavBar.vue'
 	import store from '@/store/index.js'
 	import TheGameInviteBox from '@/components/TheGameInviteBox.vue'
 
@@ -26,7 +26,7 @@
 		},
 
 		components: {
-			NavBar,
+			TheNavBar,
 			TheGameInviteBox
 		},
 
@@ -53,19 +53,20 @@
 			if (this.currentUser)
 				await store.dispatch('setupSockets');
 
-			this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
-				console.log('received')
-				this.gameInviterId = id;
-				this.gameInviterName = name;
-			})
-
-			this.gameSocket.on('redirectToGame', (gameKey) => {
-				store.commit('setCurrentGameKey', Number(gameKey));
-				store.commit('setCurrentGameRole', 'player');
-				this.gameInviterId = 0;
-				this.gameInviterName = '';
-				this.$router.push('gameroom');
-			})
+			if (this.gameSocket) {
+				this.gameSocket.on('receivedGameInvitaion', ({id, name}) => {
+					this.gameInviterId = id;
+					this.gameInviterName = name;
+				})
+	
+				this.gameSocket.on('redirectToGame', (gameKey) => {
+					store.commit('setCurrentGameKey', Number(gameKey));
+					store.commit('setCurrentGameRole', 'player');
+					this.gameInviterId = 0;
+					this.gameInviterName = '';
+					this.$router.push('gameroom');
+				})
+			}
 		}
 	}
 </script>
@@ -73,17 +74,10 @@
 <style>
 	:root {
 		--blue-dark: #0A1931;
-		--blue-light: rgb(28, 123, 212);;
+		--blue-light: rgb(28, 123, 212);
 		--grey: #EFEFEF;
 		--orange: #FFC947;
-		--black: #000000;
 		--nav-bar-height: 60px;
-
-
-		--alert-text-color: #039b00;
-		--alert-background-color: rgba(66, 224, 132, 0.424);
-		--alert-background-hover-color: rgba(8, 165, 74, 0.35);
-		--alert-border-color: #039b00;
 	}
 
 	* {

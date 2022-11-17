@@ -29,7 +29,6 @@ export default {
 	methods: {
 		login2FA() {
 			if (this.formData.code == '') {
-				console.log("No code provided!");
 				this.errorMsg = 'Please enter your code!';
 				return;
 			}
@@ -37,7 +36,6 @@ export default {
 				axios.post(`${process.env.VUE_APP_HOST_URL}:3000/2fa/authenticate`, this.formData, {withCredentials: true})
 				.then((response) => {
 					this.$router.push('profile');
-					// this.errorMsg = 'Successfully logged in with 2FA!'
 				})
 				.catch((error) => {
 					this.errorMsg = 'Error while login!'

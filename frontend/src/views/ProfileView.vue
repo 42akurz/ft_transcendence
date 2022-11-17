@@ -63,7 +63,6 @@
 			store.commit('setWatchingCurrentProfileID', 0);
 		},
 
-
 		methods: {
 			async fetchUser(id) {
 				if (id === 0) {
@@ -183,7 +182,6 @@
 	.flex-container .history {
 		flex: 1;
 		min-width: 250px;
-		/* flex-basis: 30%; */
 		display: flex;
 		justify-content: center;
 		margin-bottom: auto;

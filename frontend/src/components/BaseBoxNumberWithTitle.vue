@@ -24,9 +24,7 @@
 
 <style scoped>
 	.base-box-number-title {
-		/* width: 100%; */
 		aspect-ratio: 1 / 1;
-		/* border: 3px solid var(--blue-dark); */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

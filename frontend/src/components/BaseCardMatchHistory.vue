@@ -78,9 +78,10 @@ export default {
 </script>
 
 <style scoped>
-* {
-	box-sizing: border-box;
-}
+	* {
+		box-sizing: border-box;
+	}
+
 	.img-container {
 		display: inline-block;
 		border-radius: 50%;

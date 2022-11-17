@@ -3,6 +3,7 @@
 		<strong v-if="currentRoom.access !== 'private'">{{currentRoom.name}}</strong>
 		<strong v-if="currentRoom.access === 'private'">{{otherUserName}}</strong>
 		<DropdownChatHeader
+			v-if="currentRoom.access !== 'private'"
 			@selected="dropdownAction($event)"
 			:title="dropdownTitle"
 			:options="filteredOptions"

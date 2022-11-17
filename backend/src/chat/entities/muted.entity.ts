@@ -7,6 +7,7 @@ import {
 import { ChatRoom } from './room.entity';
 import { User } from '../../users/users.entity';
 import { CreateDateColumn } from "typeorm";
+import { UserFriendsSerializer } from '../../users/users.serializer';
 
 @Entity()
 export class RoomMutedUsers {
@@ -29,5 +30,5 @@ export class RoomMutedUsers {
 	public room!: ChatRoom;
 
 	@ManyToOne(() => User, (user) => user.roomMutedUsers, { onDelete: 'CASCADE' })
-	public user!: User;
+	public user!: UserFriendsSerializer;
 }

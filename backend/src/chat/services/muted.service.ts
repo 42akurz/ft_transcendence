@@ -1,11 +1,11 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository, Not } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-
-
 import { RoomMutedUsers } from '../entities/muted.entity';
 import { User } from '../../users/users.entity';
 import { ChatRoom } from '../entities/room.entity';
+import { plainToClass } from 'class-transformer';
+import { UserFriendsSerializer } from '../../users/users.serializer';
 
 
 @Injectable()
@@ -21,7 +21,7 @@ export class MutedService {
 			roomId: room.id,
 			userId: user.id,
 			room: room,
-			user: user
+			user: plainToClass(UserFriendsSerializer, user)
 		})
 		return await this.mutedRepository.save(roomMutedUsers);
 	}

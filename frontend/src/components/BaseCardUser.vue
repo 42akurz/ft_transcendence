@@ -1,20 +1,19 @@
 <template>
-<div>
-	<div class="card" @click="goToProfilePage">
-		<div class="img-container">
-			<img id="profile-pic" :src="imageLink"/>
-		</div>
-		<div class="user-info">
-			<span class="username">{{data.username}}</span>
-			<span v-if="showStatus" class="status">{{userStatus}}</span>
+	<div>
+		<div class="card" @click="goToProfilePage">
+			<div class="img-container">
+				<img id="profile-pic" :src="imageLink"/>
+			</div>
+			<div class="user-info">
+				<span class="username">{{data.username}}</span>
+				<span v-if="showStatus" class="status">{{userStatus}}</span>
+			</div>
 		</div>
 	</div>
-</div>
 </template>
 
 <script>
 import store from '@/store/index.js'
-
 
 export default {
 	name: 'BaseCardUser',
@@ -84,8 +83,6 @@ export default {
 	.card:hover {
 		cursor: pointer;
 		background-color: black;
-		/* border-color: var(--blue-dark);
-		color: var(--blue-dark); */
 	}
 
 	.img-container {

@@ -1,10 +1,8 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-
 import { UsersService } from '../users/users.service';
 import { GameService } from './game.service';
-
-import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { GameData } from './game.entity';
 import { User } from 'src/users/users.entity';
 
@@ -31,7 +29,6 @@ export class GameGateway {
 			return ;
 		client.data.user = user;
 		this.logger.log('client connected to Game');
-		// (await this.server.fetchSockets()).forEach(x => console.log(x.id + ' | ' + x.handshake.headers.authorization))
 	}
 	
 	handleDisconnect(@ConnectedSocket() client: Socket) {

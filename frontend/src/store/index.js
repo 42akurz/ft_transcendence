@@ -15,7 +15,6 @@ const store = createStore({
 	},
 
 	getters: {
-		// isAuthenticated: (state) => !!state.currentUser,
 		getCurrentUser: (state) => state.currentUser,
 		getSocketChat: (state) => state.socketChat,
 		getSocketGame: (state) => state.socketGame,

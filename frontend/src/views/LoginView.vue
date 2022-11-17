@@ -1,11 +1,13 @@
 <template>
 	<div class="login-wrapper">
-		<button @click="login">Login</button>
+		<button @click="login">
+			<img src="@/assets/42-logo-white.svg">
+			<strong>Login</strong>
+		</button>
 	</div>
 </template>
 
 <script>
-	import store from '@/store'
 	export default {
 		name: 'LoginView',
 
@@ -14,12 +16,6 @@
 				location.replace(`${process.env.VUE_APP_HOST_URL}:3000/authentication/callback`);
 			}
 		},
-
-		computed: {
-			currentUser() {
-				return store.getters.getCurrentUser;
-			}
-		}
 	}
 </script>
 
@@ -32,9 +28,9 @@
 	
 	button {
 		width: 200px;
-		height: 60px;
-		background-color: var(--blue-light);
-		border: 2px solid black;
+		height: 70px;
+		background-color: var(--blue-dark);
+		border: 2px solid var(--blue-dark);
 		color: white;
 		border-radius: 5px;
 		display: flex;
@@ -43,5 +39,20 @@
 		font-size: 12px;
 		font-weight: bold;
 		cursor: pointer;
+	}
+
+	button:hover {
+		background-color: var(--blue-light);
+	}
+
+	img {
+		height: 35px;
+		margin-right: 5px;
+	}
+
+	strong {
+		font-size: 20px;
+		margin-left: 5px;
+		font-weight: bold;
 	}
 </style>

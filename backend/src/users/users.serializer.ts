@@ -11,9 +11,6 @@ export class UserFriendsSerializer {
 	username: string;
 
 	@Expose()
-	profileId: string
-
-	@Expose()
 	profilePictureURL: string;
 
 	@Expose()

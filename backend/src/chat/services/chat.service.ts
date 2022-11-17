@@ -1,5 +1,5 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { Connection, Repository, ReturningStatementNotSupportedError, Not } from 'typeorm';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -101,7 +101,6 @@ export class ChatService {
 		return true;
 	}
 
-	// make this function clean
 	async createRoom(newRoom: {name: string, access: string, password?: string}): Promise<ChatRoom> {
 		if (newRoom.password) {
 			const salt: string = await bcrypt.genSalt();

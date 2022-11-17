@@ -55,12 +55,10 @@
 
 	onMounted(() => {
 		socket.value.on('createdGame', () => {
-			console.log('createdGame');
 			waiting.value = true;
 		})
 
 		socket.value.on('foundGame', (gameKey) => {
-			console.log('foundGame')
 			waiting.value = false;
 			emit('enterGame', gameKey);
 		})

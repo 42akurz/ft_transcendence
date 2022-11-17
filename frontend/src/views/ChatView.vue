@@ -175,7 +175,6 @@
 		box-sizing: border-box;
 	}
 
-
 	.grid-container {
 		display: grid;
 		grid-template-rows: 100px 10fr 100px;

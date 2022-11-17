@@ -87,7 +87,6 @@ export default {
 
 		// get all users that are not current user 
 		async getAllOtherUsers() {
-			console.log('getAllOtherUsers');
 			await axios.get(`${process.env.VUE_APP_HOST_URL}:3000/users/public`, {withCredentials: true})
 			.then((response) => {
 				this.usersData.otherUsers = response.data;

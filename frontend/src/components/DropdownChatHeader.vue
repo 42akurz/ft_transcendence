@@ -111,7 +111,7 @@ export default {
 		width: 100px;
 		height: 30px;
 		cursor: pointer;
-		background-color: rgb(28, 123, 212);
+		background-color: var(--blue-light);
 		border: 1px solid black;
 		border-radius: 5px;
 		color: white;

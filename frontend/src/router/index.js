@@ -1,9 +1,7 @@
-//https://vueschool.io/articles/vuejs-tutorials/how-to-use-vue-router-a-complete-tutorial/
 import { createRouter, createWebHistory } from 'vue-router'
 import ScoreBoard from '@/views/ScoreBoardView.vue'
 import FriendsView from '@/views/FriendsView.vue'
 import ProfileView from '@/views/ProfileView.vue'
-import GameTesting from '@/views/GameTesting.vue'
 import ChatView from '@/views/ChatView.vue'
 import SettingsView from '@/views/SettingsView.vue'
 import TwoFactorLoginView from '@/views/TwoFactorLoginView.vue'
@@ -22,11 +20,6 @@ const routes = [
 	name: 'profile',
 	component: ProfileView,
 },
-// {
-// 	path: '/test',
-// 	name: 'test',
-// 	component: GameTesting
-// },
 {
 	path: '/friends',
 	name: 'friends',
