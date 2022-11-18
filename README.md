@@ -1,3 +1,46 @@
+# Setup
+
+## Create the following .env files
+* ./docker/db.env
+```
+POSTGRES_USER=trans
+POSTGRES_PASSWORD=trans
+POSTGRES_DB=transcendence
+PGADMIN_DEFAULT_EMAIL=trans@trans.com
+PGADMIN_DEFAULT_PASSWORD=admin
+```
+
+* ./backend/.env
+```
+DB_HOST='postgres'
+DB_PORT=5432
+DB_USERNAME='trans'
+DB_PASSWORD='trans'
+DB_NAME='transcendence'
+TWO_FACTOR_AUTHENTICATION_APP_NAME='transcendence'
+JWT_ACCESS_TOKEN_SECRET='secretllul'
+JWT_ACCESS_TOKEN_EXPIRATION_TIME='2000'
+JWT_REFRESH_TOKEN_SECRET='secretllul_2'
+JWT_REFRESH_TOKEN_EXPIRATION_TIME='2000'
+FORTYTWO_APP_ID='<UID_OF_YOUR_42_API_APP>'
+FORTYTWO_APP_SECRET='<SECRET_OF_YOUR_42_API_APP>'
+CALLBACK_URL='http://<HOST_URL>:3000/authentication/callback'
+VUE_APP_HOST_URL='http://<HOST_URL>'
+```
+
+* ./frontend/.env
+```
+VUE_APP_HOST_URL='http://<HOST_URL>'
+```
+
+* Go to https://profile.intra.42.fr/oauth/applications and click 'Register a new app'
+* In the field 'Redirect URI' put: http://<HOST_URL>:3000/authentication/callback
+
+* Go to the root of the repository and run ```make```
+
+
+
+
 # Resources
 ## Private Messaging
 https://socket.io/get-started/private-messaging-part-1/
