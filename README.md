@@ -1,9 +1,8 @@
 # ft_transcendence
-
-## Final project of the 42 Core Curriculum
+* Full stack Web Application
+* Final project of the 42 Core Curriculum
 
 ### Description
-* Full stack Web Application
 * Including online Pong Game with matchmaking system and game invitations
 * Chat rooms and personal messages with ban, mute and admin options
 * Friends and ability to block users
