@@ -30,11 +30,9 @@ export class GameGateway {
 		if (!user)
 			return ;
 		client.data.user = user;
-		this.logger.log('client connected to Game');
 	}
 	
 	handleDisconnect(@ConnectedSocket() client: Socket) {
-		this.logger.log('client disconnected from Game');
 		const userId: number = Number(client.handshake.headers.authorization);
 		const gameKey: number = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)
@@ -59,7 +57,6 @@ export class GameGateway {
 				this.gameService.gameKeyToReadyPlayers.set(gameKey, [userId])
 			}
 			else if (readyUsers.some(id => id !== userId)) {
-				this.logger.log('startGame')
 				this.gameService.startGame(client, gameKey);
 				this.gameService.gameKeyToReadyPlayers.delete(gameKey);
 			}
@@ -121,7 +118,6 @@ export class GameGateway {
 
 	@SubscribeMessage('exitGame')
 	async exitGame(@ConnectedSocket() client: Socket) {
-		this.logger.log('exitGame');
 		const userId: number = Number(client.handshake.headers.authorization);
 		const gameKey: number | undefined = this.gameService.findGameKeyByPlayerID(userId);
 		if (!gameKey)

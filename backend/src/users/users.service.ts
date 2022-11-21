@@ -209,8 +209,6 @@ export class UsersService {
 				avatarId: avatar.id
 			});
 
-			Logger.log(filename + " uploaded by " + user.username + " saved wit ID: " + avatar.id);
-
 			if (currentAvatarId != 1)
 				await this.databaseFilesService.deleteFileWithQueryRunner(currentAvatarId, queryRunner);
 

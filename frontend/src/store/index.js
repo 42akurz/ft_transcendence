@@ -30,7 +30,6 @@ const store = createStore({
 				commit('setCurrentUser', response.data)
 			})
 			.catch((error) => {
-				// console.log('Error ' + error)
 			})
 		},
 		
@@ -40,7 +39,6 @@ const store = createStore({
 				commit('setCurrentUser', response.data)
 			})
 			.catch((error) => {
-				// console.log('Error ' + error)
 			})
 		},
 

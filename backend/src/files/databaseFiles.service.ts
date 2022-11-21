@@ -20,7 +20,6 @@ class DatabaseFilesService implements OnModuleInit {
 
 		if (DatabaseFile === null)
 		{
-			Logger.log("Init Files Module")
 			var picture = fs.readFileSync('./uploads/default-avatar.png')
 			this.uploadDatabaseFile(picture, "default")
 		}

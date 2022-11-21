@@ -86,7 +86,6 @@ export default {
 				store.dispatch('fetchCurrentUser');
 			}
 			catch (err) {
-				console.log(err);
 				this.message = err.response.data.error
 			}
 		}

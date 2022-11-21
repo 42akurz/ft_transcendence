@@ -31,12 +31,9 @@ export class ChatGateway {
 		if (!user)
 			return ;
 		client.data.user = user;
-		this.logger.log('client connected to Chat');
 	}
 	
-	handleDisconnect(@ConnectedSocket() client: Socket) {
-		this.logger.log('client disconnected from Chat');
-	}
+	handleDisconnect(@ConnectedSocket() client: Socket) {}
 
 	@SubscribeMessage('enterPrivateRoom')
 	async enterPrivateRoom(@MessageBody() receiverId: number, @ConnectedSocket() client: Socket) {

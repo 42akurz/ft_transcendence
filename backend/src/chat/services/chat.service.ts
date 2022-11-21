@@ -90,10 +90,6 @@ export class ChatService {
 		if (!mutedUserRelation)
 			return false;
 
-		Logger.log('created_at:		' + mutedUserRelation.created_at);
-		Logger.log('created_at + ban:	' + new Date(mutedUserRelation.created_at.getTime() + mutedUserRelation.muteTime * 60000));
-		Logger.log('now:			' + new Date());
-
 		if (new Date() > new Date(mutedUserRelation.created_at.getTime() + mutedUserRelation.muteTime * 60000)) {
 			this.mutedService.deleteMuted(mutedUserRelation.roomMutedUsersId);
 			return false;

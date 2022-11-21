@@ -26,7 +26,6 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy){
 	logger: Logger = new Logger(FortyTwoStrategy.name)
 
 	async validate(accessToken: string, refreshToken: string, profile: any){
-		this.logger.log('profile.username : ' + profile.username)
 		const user = await this.userService.findByLoginName(profile.username)
 		if (user) {
 			return user
