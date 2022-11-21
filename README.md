@@ -1,6 +1,40 @@
-# Setup
+# ft_transcendence
 
-## Create the following .env files
+## Final project of the 42 Core Curriculum
+
+### Description
+* Full stack Web Application
+* Including online Pong Game with matchmaking system and game invitations
+* Chat rooms and personal messages with ban, mute and admin options
+* Friends and ability to block users
+* A customizable Profile page
+* Scoreboard and match history
+* Two Factor Authentication
+
+
+
+## Screenshots
+
+### LoginView
+![Screenshot](img/login.png)
+### ProfileView
+![Screenshot](img/profile.png)
+### GameView
+![Screenshot](img/game.png)
+### ChatView
+![Screenshot](img/chat.png)
+### ScoreboardView
+![Screenshot](img/scoreboard.png)
+### SettingsView
+![Screenshot](img/settings.png)
+
+
+
+
+
+## Setup
+
+### Create the following .env files
 * ./docker/db.env
 ```
 POSTGRES_USER=trans
@@ -41,39 +75,39 @@ VUE_APP_HOST_URL='http://<HOST_URL>'
 
 
 
-# Resources
-## Private Messaging
+## Resources
+### Private Messaging
 https://socket.io/get-started/private-messaging-part-1/
 
-## Swagger UI
+### Swagger UI
 https://docs.nestjs.com/openapi/introduction
 
-## TypeORM
+### TypeORM
 https://typeorm.io/
 https://docs.nestjs.com/recipes/sql-typeorm
 
-## TypeORM relations
+### TypeORM relations
 https://typeorm.io/relations
 
-## VUE store
+### VUE store
 https://vuex.vuejs.org/guide/#the-simplest-store
 
-## OAUTH flows
+### OAUTH flows
 https://frontegg.com/blog/oauth-flows
 
-## Authorization Roles
+### Authorization Roles
 https://docs.nestjs.com/security/authorization
 
-## Encryption and Hashing
+### Encryption and Hashing
 https://docs.nestjs.com/security/encryption-and-hashing
 
-## RXJS - Communication between components
+### RXJS - Communication between components
 https://rxjs.dev/guide/overview
 https://jasonwatmore.com/post/2019/04/02/vuejs-rxjs-communicating-between-components-with-observable-subject
 
-## Socket.io in Nest
+### Socket.io in Nest
 https://docs.nestjs.com/websockets/gateways
 https://socket.io/docs/v4/
 
-## TypeOrm ManyToMany with extra properties
+### TypeOrm ManyToMany with extra properties
 https://orkhan.gitbook.io/typeorm/docs/many-to-many-relations
